@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
         this.message = response.message; // Récupère le message depuis la réponse JSON
       },
       (error) => {
-        console.error('Erreur lors de la récupération des données', error);
+        //console.error('Erreur lors de la récupération des données', error);
         this.message = 'Erreur lors de la connexion au serveur';
       }
     );
