@@ -44,7 +44,6 @@ testem.log
 Thumbs.db
 
 # Compiled output
-*.js
 *.js.map
 
 # Logs

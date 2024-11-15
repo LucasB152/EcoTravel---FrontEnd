@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {Destination} from './models/Destination';
 
 
 
@@ -8,9 +7,6 @@ import {Destination} from './models/Destination';
   declarations: [],
   imports: [
     CommonModule
-  ],
-  exports: [
-    Destination
   ]
 })
-export class CoreModule { }
+export class FeaturesModule { }

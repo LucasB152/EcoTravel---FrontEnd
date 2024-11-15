@@ -1,13 +1,23 @@
-import {Component, HostListener} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
+import {Destination} from '../../core/models/Destination';
+import {LocationService} from '../../core/services/location.service';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
   styleUrl: './index.component.scss'
 })
-export class IndexComponent {
+export class IndexComponent implements OnInit{
   isDropdownOpen: boolean = false;
   selectedCategory: string = "All categories";
+  destination$!: Observable<Destination[]>;
+
+  constructor(private destinationService: LocationService) {}
+
+  ngOnInit(): void {
+        this.destination$ = this.destinationService.getMostPopularLocation()
+    }
 
   toggleDropdown = () => {
     this.isDropdownOpen = !this.isDropdownOpen;
