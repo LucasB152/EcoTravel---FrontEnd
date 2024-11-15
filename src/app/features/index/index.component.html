@@ -13,16 +13,15 @@
         <!-- Menu déroulant avec *ngIf pour gérer l'affichage -->
         <div *ngIf="isDropdownOpen" id="dropdown" class="absolute top-full left-0 mt-1 bg-white divide-y divide-gray-100 rounded-lg shadow-lg w-44">
           <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdown-button">
-            <li><button type="button" (click)="selectCategory('Mockups')" class="inline-flex w-full px-4 py-2 hover:bg-gray-100 text-black">Mockups</button></li>
-            <li><button type="button" (click)="selectCategory('Templates')" class="inline-flex w-full px-4 py-2 hover:bg-gray-100 text-black">Templates</button></li>
-            <li><button type="button" (click)="selectCategory('Design')" class="inline-flex w-full px-4 py-2 hover:bg-gray-100 text-black">Design</button></li>
-            <li><button type="button" (click)="selectCategory('Logos')" class="inline-flex w-full px-4 py-2 hover:bg-gray-100 text-black">Logos</button></li>
+            <li><button type="button" (click)="selectCategory('All categories')" class="inline-flex w-full px-4 py-2 hover:bg-gray-100 text-black">All categories</button></li>
+            <li><button type="button" (click)="selectCategory('Accommodations')" class="inline-flex w-full px-4 py-2 hover:bg-gray-100 text-black">Accommodations</button></li>
+            <li><button type="button" (click)="selectCategory('Activities')" class="inline-flex w-full px-4 py-2 hover:bg-gray-100 text-black">Activities</button></li>
           </ul>
         </div>
 
         <!-- Champ de recherche -->
         <div class="relative w-full">
-          <input type="search" id="search-dropdown" class="block py-3 px-5 w-full text-lg text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500" placeholder="Search Mockups, Logos, Design Templates..." required />
+          <input type="search" id="search-dropdown" class="block py-3 px-5 w-full text-lg text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500" placeholder="Search for a destination, accommodation, an activity" required />
 
           <!-- Bouton de soumission -->
           <button type="submit" class="absolute top-0 right-0 p-3 h-full text-black bg-[#00a14b] rounded-e-lg border border-black-700 hover:bg-[#008c3a] focus:ring-4 focus:outline-none focus:ring-blue-300">
@@ -40,6 +39,6 @@
   <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-6 text-center">
     Most Popular
   </h2>
-  <app-cards-list/>
+  <app-cards-list *ngIf="destination$ | async as destinations" [destinations]="destinations"/>
 </div>
 

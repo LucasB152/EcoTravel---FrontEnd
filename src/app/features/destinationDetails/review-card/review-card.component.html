@@ -1,0 +1,36 @@
+<div class="max-w-md mx-auto p-6 bg-white shadow-md rounded-lg border border-gray-200 hover:shadow-lg transition-shadow duration-300">
+  <div class="flex items-center justify-between mb-4">
+    <div class="flex items-center">
+      <!-- Note avec des étoiles -->
+      <ng-container *ngFor="let star of stars; let i = index">
+        <svg
+          *ngIf="i < rating"
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6 text-yellow-400"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+          stroke="none"
+        >
+          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+        </svg>
+        <svg
+          *ngIf="i >= rating"
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6 text-gray-300"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+          stroke="none"
+        >
+          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+        </svg>
+      </ng-container>
+    </div>
+    <span class="text-sm text-gray-500">{{ date | date: 'shortDate' }}</span>
+  </div>
+  <p class="text-gray-700 text-base leading-relaxed">
+    {{ comment }}
+  </p>
+  <div *ngIf="modified" class="mt-3 text-xs text-gray-500 italic">
+    (Modifié)
+  </div>
+</div>
