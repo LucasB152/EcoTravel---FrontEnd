@@ -1,5 +1,6 @@
 import {Component, AfterViewInit} from '@angular/core';
 import {MarkerClusterer} from "@googlemaps/markerclusterer";
+import {environment} from '../../environments/environment';
 
 @Component({
   selector: 'app-map',
@@ -46,7 +47,8 @@ export class MapComponent implements AfterViewInit {
         resolve();
       } else {
         const script = document.createElement('script');
-        script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCkyuA7mezQv6ynC-a5p76wUhYeqjfsZ9I&libraries=marker';
+        //script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCkyuA7mezQv6ynC-a5p76wUhYeqjfsZ9I&libraries=marker';
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${environment.googleMapsApiKey}&libraries=marker`;
         script.async = true;
         script.defer = true;
         script.onload = () => resolve();
@@ -88,15 +90,10 @@ export class MapComponent implements AfterViewInit {
       // markers can only be keyboard focusable when they have click listeners
       // open info window when marker is clicked
       marker.addListener("click", () => {
-        //by using tailwindcss we can use the same class for the infoWindow and show the name, type ,the location and the images
-
-        //position. images is possibly undefined so we need to check if it is defined before using it but not show "undefined" in the html
-
         let images = "";
         if(position.images){
           images = position.images.map((image) => `<img src="${image}" class="w-20 h-20 object-cover" alt="image">`).join("");
         }
-
 
         infoWindow.setContent(`<div class="flex flex-col">
           <h1 class="text-lg font-bold">${position.name}</h1>
@@ -117,31 +114,5 @@ export class MapComponent implements AfterViewInit {
       markers,
       map: this.map,
     });
-
-
-    // Add a marker clusterer to manage the markers.
-    //
-    // let renderer = {
-    //   render({count, position}: any, stats: { clusters: { markers: { mean: number; }; }; }) {
-    //     const color = count > Math.max(10, stats.clusters.markers.mean) ? "#237700" : "#53b800";
-    //     const svg = window.btoa(`
-    //     <svg fill="${color}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
-    //       <circle cx="120" cy="120" opacity=".8" r="70" />
-    //       <circle cx="120" cy="120" opacity=".3" r="90" />
-    //       <circle cx="120" cy="120" opacity=".1" r="110" />
-    //       <text x="50%" y="50%" style="fill:#fff" text-anchor="middle" font-size="50" dominant-baseline="middle" font-family="roboto,arial,sans-serif">${count}</text>
-    //
-    //     </svg>`);
-    //     return new google.maps.Marker({
-    //       position,
-    //       icon: {
-    //         url: `data:image/svg+xml;base64,${svg}`,
-    //         scaledSize: new google.maps.Size(45, 45),
-    //       },
-    //     });
-    //   }
-    // }
-
   }
-
 }
