@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../core/services/auth.service';
-import {TokenService} from '../../core/services/token.service';
 import {Router} from '@angular/router';
+import {BehaviorSubject} from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -11,8 +11,9 @@ import {Router} from '@angular/router';
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  errorMessage: string = '';
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private tokenService: TokenService, private router: Router) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
@@ -24,11 +25,10 @@ export class LoginComponent {
       const {email, password} = this.loginForm.value;
       this.authService.login(email, password).subscribe({
         next: (response) => {
-        console.log('Login successful:', response);
-        this.tokenService.saveToken(response.token);
-        this.router.navigate(['/profile']); },
-        error: (err) => {
-        console.error('Login failed:', err);
+        this.authService.saveToken(response.token);
+        this.router.navigate(['/']);},
+        error: (error) => {
+          this.errorMessage = error.error;
       },
     });
     }

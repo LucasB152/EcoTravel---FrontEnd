@@ -20,7 +20,7 @@ import { LoginComponent } from './features/login/login.component';
 import { RegisterComponent } from './features/register/register.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AuthInterceptor} from './core/auth.interceptor';
-import { ProfileComponent } from './profile/profile.component';
+import { ProfileComponent } from './features/profile/profile.component';
 
 @NgModule({
   declarations: [
