@@ -5,10 +5,52 @@
   </div>
 
   <nav class="flex space-x-4">
-    <a href="#home" class="text-gray-700 hover:text-black hover:bg-gray-300 px-3 py-1 rounded transition">Home</a>
-    <a href="#about" class="text-gray-700 hover:text-black hover:bg-gray-300 px-3 py-1 rounded transition">Accomodations</a>
+    <a routerLink="/" class="text-gray-700 hover:text-black hover:bg-gray-300 px-3 py-1 rounded transition">Home</a>
+    <a href="#about" class="text-gray-700 hover:text-black hover:bg-gray-300 px-3 py-1 rounded transition">Accommodations</a>
     <a href="#services" class="text-gray-700 hover:text-black hover:bg-gray-300 px-3 py-1 rounded transition">Activities</a>
-    <a href="#blog" class="text-gray-700 hover:text-black hover:bg-gray-300 px-3 py-1 rounded transition">Sign in</a>
-    <a href="#contact" class="text-gray-700 hover:text-black hover:bg-gray-300 px-3 py-1 rounded transition">Register</a>
+
+    <ng-container *ngIf="isLoggedIn; else authLinks">
+      <!-- Conteneur du menu déroulant -->
+      <div class="relative group">
+        <!-- Icône de profil -->
+        <button class="flex items-center text-gray-700 hover:text-black px-3 py-1 rounded transition">
+          John Doe
+          <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+               alt="Profile"
+               class="h-8 w-8 rounded-full ml-2" />
+        </button>
+
+
+        <!-- Menu déroulant avec z-index -->
+        <div
+          class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50"
+        >
+          <a routerLink="/profile" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 transition">
+            My Profile
+          </a>
+          <a routerLink="/" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 transition">
+            My routes
+          </a>
+          <a routerLink="/" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 transition">
+            My accommodations
+          </a>
+          <a routerLink="/" class="block px-4 py-2 text-gray-700 hover:bg-gray-200 transition">
+            My activities
+          </a>
+          <button
+            (click)="onLogout()"
+            class="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-200 transition"
+          >
+            Logout
+          </button>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- Liens Inscription/Connexion -->
+    <ng-template #authLinks>
+      <a routerLink="/login" class="text-gray-700 hover:text-black hover:bg-gray-300 px-3 py-1 rounded transition">Login</a>
+      <a routerLink="/register" class="text-gray-700 hover:text-black hover:bg-gray-300 px-3 py-1 rounded transition">Register</a>
+    </ng-template>
   </nav>
 </header>
