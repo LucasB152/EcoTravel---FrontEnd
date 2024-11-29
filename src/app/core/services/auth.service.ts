@@ -15,30 +15,59 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
+  register(user: Users): Observable<any> {
+    return this.http.post(`${APP_CONSTANTS.API_URL}/auth/signup`, user);
+  }
+
+  login(email: string, password: string, rememberMe: boolean): Observable<any> {
+    return this.http.post<any>(`${APP_CONSTANTS.API_URL}/auth/login`, { email, password }).pipe(
+      tap(response => {
+        if (response && response.token) {
+          rememberMe ? this.saveToken(response.token) : this.saveTokenOnSession(response.token);
+          this.loggedIn.next(true);
+        }
+      })
+    );
+  }
+
+  isAuthenticated(): boolean {
+    return this.hasToken();
+  }
+
+  logout(): void {
+    this.loggedIn.next(false);
+    this.removeToken();
+  }
+
   private hasToken(): boolean {
     return !!this.getToken();
   }
 
-  saveToken(token: string): void {
+  private saveTokenOnSession(token: string): void {
+    sessionStorage.setItem(this.tokenKey, token);
+  }
+
+  private saveToken(token: string): void {
     localStorage.setItem(this.tokenKey, token);
-    this.loggedIn.next(true);
   }
 
   getToken(): string | null {
-    if (typeof window !== 'undefined' && window.localStorage) {
-      return localStorage.getItem(this.tokenKey);
-    }
-    return null;
+    if (typeof window === 'undefined') return null;
+
+    const token = sessionStorage.getItem(this.tokenKey) || localStorage.getItem(this.tokenKey);
+    return token && token.split('.').length === 3 ? token : null;
   }
 
-  removeToken(): void {
+
+  private removeToken(): void {
     localStorage.removeItem(this.tokenKey);
+    sessionStorage.removeItem(this.tokenKey);
     this.loggedIn.next(false);
   }
 
-  getDecodedToken(): any {
+  private getDecodedToken(): any {
     const token = this.getToken();
-    if (token) {
+    if (token != null) {
       return jwtDecode(token);
     }
     return null;
@@ -49,27 +78,9 @@ export class AuthService {
     return decodedToken.sub;
   }
 
-  getUserRole(): string | null {
+  private getUserRole(): string | null {
     const decodedToken = this.getDecodedToken();
     return decodedToken ? decodedToken.role : null;
-  }
-
-  register(user: Users): Observable<any> {
-    return this.http.post(`${APP_CONSTANTS.API_URL}/auth/signup`, user);
-  }
-
-  login(email: string, password: string): Observable<any> {
-    return this.http.post<any>(`${APP_CONSTANTS.API_URL}/auth/login`, { email, password }).pipe(
-      tap(response => {
-        if (response && response.token) {
-          this.saveToken(response.token);
-        }
-      })
-    );
-  }
-
-  logout(): void {
-    this.removeToken();
   }
 
   getUserById(id: string): Observable<any> {
