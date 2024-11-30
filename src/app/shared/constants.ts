@@ -1,3 +1,3 @@
 export const APP_CONSTANTS = {
-  API_URL: 'http://localhost:8080/api',
+  API_URL: 'https://ecotravel-backend.onrender.com/api',
 }
