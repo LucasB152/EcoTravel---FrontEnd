@@ -22,9 +22,6 @@ FROM nginx:stable-alpine
 # Copier les fichiers construits depuis l'étape précédente
 COPY --from=build /app/dist/front-ecotravel /usr/share/nginx/html
 
-# Copier le fichier de configuration par défaut de Nginx
-COPY nginx.conf /etc/nginx/nginx.conf
-
 # Exposer le port 80 pour Render
 EXPOSE 80
 
