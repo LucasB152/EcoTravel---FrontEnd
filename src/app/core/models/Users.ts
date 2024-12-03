@@ -5,16 +5,25 @@ export class Users {
   firstname: string;
   lastname: string;
   email: string;
-  password: string;
+  private password: string;
   private _profilePicturePath?: string;
 
-  constructor({firstname, lastname, email, password}: Users) {
+  constructor({
+                firstname,
+                lastname,
+                email,
+                password,
+              }: {
+    firstname: string;
+    lastname: string;
+    email: string;
+    password: string;
+  }) {
     this.firstname = firstname;
     this.lastname = lastname;
     this.email = email;
     this.password = password;
   }
-
 
   set id(value: UUID) {
     this._id = value;

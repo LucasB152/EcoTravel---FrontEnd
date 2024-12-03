@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../core/services/auth.service';
-import {Users} from '../../core/models/User';
+import {Users} from '../../core/models/Users';
 
 @Component({
   selector: 'app-register',
@@ -10,6 +10,7 @@ import {Users} from '../../core/models/User';
 })
 export class RegisterComponent {
   registerForm: FormGroup;
+  errorMessage: string = '';
 
   constructor(private fb: FormBuilder, private authService: AuthService) {
     this.registerForm = this.fb.group({
@@ -18,6 +19,7 @@ export class RegisterComponent {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       passwordConfirmation: ['', [Validators.required]],
+      terms: ['', [Validators.required]],
     },{
       validators: this.confirmationMatchPassword
     });
@@ -34,12 +36,12 @@ export class RegisterComponent {
 
   onSubmit() {
     if (this.registerForm.valid) {
-      this.authService.register(new Users(this.registerForm.value)).subscribe({
+      this.authService.register(this.registerForm.value).subscribe({
         next: (response) => {
           console.log('Register successful:', response);
         },
-        error: (err) => {
-          console.log('Register failed:', err);
+        error: (error) => {
+          this.errorMessage = error.error;
         }
       })
     }

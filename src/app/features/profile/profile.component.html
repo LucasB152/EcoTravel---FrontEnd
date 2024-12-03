@@ -5,20 +5,20 @@
       <!-- Section gauche : photo et infos utilisateur -->
       <div class="flex items-center">
         <img
-          class="w-24 h-24 rounded-full object-cover border-2 border-blue-500"
+          class="w-24 h-24 rounded-full object-cover border-2 border-[#00a14b]"
           src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
           alt="Profile Picture"
         />
-        <div class="ml-4">
-          <h2 class="text-2xl font-bold text-gray-800">John Doe</h2>
-          <p class="text-gray-600">johndoe&#64;gmail.com</p>
+        <div *ngIf="user" class="ml-4">
+          <h2 class="text-2xl font-bold text-gray-800">{{user.firstname}} {{user.lastname}}</h2>
+          <p class="text-gray-600">{{user.email}}</p>
         </div>
       </div>
 
       <!-- Section droite : bouton -->
       <div class="flex gap-3">
         <button
-          class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          class="bg-[#00a14b] text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
           (click)="editProfile()"
         >
           Modifier le profil

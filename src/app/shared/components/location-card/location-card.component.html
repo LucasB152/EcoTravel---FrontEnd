@@ -1,30 +1,47 @@
-<div class="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg bg-white border border-gray-200 rounded-lg shadow mx-auto ">
-  <img
-    class="rounded-t-lg w-full h-48 object-cover md:h-64"
-    [src]="locationActivity.imageUrl"
-    [alt]="locationActivity.title"
-  />
+<div
+  class="max-w-md w-full bg-white border border-gray-200 rounded-lg shadow mx-auto flex flex-col"
+  style="width: 350px; height: 500px;"
+>
+  <!-- Conteneur pour l'image -->
+  <div class="w-full h-1/2 overflow-hidden">
+    <img
+      class="w-full h-full object-fill rounded-t-lg"
+      [src]="locationActivity.imageFolderPath"
+      [alt]="locationActivity.title"
+    />
+  </div>
 
   <!-- Contenu de la carte -->
-  <div class="p-5">
+  <div class="p-5 flex-grow flex flex-col justify-between">
     <!-- Titre de la carte -->
-    <h5 class="mb-2 text-lg md:text-2xl font-bold tracking-tight text-gray-900">
+    <h5 class="text-lg font-bold text-gray-900">
       {{ locationActivity.title }}
     </h5>
 
     <!-- Description de la carte -->
-    <p class="mb-3 text-sm md:text-base font-normal text-gray-700">
+    <p class="text-sm text-gray-700 overflow-hidden text-ellipsis">
       {{ locationActivity.description }}
     </p>
 
     <!-- Bouton -->
     <button
       (click)="onContinue(locationActivity.id)"
-      class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-[#00a14b] rounded-lg hover:bg-green-700">
+      class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-[#00a14b] rounded-lg hover:bg-green-700 mt-4"
+    >
       See details
-      <svg class="w-3.5 h-3.5 ms-2 rtl:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M1 5h12m0 0L9 1m4 4L9 9"/>
+      <svg
+        class="w-3.5 h-3.5 ms-2 rtl:rotate-180"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 14 10"
+      >
+        <path
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M1 5h12m0 0L9 1m4 4L9 9"
+        />
       </svg>
     </button>
   </div>

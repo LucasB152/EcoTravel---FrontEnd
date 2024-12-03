@@ -9,7 +9,6 @@ import {environment} from '../../environments/environment';
 })
 export class MapComponent implements AfterViewInit {
 
-
   private map: google.maps.Map | undefined;
   //https://www.houseplans.net/uploads/plans/32005/elevations/88909-768.jpg
 //https://casaeconstrucao.org/wp-content/uploads/2020/03/casas-baratas-tiny-house-no-jardim.jpg
