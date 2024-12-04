@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Users } from '../models/Users';
-import { APP_CONSTANTS } from '../../shared/constants';
 import { jwtDecode } from 'jwt-decode';
+import {environment} from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -16,11 +16,11 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   register(user: Users): Observable<any> {
-    return this.http.post(`${APP_CONSTANTS.API_URL}/auth/signup`, user);
+    return this.http.post(`${environment.API_URL}/auth/signup`, user);
   }
 
   login(email: string, password: string, rememberMe: boolean): Observable<any> {
-    return this.http.post<any>(`${APP_CONSTANTS.API_URL}/auth/login`, { email, password }).pipe(
+    return this.http.post<any>(`${environment.API_URL}/auth/login`, { email, password }).pipe(
       tap(response => {
         if (response && response.token) {
           rememberMe ? this.saveToken(response.token) : this.saveTokenOnSession(response.token);
@@ -78,12 +78,12 @@ export class AuthService {
     return decodedToken.sub;
   }
 
-  private getUserRole(): string | null {
+  public getUserRole(): string | null {
     const decodedToken = this.getDecodedToken();
     return decodedToken ? decodedToken.role : null;
   }
 
   getUserById(id: string): Observable<any> {
-    return this.http.get<any>(`${APP_CONSTANTS.API_URL}/user/${id}`, {});
+    return this.http.get<any>(`${environment.API_URL}/user/${id}`, {});
   }
 }

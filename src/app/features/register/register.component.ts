@@ -11,6 +11,7 @@ import {Users} from '../../core/models/Users';
 export class RegisterComponent {
   registerForm: FormGroup;
   errorMessage: string = '';
+  successMessage: string = '';
 
   constructor(private fb: FormBuilder, private authService: AuthService) {
     this.registerForm = this.fb.group({
@@ -38,7 +39,7 @@ export class RegisterComponent {
     if (this.registerForm.valid) {
       this.authService.register(this.registerForm.value).subscribe({
         next: (response) => {
-          console.log('Register successful:', response);
+          this.successMessage = response.Message;
         },
         error: (error) => {
           this.errorMessage = error.error;
