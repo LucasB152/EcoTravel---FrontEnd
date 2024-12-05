@@ -1,4 +1,5 @@
 ﻿export const environment = {
   production: true,
-  googleMapsApiKey: 'apiKey'
+  googleMapsApiKey: 'apiKey',
+  API_URL: 'https://ecotravel-backend.onrender.com/api',
 };
