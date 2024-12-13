@@ -2,22 +2,29 @@ import {Component, HostListener, OnInit} from '@angular/core';
 import {Destination} from '../../core/models/Destination';
 import {LocationService} from '../../core/services/location.service';
 import {Observable} from 'rxjs';
+import {DestinationOnMap} from '../../core/models/DestinationOnMap';
 
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
   styleUrl: './index.component.scss'
 })
-export class IndexComponent implements OnInit{
+export class IndexComponent implements OnInit {
   isDropdownOpen: boolean = false;
   selectedCategory: string = "All categories";
   destination$!: Observable<Destination[]>;
+  destinationOnMap$!: Observable<DestinationOnMap[]>;
+  searchQuery: string = '';
 
-  constructor(private destinationService: LocationService) {}
+  constructor(private destinationService: LocationService) {
+  }
 
   ngOnInit(): void {
-        this.destination$ = this.destinationService.getMostPopularLocation()
-    }
+    this.destination$ = this.destinationService.getMostPopularLocation()
+
+    //les info nécessaire pour le mettre sur la map
+    this.destinationOnMap$ = this.destinationService.getDestinationsOnMap()
+  }
 
   toggleDropdown = () => {
     this.isDropdownOpen = !this.isDropdownOpen;
@@ -26,7 +33,6 @@ export class IndexComponent implements OnInit{
   selectCategory(category: string) {
     this.selectedCategory = category;
     this.isDropdownOpen = false;
-    console.log('Catégorie sélectionnée :', category);
   }
 
   @HostListener('document:click', ['$event'])
@@ -36,4 +42,8 @@ export class IndexComponent implements OnInit{
       this.isDropdownOpen = false;
     }
   }
+
+  onSearch() {
+  }
+
 }
