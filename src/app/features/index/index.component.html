@@ -58,11 +58,13 @@
   </div>
 </div>
 <div class="max-w-screen-xl mx-auto px-4 py-8">
+
+
+  <!--  <app-map *ngIf="destinationOnMap$ | async as destinationsOnMap" [destinationsOnMap]="destinationsOnMap"></app-map>-->
+  <span class="text-red-500 ">la map est hide pour éviter trop de requètes google api</span>
+
   <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-6 text-center">
     Most Popular
-    <!--    TODO TEMP to del (debugg) -->
-    <span *ngIf="destinationOnMap$ | async as destinationsOnMap"
-          class="text-sm text-gray-500">({{ destinationsOnMap.length }} destinations)</span>
   </h2>
-  <app-cards-list *ngIf="destination$ | async as destinations" [destinations]="destinations"></app-cards-list>
+  <app-cards-list *ngIf="destinationOnMap$ | async as destinationsOnMap" [destinationsOnMap]="destinationsOnMap"></app-cards-list>
 </div>

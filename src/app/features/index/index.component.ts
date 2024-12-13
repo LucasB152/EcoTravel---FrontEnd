@@ -1,5 +1,4 @@
 import {Component, HostListener, OnInit} from '@angular/core';
-import {Destination} from '../../core/models/Destination';
 import {LocationService} from '../../core/services/location.service';
 import {Observable} from 'rxjs';
 import {DestinationOnMap} from '../../core/models/DestinationOnMap';
@@ -12,7 +11,6 @@ import {DestinationOnMap} from '../../core/models/DestinationOnMap';
 export class IndexComponent implements OnInit {
   isDropdownOpen: boolean = false;
   selectedCategory: string = "All categories";
-  destination$!: Observable<Destination[]>;
   destinationOnMap$!: Observable<DestinationOnMap[]>;
   searchQuery: string = '';
 
@@ -20,8 +18,6 @@ export class IndexComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.destination$ = this.destinationService.getMostPopularLocation()
-
     //les info nécessaire pour le mettre sur la map
     this.destinationOnMap$ = this.destinationService.getDestinationsOnMap()
   }

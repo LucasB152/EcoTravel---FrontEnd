@@ -6,6 +6,6 @@ import {Destination} from '../../../core/models/Destination';
   templateUrl: './cards-list.component.html',
   styleUrl: './cards-list.component.scss'
 })
-export class CardsListComponent{
-  @Input() destinations: Destination[] = [];
+export class CardsListComponent {
+  @Input() destinationsOnMap: any[] = [];
 }
