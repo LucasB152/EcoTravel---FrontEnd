@@ -1,14 +1,14 @@
 <div class="max-w-4xl mx-auto p-6 space-y-10 mt-10">
-  <!-- Section pour les informations de base -->
-  <div class="bg-white shadow-md rounded-lg p-6">
+  <div *ngIf="basicInfoForm" class="bg-white shadow-md rounded-lg p-6">
     <h2 class="text-xl font-bold text-gray-800 mb-6">Informations de base</h2>
 
     <form [formGroup]="basicInfoForm" (ngSubmit)="onUpdateBasicInfo()" class="space-y-6">
       <!-- Photo de profil -->
       <div class="flex items-center space-x-6">
         <div class="w-24 h-24 bg-gray-100 rounded-full overflow-hidden">
+          <!-- L'image s'affichera ici, si une photo a été sélectionnée -->
           <img
-            [src]="basicInfoForm.get('photo')?.value"
+            [src]="imagePreviewUrl || basicInfoForm.get('profilePicturePath')?.value"
             alt="Photo de profil"
             class="w-full h-full object-cover"
           />
@@ -30,11 +30,11 @@
 
       <!-- Nom -->
       <div>
-        <label for="lastName" class="block text-sm font-medium text-gray-700">Nom</label>
+        <label for="lastname" class="block text-sm font-medium text-gray-700">Nom</label>
         <input
-          id="lastName"
+          id="lastname"
           type="text"
-          formControlName="lastName"
+          formControlName="lastname"
           class="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           placeholder="Entrez votre nom"
         />
@@ -42,11 +42,11 @@
 
       <!-- Prénom -->
       <div>
-        <label for="firstName" class="block text-sm font-medium text-gray-700">Prénom</label>
+        <label for="firstname" class="block text-sm font-medium text-gray-700">Prénom</label>
         <input
-          id="firstName"
+          id="firstname"
           type="text"
-          formControlName="firstName"
+          formControlName="firstname"
           class="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           placeholder="Entrez votre prénom"
         />
@@ -69,7 +69,7 @@
         <button
           type="submit"
           [disabled]="basicInfoForm.invalid"
-          class="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-md shadow hover:bg-[#00a14b] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          class="w-full py-2 px-4 bg-[#00a14b] text-white font-semibold rounded-md shadow hover:bg-[#008f44] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
         >
           Mettre à jour les informations
         </button>
@@ -77,7 +77,7 @@
     </form>
   </div>
 
-  <!-- Section pour changer le mot de passe -->
+<!-- Section pour changer le mot de passe -->
   <div class="bg-white shadow-md rounded-lg p-6">
     <h2 class="text-xl font-bold text-gray-800 mb-6">Changer le mot de passe</h2>
 

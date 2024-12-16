@@ -25,11 +25,12 @@ export class ProfileComponent implements OnInit {
           password: ""
         });
         this.user.profilePicturePath = response.profilePicturePath;
+        console.log(this.user.profilePicturePath);
       }
     );
   }
 
   editProfile() {
-
+    this.router.navigateByUrl("/profile-edit");
   }
 }

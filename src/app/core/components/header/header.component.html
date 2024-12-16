@@ -15,7 +15,7 @@
         <!-- Icône de profil -->
         <button class="flex items-center text-gray-700 hover:text-black px-3 py-1 rounded transition">
           {{user.firstname}} {{user.lastname}}
-          <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+          <img [src]="user.profilePicturePath"
                alt="Profile"
                class="h-8 w-8 rounded-full ml-2" />
         </button>
