@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import {environment} from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CloudinaryService {
-  private uploadUrl = 'http://localhost:8081/api/user/picture';
 
   constructor(private http: HttpClient) {}
 
@@ -14,6 +14,6 @@ export class CloudinaryService {
     const formData = new FormData();
     formData.append('file', file);
 
-    return this.http.post(`${this.uploadUrl}/${id}`, formData, { responseType: 'text' });
+    return this.http.post(`${environment.API_URL}/user/picture/${id}`, formData, { responseType: 'text' });
   }
 }
