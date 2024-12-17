@@ -1,21 +1,26 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Users} from '../models/Users';
-import {Observable} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
+  private userUpdated = new BehaviorSubject<boolean>(false);
+  userUpdated$ = this.userUpdated.asObservable();
   constructor(private http: HttpClient) {}
 
   modifyUserDetails(user: Users, id: string): Observable<any> {
-    console.log(user);
     return this.http.put(`${environment.API_URL}/user/${id}`, user);
   }
 
-  modifyUserPassword(currentPassword: string, newPassword: string): Observable<any> | null {
-    return null;
+  notifyUserUpdated(){
+    this.userUpdated.next(true);
+  }
+
+  modifyUserPassword(oldPassword: string, newPassword: string, userId: string): Observable<any> {
+    return this.http.put(`${environment.API_URL}/user/${userId}/password`, {oldPassword, newPassword, userId});
   }
 }

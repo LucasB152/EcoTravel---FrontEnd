@@ -55,8 +55,6 @@ export class ProfileEditComponent implements OnInit {
           next: (imageUrl) => {
             this.basicInfoForm.patchValue({profilePicturePath: imageUrl});
 
-            console.log(imageUrl);
-
             this.saveForm();
           }, error: (error) => {
             console.error(error);
@@ -70,17 +68,20 @@ export class ProfileEditComponent implements OnInit {
 
   onUpdatePassword(): void {
     if (this.passwordForm.valid) {
-      const { newPassword, confirmPassword } = this.passwordForm.value;
+      const {currentPassword, newPassword, confirmPassword } = this.passwordForm.value;
 
-      if (newPassword !== confirmPassword) {
-        alert('Le nouveau mot de passe et la confirmation ne correspondent pas.');
-        return;
+      if (newPassword === confirmPassword) {
+        this.userService.modifyUserPassword(currentPassword, newPassword, this.user.id).subscribe({
+          next: () => {
+            console.log("ok");
+          },
+          error: (error) => {
+            console.error(error);
+          }
+        })
       }
-
-      console.log('Mot de passe mis à jour avec succès :', this.passwordForm.value);
-      alert('Mot de passe mis à jour avec succès !');
-    } else {
-      alert('Veuillez remplir correctement le formulaire de mot de passe.');
+    }else{
+      console.log("formulaire non valide");
     }
   }
 
@@ -99,6 +100,7 @@ export class ProfileEditComponent implements OnInit {
   private saveForm() {
     this.userService.modifyUserDetails(this.basicInfoForm.value, this.user.id).subscribe({
       next: (response) => {
+        this.userService.notifyUserUpdated();
         this.router.navigateByUrl("/profile");
       },
       error: (error) => {

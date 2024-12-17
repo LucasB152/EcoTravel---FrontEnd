@@ -24,8 +24,7 @@ export class ProfileComponent implements OnInit {
           email: response.email,
           password: ""
         });
-        this.user.profilePicturePath = response.profilePicturePath;
-        console.log(this.user.profilePicturePath);
+        this.user.profilePicturePath = response.profilePicturePath || "basic-profile-picture.webp";
       }
     );
   }
