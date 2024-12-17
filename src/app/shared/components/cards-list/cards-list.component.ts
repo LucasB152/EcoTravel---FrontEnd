@@ -7,5 +7,5 @@ import {Destination} from '../../../core/models/Destination';
   styleUrl: './cards-list.component.scss'
 })
 export class CardsListComponent {
-  @Input() destinationsOnMap: any[] = [];
+  @Input() destinations: any[] = [];
 }

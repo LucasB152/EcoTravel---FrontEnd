@@ -1,0 +1,31 @@
+<div>
+  <div class="flex flex-col md:flex-row gap-3">
+    <div class="flex">
+      <input
+        type="text"
+        placeholder="Search by title or description"
+        [(ngModel)]="criteria.query"
+        class="w-full md:w-80 px-3 h-10 rounded-l border-2 border-sky-500 focus:outline-none focus:border-sky-500"
+      />
+      <button (click)="search()" class="bg-sky-500 text-white rounded-r px-2 md:px-3 py-0 md:py-1">Search</button>
+    </div>
+    <select [(ngModel)]="criteria.type"
+            class=" h-10 border-2 border-sky-500 focus:outline-none focus:border-sky-500 text-sky-500 rounded px-2 md:px-3 py-0 md:py-1 tracking-wider">
+      <option value="">Both type</option>
+      <option value="host">HOST</option>
+      <option value="activity">ACTIVITY</option>
+    </select>
+
+    <div class="bg-white p-3 rounded">
+      <label *ngFor="let tag of availableTags">
+        <input
+          type="checkbox"
+          [value]="tag"
+          (change)="toggleTag(tag, $event)"
+          class=""
+        />
+        {{ tag }}
+      </label>
+    </div>
+  </div>
+</div>

@@ -1,6 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Router} from '@angular/router';
-import {DestinationOnMap} from '../../../core/models/DestinationOnMap';
+import {Destination} from '../../../core/models/Destination';
 
 @Component({
   selector: 'app-location-card',
@@ -8,7 +8,7 @@ import {DestinationOnMap} from '../../../core/models/DestinationOnMap';
   styleUrl: './location-card.component.scss'
 })
 export class LocationCardComponent {
-  @Input() locationActivity!: DestinationOnMap;
+  @Input() locationActivity!: Destination;
 
   constructor(private router: Router) {
   }
