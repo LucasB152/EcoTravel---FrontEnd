@@ -68,20 +68,18 @@ export class ProfileEditComponent implements OnInit {
 
   onUpdatePassword(): void {
     if (this.passwordForm.valid) {
-      const {currentPassword, newPassword, confirmPassword } = this.passwordForm.value;
+      const {currentPassword, newPassword, confirmPassword} = this.passwordForm.value;
 
       if (newPassword === confirmPassword) {
         this.userService.modifyUserPassword(currentPassword, newPassword, this.user.id).subscribe({
-          next: () => {
-            console.log("ok");
+          next: (message) => {
+            console.log(message);
           },
           error: (error) => {
             console.error(error);
           }
         })
       }
-    }else{
-      console.log("formulaire non valide");
     }
   }
 
