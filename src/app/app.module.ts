@@ -21,6 +21,7 @@ import { RegisterComponent } from './features/register/register.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AuthInterceptor} from './core/auth.interceptor';
 import { ProfileComponent } from './features/profile/profile.component';
+import {CoreModule} from './core/core.module';
 import { ProfileEditComponent } from './features/profile-edit/profile-edit.component';
 
 @NgModule({
@@ -49,7 +50,8 @@ import { ProfileEditComponent } from './features/profile-edit/profile-edit.compo
     RouterLink,
     RouterLinkActive,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    CoreModule
   ],
   providers: [
     provideClientHydration(),

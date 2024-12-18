@@ -1,6 +1,7 @@
-import {Component, AfterViewInit} from '@angular/core';
+import {Component, AfterViewInit, Input} from '@angular/core';
 import {MarkerClusterer} from "@googlemaps/markerclusterer";
 import {environment} from '../../environments/environment';
+import {DestinationOnMap} from '../core/models/DestinationOnMap';
 
 @Component({
   selector: 'app-map',
@@ -9,26 +10,9 @@ import {environment} from '../../environments/environment';
 })
 export class MapComponent implements AfterViewInit {
 
+  @Input() destinations: any[] = [];
+
   private map: google.maps.Map | undefined;
-  //https://www.houseplans.net/uploads/plans/32005/elevations/88909-768.jpg
-//https://casaeconstrucao.org/wp-content/uploads/2020/03/casas-baratas-tiny-house-no-jardim.jpg
-//https://ecopark-adventures.com/wp-content/uploads/2019/07/HP-Main-picture-Tournai-e1580480117562.jpg
-  private locations = [
-    {lat: 50.7636, lng: 5.5273, name: "maison en foret", type: "host", images: ["https://www.houseplans.net/uploads/plans/32005/elevations/88909-768.jpg"]},
-    {lat: 50.6336, lng: 5.3573, name: "challet dans les bois", type: "host", images: ["https://casaeconstrucao.org/wp-content/uploads/2020/03/casas-baratas-tiny-house-no-jardim.jpg"]},
-    {lat: 50.66036, lng: 5.5993, name: "maison de campagne", type: "host"},
-    {lat: 50.6836, lng: 5.5673, name: "acrobranche", type: "activity", images: ["https://ecopark-adventures.com/wp-content/uploads/2019/07/HP-Main-picture-Tournai-e1580480117562.jpg"]},
-    {lat: 50.0636, lng: 5.8573, name: "parc d'attraction", type: "activity", images: []},
-    {lat: 50.6136, lng: 5.7873, name: "parc animalier", type: "activity", images: ["https://ecopark-adventures.com/wp-content/uploads/2019/07/HP-Main-picture-Tournai-e1580480117562.jpg"]},
-    {lat: 50.7636, lng: 5.0573, name: "parc aquatique", type: "activity", images: ["https://ecopark-adventures.com/wp-content/uploads/2019/07/HP-Main-picture-Tournai-e1580480117562.jpg"]},
-    {lat: 50.9636, lng: 5.9573, name: "villa de luxe", type: "host", images: []},
-    {lat: 50.7636, lng: 5.9573, name: "chateau", type: "host", images: ["https://casaeconstrucao.org/wp-content/uploads/2020/03/casas-baratas-tiny-house-no-jardim.jpg", "https://www.houseplans.net/uploads/plans/32005/elevations/88909-768.jpg"]},
-    {lat: 51.636, lng: 5.2573, name: "chateau", type: "host", images: []},
-    {lat: 50.0636, lng: 5.0573, name: "aqua poney", type: "activity", images: []},
-    {lat: 50.0636, lng: 5.7573, name: "cabanne dans un arbre", type: "host", images: ["https://www.houseplans.net/uploads/plans/32005/elevations/88909-768.jpg", "https://casaeconstrucao.org/wp-content/uploads/2020/03/casas-baratas-tiny-house-no-jardim.jpg"]},
-    {lat: 50.4636, lng: 5.4573, name: "petite maison en bois", type: "host", images: ["https://casaeconstrucao.org/wp-content/uploads/2020/03/casas-baratas-tiny-house-no-jardim.jpg"]},
-    {lat: 50.1636, lng: 5.1573, name: "petite maison en papier reciblable", type: "host", images: ["https://casaeconstrucao.org/wp-content/uploads/2020/03/casas-baratas-tiny-house-no-jardim.jpg"]},
-  ];
 
   ngAfterViewInit(): void {
     if (typeof window === 'undefined' || typeof document === 'undefined') {
@@ -74,7 +58,7 @@ export class MapComponent implements AfterViewInit {
       disableAutoPan: true,
     });
 
-    const markers = this.locations.map((position, i) => {
+    const markers = this.destinations.map((position, i) => {
       const color = position.type === "host" ? "#a6f342" : "#4acbea";
       const pinGlyph = new google.maps.marker.PinElement({
         background: color,
@@ -82,7 +66,7 @@ export class MapComponent implements AfterViewInit {
         borderColor: "#000000",
       })
       const marker = new google.maps.marker.AdvancedMarkerElement({
-        position,
+        position: {lat: position.lat, lng: position.lng},
         content: pinGlyph.element,
       });
 
@@ -90,8 +74,8 @@ export class MapComponent implements AfterViewInit {
       // open info window when marker is clicked
       marker.addListener("click", () => {
         let images = "";
-        if(position.images){
-          images = position.images.map((image) => `<img src="${image}" class="w-20 h-20 object-cover" alt="image">`).join("");
+        if (position.images) {
+          images = position.images.map((image: any) => `<img src="${image}" class="w-20 h-20 object-cover" alt="image">`).join("");
         }
 
         infoWindow.setContent(`<div class="flex flex-col">
