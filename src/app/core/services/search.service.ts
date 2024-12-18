@@ -12,6 +12,7 @@ import {environment} from '../../../environments/environment';
 export class SearchService {
 
   private baseUrl = `${environment.API_URL}/destination/search`;
+  //http://localhost:8081/api/destination/search
 
   constructor(private http: HttpClient) {
   }
@@ -23,6 +24,9 @@ export class SearchService {
    */
   search(criteria: SearchCriteria): Observable<Destination[]> {
     const params = this.buildHttpParams(criteria);
+
+    console.log(params);
+    console.log(criteria);
 
     return this.http.get<Destination[]>(this.baseUrl, {params});
 
@@ -47,7 +51,7 @@ export class SearchService {
     if (criteria.type) {
       params = params.set('type', criteria.type);
     } else {
-      params = params.set('type', 'both');
+      params = params.set('type', '');
     }
     if (criteria.page !== undefined) {
       params = params.set('page', criteria.page.toString());

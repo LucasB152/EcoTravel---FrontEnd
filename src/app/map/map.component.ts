@@ -10,7 +10,7 @@ import {DestinationOnMap} from '../core/models/DestinationOnMap';
 })
 export class MapComponent implements AfterViewInit {
 
-  @Input() destinationsOnMap: any[] = [];
+  @Input() destinations: any[] = [];
 
   private map: google.maps.Map | undefined;
 
@@ -58,8 +58,8 @@ export class MapComponent implements AfterViewInit {
       disableAutoPan: true,
     });
 
-    const markers = this.destinationsOnMap.map((position, i) => {
-      const color = position.destinationTypeName === "host" ? "#a6f342" : "#4acbea";
+    const markers = this.destinations.map((position, i) => {
+      const color = position.type === "host" ? "#a6f342" : "#4acbea";
       const pinGlyph = new google.maps.marker.PinElement({
         background: color,
         glyphColor: "#ffffff",
@@ -80,7 +80,7 @@ export class MapComponent implements AfterViewInit {
 
         infoWindow.setContent(`<div class="flex flex-col">
           <h1 class="text-lg font-bold">${position.name}</h1>
-          <p class="text-sm">${position.destinationTypeName}</p>
+          <p class="text-sm">${position.type}</p>
           <p class="text-sm">${position.lat}, ${position.lng}</p>
           <div class="flex flex-wrap">
             ${images}

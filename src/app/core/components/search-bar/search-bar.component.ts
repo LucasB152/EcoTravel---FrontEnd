@@ -23,6 +23,7 @@ export class SearchBarComponent {
   }
 
   search(): void {
+
     this.searchService.search(this.criteria).subscribe(results => {
       this.searchResults.emit(results);
     });
