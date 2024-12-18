@@ -4,9 +4,9 @@
     <div class="flex items-center justify-between p-6 border-b">
       <!-- Section gauche : photo et infos utilisateur -->
       <div class="flex items-center">
-        <img
+        <img *ngIf="user"
           class="w-24 h-24 rounded-full object-cover border-2 border-[#00a14b]"
-          src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+          [src]="user.profilePicturePath"
           alt="Profile Picture"
         />
         <div *ngIf="user" class="ml-4">
@@ -18,7 +18,7 @@
       <!-- Section droite : bouton -->
       <div class="flex gap-3">
         <button
-          class="bg-[#00a14b] text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          class="bg-[#00a14b] text-white px-4 py-2 rounded hover:bg-[#008f44] focus:outline-none focus:ring-2 focus:ring-blue-400"
           (click)="editProfile()"
         >
           Modifier le profil
