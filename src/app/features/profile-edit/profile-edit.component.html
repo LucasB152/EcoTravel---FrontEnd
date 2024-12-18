@@ -1,0 +1,133 @@
+<div class="max-w-4xl mx-auto p-6 space-y-10 mt-10">
+  <div *ngIf="basicInfoForm" class="bg-white shadow-md rounded-lg p-6">
+    <h2 class="text-xl font-bold text-gray-800 mb-6">Informations de base</h2>
+
+    <form [formGroup]="basicInfoForm" (ngSubmit)="onUpdateBasicInfo()" class="space-y-6">
+      <!-- Photo de profil -->
+      <div class="flex items-center space-x-6">
+        <div class="w-24 h-24 bg-gray-100 rounded-full overflow-hidden">
+          <!-- L'image s'affichera ici, si une photo a été sélectionnée -->
+          <img
+            [src]="imagePreviewUrl || basicInfoForm.get('profilePicturePath')?.value"
+            alt="Photo de profil"
+            class="w-full h-full object-cover"
+          />
+        </div>
+        <label class="block">
+          <span class="sr-only">Changer la photo de profil</span>
+          <input
+            type="file"
+            class="block w-full text-sm text-gray-500
+            file:mr-4 file:py-2 file:px-4
+            file:rounded-full file:border-0
+            file:text-sm file:font-semibold
+            file:bg-green-50 file:text-[#00a14b]
+            hover:file:bg-green-100"
+            (change)="onPhotoChange($event)"
+          />
+        </label>
+      </div>
+
+      <!-- Nom -->
+      <div>
+        <label for="lastname" class="block text-sm font-medium text-gray-700">Nom</label>
+        <input
+          id="lastname"
+          type="text"
+          formControlName="lastname"
+          class="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          placeholder="Entrez votre nom"
+        />
+      </div>
+
+      <!-- Prénom -->
+      <div>
+        <label for="firstname" class="block text-sm font-medium text-gray-700">Prénom</label>
+        <input
+          id="firstname"
+          type="text"
+          formControlName="firstname"
+          class="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          placeholder="Entrez votre prénom"
+        />
+      </div>
+
+      <!-- Email -->
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          class="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          placeholder="Entrez votre email"
+        />
+      </div>
+
+      <!-- Bouton pour mettre à jour les informations -->
+      <div>
+        <button
+          type="submit"
+          [disabled]="basicInfoForm.invalid"
+          class="w-full py-2 px-4 bg-[#00a14b] text-white font-semibold rounded-md shadow hover:bg-[#008f44] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        >
+          Mettre à jour les informations
+        </button>
+      </div>
+    </form>
+  </div>
+
+<!-- Section pour changer le mot de passe -->
+  <div class="bg-white shadow-md rounded-lg p-6">
+    <h2 class="text-xl font-bold text-gray-800 mb-6">Changer le mot de passe</h2>
+
+    <form [formGroup]="passwordForm" (ngSubmit)="onUpdatePassword()" class="space-y-6">
+      <!-- Ancien mot de passe -->
+      <div>
+        <label for="currentPassword" class="block text-sm font-medium text-gray-700">Ancien mot de passe</label>
+        <input
+          id="currentPassword"
+          type="password"
+          formControlName="currentPassword"
+          class="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          placeholder="Entrez votre ancien mot de passe"
+        />
+      </div>
+
+      <!-- Nouveau mot de passe -->
+      <div>
+        <label for="newPassword" class="block text-sm font-medium text-gray-700">Nouveau mot de passe</label>
+        <input
+          id="newPassword"
+          type="password"
+          formControlName="newPassword"
+          class="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          placeholder="Entrez un nouveau mot de passe"
+        />
+      </div>
+
+      <!-- Confirmation du mot de passe -->
+      <div>
+        <label for="confirmPassword" class="block text-sm font-medium text-gray-700">Confirmation</label>
+        <input
+          id="confirmPassword"
+          type="password"
+          formControlName="confirmPassword"
+          class="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+          placeholder="Confirmez le nouveau mot de passe"
+        />
+      </div>
+
+      <!-- Bouton pour changer le mot de passe -->
+      <div>
+        <button
+          type="submit"
+          [disabled]="passwordForm.invalid"
+          class="w-full py-2 px-4 bg-red-600 text-white font-semibold rounded-md shadow hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+        >
+          Mettre à jour le mot de passe
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

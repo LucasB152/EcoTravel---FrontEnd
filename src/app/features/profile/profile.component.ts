@@ -24,12 +24,12 @@ export class ProfileComponent implements OnInit {
           email: response.email,
           password: ""
         });
-        this.user.profilePicturePath = response.profilePicturePath;
+        this.user.profilePicturePath = response.profilePicturePath || "basic-profile-picture.webp";
       }
     );
   }
 
   editProfile() {
-
+    this.router.navigateByUrl("/profile-edit");
   }
 }

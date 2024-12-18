@@ -59,7 +59,7 @@ export class AuthService {
   }
 
 
-  private removeToken(): void {
+  public removeToken(): void {
     localStorage.removeItem(this.tokenKey);
     sessionStorage.removeItem(this.tokenKey);
     this.loggedIn.next(false);
@@ -85,5 +85,21 @@ export class AuthService {
 
   getUserById(id: string): Observable<any> {
     return this.http.get<any>(`${environment.API_URL}/user/${id}`, {});
+  }
+
+  isTokenExpired(): boolean {
+    try{
+      const decodedToken = this.getDecodedToken();
+      if(decodedToken.exp){
+
+        console.log(`Expiration Date: ${decodedToken.exp}`);
+        console.log(`Date: ${Date.now()}`);
+        console.log(decodedToken.exp < Date.now());
+        return decodedToken.exp < Date.now();
+      }
+      return true;
+    }catch (e) {
+      return true;
+    }
   }
 }

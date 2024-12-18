@@ -1,7 +1,5 @@
-import {UUID} from 'node:crypto';
-
 export class Users {
-  private _id?: UUID;
+  private _id?: string;
   firstname: string;
   lastname: string;
   email: string;
@@ -25,11 +23,20 @@ export class Users {
     this.password = password;
   }
 
-  set id(value: UUID) {
+
+  get id(): string {
+    return <string>this._id;
+  }
+
+  set id(value: string) {
     this._id = value;
   }
 
   set profilePicturePath(value: string) {
     this._profilePicturePath = value;
+  }
+
+  get profilePicturePath(): string | undefined {
+    return this._profilePicturePath;
   }
 }

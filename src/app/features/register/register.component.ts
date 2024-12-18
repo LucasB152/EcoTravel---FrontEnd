@@ -42,7 +42,7 @@ export class RegisterComponent {
           this.successMessage = response.Message;
         },
         error: (error) => {
-          this.errorMessage = error.error;
+          this.errorMessage = error.error.message;
         }
       })
     }
