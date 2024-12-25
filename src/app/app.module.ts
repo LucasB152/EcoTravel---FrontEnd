@@ -22,6 +22,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AuthInterceptor} from './core/auth.interceptor';
 import { ProfileComponent } from './features/profile/profile.component';
 import { ProfileEditComponent } from './features/profile-edit/profile-edit.component';
+import { NotificationComponent } from './notification/notification.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { ProfileEditComponent } from './features/profile-edit/profile-edit.compo
     LoginComponent,
     RegisterComponent,
     ProfileComponent,
-    ProfileEditComponent
+    ProfileEditComponent,
+    NotificationComponent
   ],
   imports: [
     BrowserModule,
