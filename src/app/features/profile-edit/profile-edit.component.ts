@@ -104,7 +104,7 @@ export class ProfileEditComponent implements OnInit {
         this.notificationService.showNotificationSuccess(response.Message);
       },
       error: (error) => {
-        this.notificationService.showNotificationError(error)
+        this.notificationService.showNotificationError(error.error.message)
       }
     })
   }
