@@ -59,7 +59,7 @@ export class MapComponent implements AfterViewInit {
     });
 
     const markers = this.destinations.map((position, i) => {
-      const color = position.type === "host" ? "#a6f342" : "#4acbea";
+      const color = position.type === "ACTIVITY" ? "#4acbea" : "#a6f342";
       const pinGlyph = new google.maps.marker.PinElement({
         background: color,
         glyphColor: "#ffffff",

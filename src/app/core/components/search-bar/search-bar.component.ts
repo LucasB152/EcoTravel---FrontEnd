@@ -2,6 +2,7 @@ import {Component, EventEmitter, Output} from '@angular/core';
 import {SearchCriteria} from '../../models/search-criteria.interface';
 import {SearchService} from '../../services/search.service';
 import {Destination} from '../../models/Destination';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-search-bar',
@@ -13,20 +14,18 @@ import {Destination} from '../../models/Destination';
 export class SearchBarComponent {
 
 //output pour l'index component
-  @Output() searchResults = new EventEmitter<Destination[]>();
-
+  @Output() searchResults = new EventEmitter<Observable<Destination[]>>();
   criteria: SearchCriteria = {tags: [], type: "", page: 0, size: 10};
   //todo : get tags from the server
   availableTags: string[] = ['wifi', 'swimmpool', 'all-in', 'no pet', 'no smoke'];
+  isTagsDropdownOpen: boolean = false;
 
   constructor(private searchService: SearchService) {
   }
 
   search(): void {
-
-    this.searchService.search(this.criteria).subscribe(results => {
-      this.searchResults.emit(results);
-    });
+    const results$ = this.searchService.search(this.criteria);
+    this.searchResults.emit(results$);
   }
 
   toggleTag(tag: string, event: Event) {

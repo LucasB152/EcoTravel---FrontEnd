@@ -8,34 +8,21 @@ import {Observable} from 'rxjs';
   templateUrl: './index.component.html',
   styleUrl: './index.component.scss'
 })
-export class IndexComponent implements OnInit{
-  isDropdownOpen: boolean = false;
-  selectedCategory: string = "All categories";
-  destination$!: Observable<Destination[]>;
-  isLoading : boolean = true;
+export class IndexComponent implements OnInit {
+  destinations$!: Observable<Destination[]>;
 
   constructor(private destinationService: LocationService) {}
 
   ngOnInit(): void {
-        this.destination$ = this.destinationService.getMostPopularLocation();
-        this.isLoading = false;
-    }
-
-  toggleDropdown = () => {
-    this.isDropdownOpen = !this.isDropdownOpen;
+    this.destinations$ = this.destinationService.getMostPopularLocation();
   }
 
-  selectCategory(category: string) {
-    this.selectedCategory = category;
-    this.isDropdownOpen = false;
-    console.log('Catégorie sélectionnée :', category);
+  /**
+   * handles la recherche de destinations
+   * @param results$
+   */
+  onSearchResults(results$: Observable<Destination[]>): void {
+    this.destinations$ = results$;
   }
 
-  @HostListener('document:click', ['$event'])
-  closeDropdown(event: Event) {
-    const target = event.target as HTMLElement;
-    if (!target.closest('#dropdown-button') && !target.closest('#dropdown')) {
-      this.isDropdownOpen = false;
-    }
-  }
 }
