@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../core/services/auth.service';
 import {Users} from '../../core/models/Users';
+import {NotificationService} from '../../core/services/notification.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -10,13 +12,11 @@ import {Users} from '../../core/models/Users';
 })
 export class RegisterComponent {
   registerForm: FormGroup;
-  errorMessage: string = '';
-  successMessage: string = '';
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private notificationService: NotificationService, private router: Router) {
     this.registerForm = this.fb.group({
-      firstname: ['', [Validators.required]],
-      lastname: ['', [Validators.required]],
+      firstName: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       passwordConfirmation: ['', [Validators.required]],
@@ -39,10 +39,11 @@ export class RegisterComponent {
     if (this.registerForm.valid) {
       this.authService.register(this.registerForm.value).subscribe({
         next: (response) => {
-          this.successMessage = response.Message;
+          this.router.navigateByUrl("/");
+          this.notificationService.showNotificationSuccess(response.Message);
         },
         error: (error) => {
-          this.errorMessage = error.error.message;
+          this.notificationService.showNotificationError(error.error.message);
         }
       })
     }

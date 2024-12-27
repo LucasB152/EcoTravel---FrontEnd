@@ -23,6 +23,8 @@ import {AuthInterceptor} from './core/auth.interceptor';
 import { ProfileComponent } from './features/profile/profile.component';
 import {CoreModule} from './core/core.module';
 import { ProfileEditComponent } from './features/profile-edit/profile-edit.component';
+import { NotificationComponent } from './core/components/notification/notification.component';
+import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,9 @@ import { ProfileEditComponent } from './features/profile-edit/profile-edit.compo
     LoginComponent,
     RegisterComponent,
     ProfileComponent,
-    ProfileEditComponent
+    ProfileEditComponent,
+    NotificationComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,

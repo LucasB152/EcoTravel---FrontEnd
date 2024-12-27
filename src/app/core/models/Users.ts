@@ -7,18 +7,18 @@ export class Users {
   private _profilePicturePath?: string;
 
   constructor({
-                firstname,
-                lastname,
+                firstName,
+                lastName,
                 email,
                 password,
               }: {
-    firstname: string;
-    lastname: string;
+    firstName: string;
+    lastName: string;
     email: string;
     password: string;
   }) {
-    this.firstname = firstname;
-    this.lastname = lastname;
+    this.firstname = firstName;
+    this.lastname = lastName;
     this.email = email;
     this.password = password;
   }

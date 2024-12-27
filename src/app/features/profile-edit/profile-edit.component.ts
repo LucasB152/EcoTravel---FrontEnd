@@ -5,6 +5,7 @@ import {AuthService} from '../../core/services/auth.service';
 import {UserService} from '../../core/services/user.service';
 import {Router} from '@angular/router';
 import {CloudinaryService} from '../../core/services/cloudinary.service';
+import {NotificationService} from '../../core/services/notification.service';
 
 @Component({
   selector: 'app-profile-edit',
@@ -17,17 +18,16 @@ export class ProfileEditComponent implements OnInit {
   user!: Users;
   selectedFile: File | null = null;
   imagePreviewUrl: string | null = null;
-  errorMessage: string = '';
 
-  constructor(private authService : AuthService, private fb: FormBuilder, private userService: UserService, private router: Router, private cloudinaryService: CloudinaryService) {}
+  constructor(private authService : AuthService, private fb: FormBuilder, private userService: UserService, private router: Router, private cloudinaryService: CloudinaryService, private notificationService: NotificationService) {}
 
   ngOnInit(): void {
     let id: string = this.authService.getUserId();
     this.authService.getUserById(id).subscribe(
       response => {
         this.user = new Users({
-          firstname: response.firstname,
-          lastname: response.lastname,
+          firstName: response.firstName,
+          lastName: response.lastName,
           email: response.email,
           password: ""
         });
@@ -35,8 +35,8 @@ export class ProfileEditComponent implements OnInit {
         this.user.profilePicturePath = response.profilePicturePath;
         this.basicInfoForm = this.fb.group({
           profilePicturePath: [this.user.profilePicturePath],
-          lastname: [this.user.lastname, Validators.required],
-          firstname: [this.user.firstname, Validators.required],
+          lastName: [this.user.lastname, Validators.required],
+          firstName: [this.user.firstname, Validators.required],
           email: [this.user.email, [Validators.required, Validators.email]],
         });
       }
@@ -73,10 +73,11 @@ export class ProfileEditComponent implements OnInit {
       if (newPassword === confirmPassword) {
         this.userService.modifyUserPassword(currentPassword, newPassword, this.user.id).subscribe({
           next: (message) => {
-            console.log(message);
+            this.router.navigateByUrl('/profile');
+            this.notificationService.showNotificationSuccess(message.Message);
           },
           error: (error) => {
-            console.error(error);
+            this.notificationService.showNotificationError(error.error.message);
           }
         })
       }
@@ -100,9 +101,10 @@ export class ProfileEditComponent implements OnInit {
       next: (response) => {
         this.userService.notifyUserUpdated();
         this.router.navigateByUrl("/profile");
+        this.notificationService.showNotificationSuccess(response.Message);
       },
       error: (error) => {
-        this.errorMessage = error.error;
+        this.notificationService.showNotificationError(error.error.message)
       }
     })
   }

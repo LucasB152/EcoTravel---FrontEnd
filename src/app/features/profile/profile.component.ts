@@ -19,8 +19,8 @@ export class ProfileComponent implements OnInit {
     this.authService.getUserById(id).subscribe(
       response => {
         this.user = new Users({
-          firstname: response.firstname,
-          lastname: response.lastname,
+          firstName: response.firstName,
+          lastName: response.lastName,
           email: response.email,
           password: ""
         });
