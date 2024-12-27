@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {FlowbiteService} from './core/services/flowbite.service';
 
 @Component({
   selector: 'app-root',
@@ -7,6 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit {
   title: string = 'front-ecotravel';
+
+  constructor(private flowbiteService: FlowbiteService) {}
+
   ngOnInit(): void {
+    this.flowbiteService.loadFlowbite(flowbite => {
+      console.log(flowbite);
+    })
   }
 }

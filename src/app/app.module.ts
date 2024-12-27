@@ -24,6 +24,7 @@ import { ProfileComponent } from './features/profile/profile.component';
 import { ProfileEditComponent } from './features/profile-edit/profile-edit.component';
 import { NotificationComponent } from './core/components/notification/notification.component';
 import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
+import { HostAccountRequestComponent } from './host-account-request/host-account-request.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.compo
     ProfileComponent,
     ProfileEditComponent,
     NotificationComponent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    HostAccountRequestComponent
   ],
   imports: [
     BrowserModule,

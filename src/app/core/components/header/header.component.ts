@@ -13,6 +13,7 @@ export class HeaderComponent implements OnInit {
 
   isLoggedIn!: boolean;
   user!: Users;
+  isMenuOpen: boolean = false;
 
   constructor(private router: Router, private authService: AuthService, private userService: UserService) {
   }
@@ -51,5 +52,9 @@ export class HeaderComponent implements OnInit {
   onLogout() {
     this.authService.logout();
     this.router.navigate(['/']);
+  }
+
+  toggleMenu() {
+    this.isMenuOpen = true;
   }
 }

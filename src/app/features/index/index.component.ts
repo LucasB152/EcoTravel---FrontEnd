@@ -12,13 +12,11 @@ export class IndexComponent implements OnInit{
   isDropdownOpen: boolean = false;
   selectedCategory: string = "All categories";
   destination$!: Observable<Destination[]>;
-  isLoading : boolean = true;
 
   constructor(private destinationService: LocationService) {}
 
   ngOnInit(): void {
         this.destination$ = this.destinationService.getMostPopularLocation();
-        this.isLoading = false;
     }
 
   toggleDropdown = () => {
