@@ -8,6 +8,7 @@ import {ProfileComponent} from './features/profile/profile.component';
 import {LoggedInGuard} from './core/services/LoggedInGuard';
 import {AuthGuard} from './core/services/auth.guard';
 import {ProfileEditComponent} from './features/profile-edit/profile-edit.component';
+import {DestinationCreationComponent} from './features/destination-creation/destination-creation.component';
 
 export const routes: Routes = [
   { path: '', component: IndexComponent },
@@ -16,5 +17,6 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [LoggedInGuard] },
   { path: 'register', component: RegisterComponent, canActivate: [LoggedInGuard]  },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'create-destination', component: DestinationCreationComponent },
   { path: 'profile-edit', component: ProfileEditComponent, canActivate: [AuthGuard] },
 ];
