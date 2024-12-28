@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {GoogleMapsModule} from '@angular/google-maps';
-import { MapComponent } from './map/map.component';
+import { MapComponent } from './features/map/map.component';
 import { HeaderComponent } from './core/components/header/header.component';
 import {RouterLink, RouterLinkActive, RouterModule} from '@angular/router';
 import { IndexComponent } from './features/index/index.component';
@@ -24,8 +24,8 @@ import { ProfileComponent } from './features/profile/profile.component';
 import { DestinationCreationComponent } from './features/destination-creation/destination-creation.component';
 import { ProfileEditComponent } from './features/profile-edit/profile-edit.component';
 import { NotificationComponent } from './core/components/notification/notification.component';
-import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
-import { HostAccountRequestComponent } from './host-account-request/host-account-request.component';
+import { LoadingSpinnerComponent } from './features/loading-spinner/loading-spinner.component';
+import { HostAccountRequestComponent } from './features/host-account-request/host-account-request.component';
 
 @NgModule({
   declarations: [

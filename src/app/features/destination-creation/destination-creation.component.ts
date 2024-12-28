@@ -4,6 +4,8 @@ import {LocationService} from '../../core/services/location.service';
 import {Observable} from 'rxjs';
 import {AuthService} from '../../core/services/auth.service';
 import {Router} from '@angular/router';
+import {DestinationCreationDto} from '../../core/models/DestinationCreationDto';
+import {AddressDto} from '../../core/models/AddressDto';
 
 @Component({
   selector: 'app-destination-creation',
@@ -11,6 +13,8 @@ import {Router} from '@angular/router';
   styleUrl: './destination-creation.component.scss'
 })
 export class DestinationCreationComponent {
+
+  brutForcedId = "ad578818-a4b3-430a-98e1-c0589d640076"; //TODO à changer
 
   destinationForm = new FormGroup({
     name: new FormControl(''),
@@ -20,7 +24,8 @@ export class DestinationCreationComponent {
     contactPhone: new FormControl(''),
     contactEmail: new FormControl(''),
 
-    //TODO rajouter is visible dans le form
+    isVisible: new FormControl(false),
+    type:new FormControl(''),
 
     country: new FormControl(''),
     location: new FormControl(''),
@@ -36,7 +41,6 @@ export class DestinationCreationComponent {
     private authService: AuthService,
     private router: Router
     ) {
-    console.log(this.authService.isAuthenticated());
   }
 
   ngOnInit(): void {
@@ -44,10 +48,31 @@ export class DestinationCreationComponent {
   }
 
   trackByFn(index: number, item: string): string {
-    return item; //TODO vérfier
+    return item;
   }
 
   handleSubmit() {
-    alert(this.destinationForm.value.name);
+    const address: AddressDto = new AddressDto(
+      this.destinationForm.value.country!,
+      this.destinationForm.value.location!,
+      this.destinationForm.value.street!,
+      this.destinationForm.value.number!,
+      this.destinationForm.value.capacity!,
+      0,
+      0
+    );
+
+    const destination: DestinationCreationDto = new DestinationCreationDto(
+      this.destinationForm.value.name!,
+      this.destinationForm.value.description!,
+      this.destinationForm.value.price!,
+      this.destinationForm.value.capacity!,
+      this.destinationForm.value.contactPhone!,
+      this.destinationForm.value.contactEmail!,
+      this.destinationForm.value.isVisible!,
+      address
+    );
+
+    this.destinationService.createNewDestination(destination);
   }
 }

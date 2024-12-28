@@ -1,4 +1,6 @@
-﻿export class DestinationCreationDto {
+﻿import {AddressDto} from "./AddressDto";
+
+export class DestinationCreationDto {
   constructor(
     public name: string,
     public description: string,
@@ -6,15 +8,8 @@
     public capacity: string,
     public contactPhone: string,
     public contactEmail: string,
-
-    public addressCreationDto: {
-      country: string,
-      location: string,
-      street: string,
-      number: string,
-      zipcode: string,
-      longitude: number
-    }
+    public isVisible: boolean,
+    public addressCreationDto: AddressDto,
   ) {
   }
 }

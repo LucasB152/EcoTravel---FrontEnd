@@ -12,7 +12,11 @@ export class LocationService {
   constructor(private http: HttpClient) {}
 
   createNewDestination(destination: DestinationCreationDto) {
-    return this.http.post(`${environment.API_URL}/destination`, destination);
+    //TODO faire la conversion latitude longitude
+    console.log(destination);
+    console.log("je lance une requete api");
+    console.log(`${environment.API_URL}/destination`);
+    return this.http.post<any>(`http://localhost:8081/api/destination/test`, destination);
   }
 
   getMostPopularLocation(): Observable<Destination[]> {
