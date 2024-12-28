@@ -7,10 +7,13 @@ export interface Destination {
   destinationID: number;
   name: string;
   description: string;
-  lat: number;
-  lng: number;
-  address: string;
-  type: string;
+  price: string;
+  capacity: string;
+  contactPhone: string;
+  contactEmail: string;
   images: string[];
-  tags: string[];
+  destinationType: string;
+  address: string;
+  tag: string[];
+  visible: boolean;
 }

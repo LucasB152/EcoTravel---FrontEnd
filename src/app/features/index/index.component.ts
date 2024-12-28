@@ -1,7 +1,8 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Destination} from '../../core/models/Destination';
 import {LocationService} from '../../core/services/location.service';
-import {Observable} from 'rxjs';
+import {forkJoin, Observable, switchMap} from 'rxjs';
+import {DestinationId} from '../../core/models/DestinationId';
 
 @Component({
   selector: 'app-index',
@@ -11,18 +12,20 @@ import {Observable} from 'rxjs';
 export class IndexComponent implements OnInit {
   destinations$!: Observable<Destination[]>;
 
-  constructor(private destinationService: LocationService) {}
+  constructor(private destinationService: LocationService) {
+  }
 
   ngOnInit(): void {
-    this.destinations$ = this.destinationService.getMostPopularLocation();
   }
 
-  /**
-   * handles la recherche de destinations
-   * @param results$
-   */
-  onSearchResults(results$: Observable<Destination[]>): void {
-    this.destinations$ = results$;
+  onSearchResults(results$: Observable<DestinationId[]>): void {
+    this.destinations$ = results$.pipe(
+      switchMap((destinationIds: DestinationId[]) => {
+        const destinationDetails$ = destinationIds.map((destinationId: DestinationId) =>
+          this.destinationService.getDestinationDetails(destinationId.destinationID)
+        );
+        return forkJoin(destinationDetails$);
+      })
+    );
   }
-
 }

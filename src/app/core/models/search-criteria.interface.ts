@@ -7,6 +7,4 @@ export interface SearchCriteria {
   query?: string;
   tags?: string[];
   type?: string;
-  page?: number;
-  size?: number;
 }

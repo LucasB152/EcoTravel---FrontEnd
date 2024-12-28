@@ -3,6 +3,7 @@ import {SearchCriteria} from '../../models/search-criteria.interface';
 import {SearchService} from '../../services/search.service';
 import {Destination} from '../../models/Destination';
 import {Observable} from 'rxjs';
+import {DestinationId} from '../../models/DestinationId';
 
 @Component({
   selector: 'app-search-bar',
@@ -14,8 +15,9 @@ import {Observable} from 'rxjs';
 export class SearchBarComponent {
 
 //output pour l'index component
-  @Output() searchResults = new EventEmitter<Observable<Destination[]>>();
-  criteria: SearchCriteria = {tags: [], type: "", page: 0, size: 10};
+  @Output() searchResults = new EventEmitter<Observable<DestinationId[]>>();
+  criteria: SearchCriteria = {tags: [], type: ""};
+
   //todo : get tags from the server
   availableTags: string[] = ['wifi', 'swimmpool', 'all-in', 'no pet', 'no smoke'];
   isTagsDropdownOpen: boolean = false;

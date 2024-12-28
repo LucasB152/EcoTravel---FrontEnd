@@ -2,8 +2,8 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {SearchCriteria} from '../models/search-criteria.interface';
 import {Observable} from 'rxjs';
-import {Destination} from '../models/Destination';
 import {environment} from '../../../environments/environment';
+import {DestinationId} from '../models/DestinationId';
 
 @Injectable({
   providedIn: 'root'
@@ -18,18 +18,13 @@ export class SearchService {
   }
 
   /**
-   * Executes a search query based on the provided criteria.
-   * @param criteria The search criteria for filtering destinations.
-   * @returns An observable containing an array of destinations.
+   * renvoie tout les id des destinations avec ou sans la recherche
+   * @param criteria PAS OBLIGATOIRE
    */
-  search(criteria: SearchCriteria): Observable<Destination[]> {
+  search(criteria: SearchCriteria): Observable<DestinationId[]> {
     const params = this.buildHttpParams(criteria);
 
-    console.log(params);
-    console.log(criteria);
-
-    return this.http.get<Destination[]>(this.baseUrl, {params});
-
+    return this.http.get<DestinationId[]>(this.baseUrl, {params});
   }
 
   /**
@@ -52,12 +47,6 @@ export class SearchService {
       params = params.set('type', criteria.type);
     } else {
       params = params.set('type', '');
-    }
-    if (criteria.page !== undefined) {
-      params = params.set('page', criteria.page.toString());
-    }
-    if (criteria.size !== undefined) {
-      params = params.set('size', criteria.size.toString());
     }
     return params;
   }
