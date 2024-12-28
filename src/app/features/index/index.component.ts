@@ -16,7 +16,7 @@ export class IndexComponent implements OnInit{
   constructor(private destinationService: LocationService) {}
 
   ngOnInit(): void {
-        this.destination$ = this.destinationService.getMostPopularLocation()
+        this.destination$ = this.destinationService.getMostPopularLocation();
     }
 
   toggleDropdown = () => {

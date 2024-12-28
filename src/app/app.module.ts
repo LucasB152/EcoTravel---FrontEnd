@@ -23,6 +23,9 @@ import {AuthInterceptor} from './core/auth.interceptor';
 import { ProfileComponent } from './features/profile/profile.component';
 import { DestinationCreationComponent } from './features/destination-creation/destination-creation.component';
 import { ProfileEditComponent } from './features/profile-edit/profile-edit.component';
+import { NotificationComponent } from './core/components/notification/notification.component';
+import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
+import { HostAccountRequestComponent } from './host-account-request/host-account-request.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +44,10 @@ import { ProfileEditComponent } from './features/profile-edit/profile-edit.compo
     ProfileComponent,
     DestinationCreationComponent,
     ProfileComponent,
-    ProfileEditComponent
+    ProfileEditComponent,
+    NotificationComponent,
+    LoadingSpinnerComponent,
+    HostAccountRequestComponent
   ],
   imports: [
     BrowserModule,

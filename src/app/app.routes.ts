@@ -9,6 +9,7 @@ import {LoggedInGuard} from './core/services/LoggedInGuard';
 import {AuthGuard} from './core/services/auth.guard';
 import {ProfileEditComponent} from './features/profile-edit/profile-edit.component';
 import {DestinationCreationComponent} from './features/destination-creation/destination-creation.component';
+import {HostAccountRequestComponent} from './host-account-request/host-account-request.component';
 
 export const routes: Routes = [
   { path: '', component: IndexComponent },
@@ -19,4 +20,5 @@ export const routes: Routes = [
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'create-destination', component: DestinationCreationComponent },
   { path: 'profile-edit', component: ProfileEditComponent, canActivate: [AuthGuard] },
+  { path: 'host-account-request', component: HostAccountRequestComponent, canActivate: [AuthGuard] },
 ];

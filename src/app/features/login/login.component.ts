@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../core/services/auth.service';
 import {Router} from '@angular/router';
+import {NotificationService} from '../../core/services/notification.service';
 
 @Component({
   selector: 'app-login',
@@ -10,9 +11,8 @@ import {Router} from '@angular/router';
 })
 export class LoginComponent{
   loginForm: FormGroup;
-  errorMessage: string = '';
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private notificationService: NotificationService) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -25,10 +25,10 @@ export class LoginComponent{
       const {email, password, remember} = this.loginForm.value;
       this.authService.login(email, password, remember).subscribe({
         next: () => {
-          this.router.navigate(['/']);
+          this.router.navigateByUrl('/');
         },
         error: (error) => {
-          this.errorMessage = error.error.message;
+          this.notificationService.showNotificationError(error.error.message);
         },
       });
     }

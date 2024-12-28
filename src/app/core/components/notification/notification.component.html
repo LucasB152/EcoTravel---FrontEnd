@@ -1,0 +1,9 @@
+<div
+  *ngIf="notification$ | async as notification"
+  class="fixed top-0 left-0 w-full text-white text-center py-2 shadow-lg transition-opacity duration-1000 z-50"
+  [class.bg-green-500]="notification.type === 'success'"
+  [class.bg-red-500]="notification.type === 'error'"
+  [class.opacity-0]="!notification.message"
+>
+  {{ notification.message }}
+</div>
