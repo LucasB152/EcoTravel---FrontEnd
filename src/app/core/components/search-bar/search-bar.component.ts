@@ -1,9 +1,9 @@
 import {Component, EventEmitter, Output} from '@angular/core';
 import {SearchCriteria} from '../../models/search-criteria.interface';
 import {SearchService} from '../../services/search.service';
-import {Destination} from '../../models/Destination';
 import {Observable} from 'rxjs';
 import {DestinationId} from '../../models/DestinationId';
+import {TagService} from '../../services/tag.service';
 
 @Component({
   selector: 'app-search-bar',
@@ -18,11 +18,16 @@ export class SearchBarComponent {
   @Output() searchResults = new EventEmitter<Observable<DestinationId[]>>();
   criteria: SearchCriteria = {tags: [], type: ""};
 
-  //todo : get tags from the server
-  availableTags: string[] = ['wifi', 'swimmpool', 'all-in', 'no pet', 'no smoke'];
+  availableTags: string[] = [];
   isTagsDropdownOpen: boolean = false;
 
-  constructor(private searchService: SearchService) {
+  constructor(
+    private searchService: SearchService,
+    private tagService: TagService
+  ) {
+    this.tagService.getTags().subscribe((tags) => {
+      this.availableTags = tags.map((tag) => tag.name);
+    });
   }
 
   search(): void {
