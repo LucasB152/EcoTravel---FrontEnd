@@ -1,24 +1,24 @@
-<div class="min-h-screen bg-gray-100 p-6">
+<div class="min-h-screen bg-gray-100 p-4 sm:p-6">
   <div class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
     <!-- En-tête du profil -->
-    <div class="flex items-center justify-between p-6 border-b">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between p-6 border-b gap-4 sm:gap-0">
       <!-- Section gauche : photo et infos utilisateur -->
       <div class="flex items-center">
         <img *ngIf="user"
-          class="w-24 h-24 rounded-full object-cover border-2 border-[#00a14b]"
-          [src]="user.profilePicturePath"
-          alt="Profile Picture"
+             class="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-2 border-[#00a14b]"
+             [src]="user.profilePicturePath"
+             alt="Profile Picture"
         />
         <div *ngIf="user" class="ml-4">
-          <h2 class="text-2xl font-bold text-gray-800">{{user.firstname}} {{user.lastname}}</h2>
-          <p class="text-gray-600">{{user.email}}</p>
+          <h2 class="text-xl sm:text-2xl font-bold text-gray-800">{{user.firstname}} {{user.lastname}}</h2>
+          <p class="text-gray-600 text-sm sm:text-base">{{user.email}}</p>
         </div>
       </div>
 
-      <!-- Section droite : bouton -->
-      <div class="flex gap-3">
+      <!-- Section droite : bouton Modifier le profil -->
+      <div>
         <button
-          class="bg-[#00a14b] text-white px-4 py-2 rounded hover:bg-[#008f44] focus:outline-none focus:ring-2 focus:ring-blue-400"
+          class="bg-[#00a14b] text-white px-4 py-2 rounded hover:bg-[#008f44] focus:outline-none focus:ring-2 focus:ring-green-400"
           (click)="editProfile()"
         >
           Modifier le profil
@@ -31,7 +31,7 @@
       <h3 class="text-lg font-semibold text-gray-700 mb-4">Sections</h3>
 
       <!-- Placeholder pour les cards -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
         <div class="p-4 bg-gray-50 border border-gray-200 rounded-lg">
           <p class="text-gray-500">Card 1 Placeholder</p>
         </div>
@@ -39,6 +39,22 @@
           <p class="text-gray-500">Card 2 Placeholder</p>
         </div>
         <!-- Ajoutez plus de cards ici -->
+      </div>
+
+      <!-- Section des boutons -->
+      <div class="flex flex-col gap-4">
+        <button
+          class="bg-[#00a14b] text-white w-full px-4 py-2 rounded hover:bg-[#008f44] focus:outline-none focus:ring-2 focus:ring-green-400"
+          (click)="requestHostingAccount()"
+        >
+          Demander un compte hébergeur
+        </button>
+        <button
+          class="bg-red-500 text-white w-full px-4 py-2 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400"
+          (click)="deleteAccount()"
+        >
+          Supprimer mon compte
+        </button>
       </div>
     </div>
   </div>

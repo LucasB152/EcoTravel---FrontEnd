@@ -32,4 +32,12 @@ export class ProfileComponent implements OnInit {
   editProfile() {
     this.router.navigateByUrl("/profile-edit");
   }
+
+  requestHostingAccount() {
+
+  }
+
+  deleteAccount() {
+
+  }
 }

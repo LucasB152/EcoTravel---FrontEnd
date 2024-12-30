@@ -21,4 +21,8 @@ export class LocationService {
   getDestinationDetails(destinationId: number) {
     return this.http.get<Destination>(`${environment.API_URL}/destination/${destinationId}`);
   }
+
+  getLocationTypes(): Observable<string[]> {
+    return this.http.get<string[]>(`${environment.API_URL}/destination/types`);
+  }
 }

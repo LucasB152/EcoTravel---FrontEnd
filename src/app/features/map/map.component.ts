@@ -1,6 +1,6 @@
 import {Component, AfterViewInit, Input} from '@angular/core';
 import {MarkerClusterer} from "@googlemaps/markerclusterer";
-import {environment} from '../../environments/environment';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-map',

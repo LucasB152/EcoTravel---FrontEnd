@@ -34,6 +34,10 @@ export class AuthService {
     return this.hasToken();
   }
 
+  isAdmin(): boolean {
+    return this.getUserRole() === "ADMIN";
+  }
+
   logout(): void {
     this.loggedIn.next(false);
     this.removeToken();

@@ -1,0 +1,192 @@
+<section class="bg-gray-50">
+  <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto min-h-screen lg:py-4">
+    <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-[#00a14b]">
+      <img class="w-8 h-8 mr-2" src="logo.png" alt="logo">
+      EcoTravel
+    </a>
+    <div class="w-full bg-white rounded-lg shadow">
+      <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+        <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
+          Demande d'inscription
+        </h1>
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-4 md:space-y-6">
+          <!-- Nom complet -->
+          <div>
+            <label for="fullname" class="block mb-2 text-sm font-medium text-gray-900">Nom complet*</label>
+            <input
+              type="text"
+              id="fullname"
+              formControlName="fullName"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+              placeholder="John Doe" />
+            <small *ngIf="registerForm.get('fullName')?.invalid && registerForm.get('fullName')?.touched"
+                   class="text-red-600">
+              Ce champ est requis.
+            </small>
+          </div>
+
+          <!-- Email -->
+          <div>
+            <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Email*</label>
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+              placeholder="name@company.com" />
+            <small *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+                   class="text-red-600">
+              <span *ngIf="registerForm.get('email')?.errors?.['required']">Email requis.</span>
+              <span *ngIf="registerForm.get('email')?.errors?.['email']">Email invalide.</span>
+            </small>
+          </div>
+
+          <!-- Numéro de téléphone -->
+          <div>
+            <label for="phone" class="block mb-2 text-sm font-medium text-gray-900">Numéro de téléphone*</label>
+            <input
+              type="text"
+              id="phone"
+              formControlName="phone"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+              placeholder="0123456789" />
+            <small *ngIf="registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched"
+                   class="text-red-600">
+              Ce champ est requis.
+            </small>
+          </div>
+
+          <!-- Statut juridique -->
+          <div>
+            <label for="status" class="block mb-2 text-sm font-medium text-gray-900">Statut juridique*</label>
+            <select
+              id="status"
+              formControlName="status"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+              <option value="auto-entrepreneur">Auto-entrepreneur</option>
+              <option value="sarl">SARL</option>
+              <option value="particulier">Particulier</option>
+              <option value="association">Association</option>
+            </select>
+            <small *ngIf="registerForm.get('status')?.invalid && registerForm.get('status')?.touched"
+                   class="text-red-600">
+              Ce champ est requis.
+            </small>
+          </div>
+
+          <!-- Nom de l'entreprise -->
+          <div>
+            <label for="company" class="block mb-2 text-sm font-medium text-gray-900">Nom de l'entreprise ou du projet (si applicable)</label>
+            <input
+              type="text"
+              id="company"
+              formControlName="company"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+              placeholder="Nom de l'entreprise ou du projet" />
+          </div>
+
+          <!-- Numéro ONSS ou SIRET -->
+          <div>
+            <label for="identifier" class="block mb-2 text-sm font-medium text-gray-900">Numéro ONSS ou SIRET (si applicable)</label>
+            <input
+              type="text"
+              id="identifier"
+              formControlName="identifier"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+              placeholder="Numéro ONSS ou SIRET" />
+          </div>
+
+          <!-- Lien vers site web -->
+          <div>
+            <label for="website" class="block mb-2 text-sm font-medium text-gray-900">Lien vers un site web ou réseaux sociaux</label>
+            <input
+              type="url"
+              id="website"
+              formControlName="website"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+              placeholder="https://example.com" />
+          </div>
+
+          <!-- Type de services -->
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">Type de services prévus*</label>
+            <div class="flex items-center space-x-4">
+              <label class="inline-flex items-center">
+                <input type="checkbox" formControlName="services" value="hebergement"
+                       class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                <span class="ml-2 text-sm text-gray-900">Hébergement</span>
+              </label>
+              <label class="inline-flex items-center">
+                <input type="checkbox" formControlName="services" value="activite"
+                       class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                <span class="ml-2 text-sm text-gray-900">Activité</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Descriptions -->
+          <div>
+            <label for="description" class="block mb-2 text-sm font-medium text-gray-900">Descriptions des services et pratiques écoresponsables</label>
+            <textarea
+              id="description"
+              formControlName="description"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+              rows="4"
+              placeholder="Description des services et pratiques"></textarea>
+          </div>
+
+          <!-- Certifications -->
+          <div>
+            <label for="certifications" class="block mb-2 text-sm font-medium text-gray-900">Certifications environnementales (fichiers)</label>
+            <input
+              type="file"
+              id="certifications"
+              formControlName="certifications"
+              class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" />
+          </div>
+
+          <!-- Pourquoi rejoindre -->
+          <div>
+            <label for="motivation" class="block mb-2 text-sm font-medium text-gray-900">Pourquoi souhaitez-vous rejoindre EcoTravel?*</label>
+            <textarea
+              id="motivation"
+              formControlName="motivation"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+              rows="4"
+              placeholder="Votre motivation"></textarea>
+            <small *ngIf="registerForm.get('motivation')?.invalid && registerForm.get('motivation')?.touched"
+                   class="text-red-600">
+              Ce champ est requis.
+            </small>
+          </div>
+
+          <!-- Accepter CGU -->
+          <div>
+            <div class="flex items-start">
+              <div class="flex items-center h-5">
+                <input id="terms" formControlName="terms" type="checkbox"
+                       class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300">
+              </div>
+              <div class="ml-3 text-sm">
+                <label for="terms" class="font-light text-gray-500">J'accepte les <a
+                  class="font-medium text-primary-600 hover:underline" href="#">CGU</a></label>
+              </div>
+            </div>
+            <small *ngIf="registerForm.get('terms')?.invalid && registerForm.get('terms')?.touched"
+                   class="text-red-600">
+              Vous devez accepter les CGU.
+            </small>
+          </div>
+
+          <!-- Validation -->
+          <button
+            type="submit"
+            [disabled]="registerForm.invalid"
+            class="w-full text-white bg-[#00a14b] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+            Soumettre
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
