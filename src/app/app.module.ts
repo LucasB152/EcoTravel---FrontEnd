@@ -26,6 +26,7 @@ import { ProfileEditComponent } from './features/profile-edit/profile-edit.compo
 import { NotificationComponent } from './core/components/notification/notification.component';
 import { LoadingSpinnerComponent } from './features/loading-spinner/loading-spinner.component';
 import { HostAccountRequestComponent } from './features/host-account-request/host-account-request.component';
+import {CoreModule} from './core/core.module';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { HostAccountRequestComponent } from './features/host-account-request/hos
     RouterLink,
     RouterLinkActive,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    CoreModule
   ],
   providers: [
     provideClientHydration(),

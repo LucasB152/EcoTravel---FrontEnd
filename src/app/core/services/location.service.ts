@@ -5,14 +5,15 @@ import {environment} from '../../../environments/environment';
 import {HttpClientInterface} from './http-client.interface';
 import {HttpClient} from '@angular/common/http';
 import {DestinationId} from '../models/DestinationId';
+import {DestinationCreationDto} from '../models/DestinationCreationDto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocationService {
 
-  constructor(@Inject(HttpClient) private http: HttpClientInterface) {
-  }
+  constructor(private http: HttpClient) {}
+
 
   getMostPopularLocation(): Observable<DestinationId[]> {
     return this.http.get<DestinationId[]>(`${environment.API_URL}/destination/search`);
@@ -25,4 +26,14 @@ export class LocationService {
   getLocationTypes(): Observable<string[]> {
     return this.http.get<string[]>(`${environment.API_URL}/destination/types`);
   }
+
+  createNewDestination(destination: DestinationCreationDto) {
+    //TODO faire la conversion latitude longitude
+    console.log(destination);
+    console.log("je lance une requete api");
+    console.log(`${environment.API_URL}/destination`);
+    return this.http.post<any>(`http://localhost:8081/api/destination/test`, destination);
+
+  }
+
 }
