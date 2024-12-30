@@ -6,8 +6,8 @@
   <div class="w-full h-1/2 overflow-hidden">
     <img
       class="w-full h-full object-fill rounded-t-lg"
-      [src]="locationActivity.imageFolderPath"
-      [alt]="locationActivity.title"
+      [src]="locationActivity.images[0]"
+      [alt]="locationActivity.name"
     />
   </div>
 
@@ -15,7 +15,7 @@
   <div class="p-5 flex-grow flex flex-col justify-between">
     <!-- Titre de la carte -->
     <h5 class="text-lg font-bold text-gray-900">
-      {{ locationActivity.title }}
+      {{ locationActivity.name }}
     </h5>
 
     <!-- Description de la carte -->
@@ -25,7 +25,7 @@
 
     <!-- Bouton -->
     <button
-      (click)="onContinue(locationActivity.id)"
+      (click)="onContinue(locationActivity.destinationID)"
       class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-[#00a14b] rounded-lg hover:bg-green-700 mt-4"
     >
       See details
