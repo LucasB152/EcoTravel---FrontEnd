@@ -1,30 +1,24 @@
-import {Inject, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Destination} from '../models/Destination';
 import {environment} from '../../../environments/environment';
-import {HttpClientInterface} from './http-client.interface';
 import {HttpClient} from '@angular/common/http';
-import {DestinationId} from '../models/DestinationId';
 import {DestinationCreationDto} from '../models/DestinationCreationDto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocationService {
+  private baseUrl = `${environment.API_URL}/destination`;
 
   constructor(private http: HttpClient) {}
 
-
-  getMostPopularLocation(): Observable<DestinationId[]> {
-    return this.http.get<DestinationId[]>(`${environment.API_URL}/destination/search`);
-  }
-
   getDestinationDetails(destinationId: number) {
-    return this.http.get<Destination>(`${environment.API_URL}/destination/${destinationId}`);
+    return this.http.get<Destination>(`${this.baseUrl}/${destinationId}`);
   }
 
   getLocationTypes(): Observable<string[]> {
-    return this.http.get<string[]>(`${environment.API_URL}/destination/types`);
+    return this.http.get<string[]>(`${this.baseUrl}/types`);
   }
 
   createNewDestination(destination: DestinationCreationDto) {

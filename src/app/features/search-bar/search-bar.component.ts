@@ -1,9 +1,8 @@
 import {Component, EventEmitter, Output} from '@angular/core';
-import {SearchCriteria} from '../../models/search-criteria.interface';
-import {SearchService} from '../../services/search.service';
+import {SearchService} from '../../core/services/search.service';
 import {Observable} from 'rxjs';
-import {DestinationId} from '../../models/DestinationId';
-import {TagService} from '../../services/tag.service';
+import {TagService} from '../../core/services/tag.service';
+import {SearchResult} from '../../core/models/SearchResult';
 
 @Component({
   selector: 'app-search-bar',
@@ -15,11 +14,13 @@ import {TagService} from '../../services/tag.service';
 export class SearchBarComponent {
 
 //output pour l'index component
-  @Output() searchResults = new EventEmitter<Observable<DestinationId[]>>();
-  criteria: SearchCriteria = {tags: [], type: ""};
+  @Output() searchResults = new EventEmitter<Observable<SearchResult>>();
 
   availableTags: string[] = [];
   isTagsDropdownOpen: boolean = false;
+  query: string = '';
+  tags: string[] = [];
+  type: string = '';
 
   constructor(
     private searchService: SearchService,
@@ -31,7 +32,7 @@ export class SearchBarComponent {
   }
 
   search(): void {
-    const results$ = this.searchService.search(this.criteria);
+    const results$ = this.searchService.searchDestinations(this.query, this.tags, this.type);
     this.searchResults.emit(results$);
   }
 
@@ -39,9 +40,9 @@ export class SearchBarComponent {
     const inputElement = event.target as HTMLInputElement;
     const isChecked = inputElement.checked;
     if (isChecked) {
-      this.criteria.tags?.push(tag);
+      this.tags?.push(tag);
     } else {
-      this.criteria.tags = this.criteria.tags?.filter((t) => t !== tag);
+      this.tags = this.tags?.filter((t) => t !== tag);
     }
   }
 }
