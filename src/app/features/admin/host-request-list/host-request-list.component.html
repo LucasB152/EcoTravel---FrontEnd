@@ -1,0 +1,61 @@
+<div class="container mx-auto p-4">
+  <h1 class="text-2xl font-bold mb-4">Liste des demandes</h1>
+
+  <!-- Liste des demandes -->
+  <div *ngIf="!selectedRequest">
+    <ul class="space-y-4">
+      <li
+        *ngFor="let request of requests"
+        (click)="selectRequest(request)"
+        class="p-4 border rounded shadow hover:bg-gray-100 cursor-pointer"
+      >
+        <div>
+          <strong>Nom :</strong> {{ request.fullName }}
+        </div>
+        <div>
+          <strong>Email :</strong> {{ request.email }}
+        </div>
+        <div>
+          <strong>Statut :</strong> {{ request.status }}
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Détails d'une demande -->
+  <div *ngIf="selectedRequest" class="p-4 border rounded shadow">
+    <h2 class="text-xl font-bold mb-4">Détails de la demande</h2>
+    <p><strong>Nom complet :</strong> {{ selectedRequest.fullName }}</p>
+    <p><strong>Email :</strong> {{ selectedRequest.email }}</p>
+    <p><strong>Téléphone :</strong> {{ selectedRequest.phone }}</p>
+    <p><strong>Statut :</strong> {{ selectedRequest.status }}</p>
+    <p><strong>Entreprise :</strong> {{ selectedRequest.company }}</p>
+    <p><strong>Identifiant :</strong> {{ selectedRequest.identifier }}</p>
+    <p><strong>Site web :</strong> <a [href]="selectedRequest.website" target="_blank">{{ selectedRequest.website }}</a></p>
+    <p><strong>Services :</strong> {{ selectedRequest.services.join(', ') }}</p>
+    <p><strong>Description :</strong> {{ selectedRequest.description }}</p>
+    <p><strong>Certifications :</strong> {{ selectedRequest.certifications || 'Aucune' }}</p>
+    <p><strong>Motivation :</strong> {{ selectedRequest.motivation }}</p>
+    <p><strong>Conditions acceptées :</strong> {{ selectedRequest.terms ? 'Oui' : 'Non' }}</p>
+    <div class="mt-4 space-x-2">
+      <button
+        (click)="updateStatus('Accepté')"
+        class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+      >
+        Accepter
+      </button>
+      <button
+        (click)="updateStatus('Refusé')"
+        class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+      >
+        Refuser
+      </button>
+      <button
+        (click)="selectedRequest = null"
+        class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+      >
+        Retour
+      </button>
+    </div>
+  </div>
+</div>

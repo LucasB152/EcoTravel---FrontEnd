@@ -5,10 +5,15 @@ import {MapComponent} from './map/map.component';
 import {LoginComponent} from './features/login/login.component';
 import {RegisterComponent} from './features/register/register.component';
 import {ProfileComponent} from './features/profile/profile.component';
-import {LoggedInGuard} from './core/services/LoggedInGuard';
-import {AuthGuard} from './core/services/auth.guard';
+import {LoggedInGuard} from './core/guard/LoggedInGuard';
+import {AuthGuard} from './core/guard/auth.guard';
 import {ProfileEditComponent} from './features/profile-edit/profile-edit.component';
-import {HostAccountRequestComponent} from './host-account-request/host-account-request.component';
+import {HostAccountRequestComponent} from './features/host-account-request/host-account-request.component';
+import {HostRequestListComponent} from './features/admin/host-request-list/host-request-list.component';
+import {RoleGuard} from './core/guard/role.guard';
+import {
+  AdministratorManagementComponent
+} from './features/admin/administrator-management/administrator-management.component';
 
 export const routes: Routes = [
   { path: '', component: IndexComponent },
@@ -19,4 +24,6 @@ export const routes: Routes = [
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'profile-edit', component: ProfileEditComponent, canActivate: [AuthGuard] },
   { path: 'host-account-request', component: HostAccountRequestComponent, canActivate: [AuthGuard] },
+  { path: 'host-requests', component: HostRequestListComponent, canActivate: [RoleGuard], data: { roles: ['ADMIN'] } },
+  { path: 'administrators-management', component: AdministratorManagementComponent, canActivate: [RoleGuard], data: { roles: ['ADMIN'] } },
 ];

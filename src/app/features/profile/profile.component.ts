@@ -1,7 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {AuthService} from '../../core/services/auth.service';
 import {Users} from '../../core/models/Users';
+import {UserService} from '../../core/services/user.service';
+import {AuthService} from '../../core/services/auth.service';
+import {NotificationService} from '../../core/services/notification.service';
 
 @Component({
   selector: 'app-profile',
@@ -10,13 +12,13 @@ import {Users} from '../../core/models/Users';
 })
 export class ProfileComponent implements OnInit {
   user!: Users;
+  isModalOpen: boolean = false;
 
-  constructor(private router: Router, private authService: AuthService) {
+  constructor(private router: Router, private authService: AuthService, private notificationService: NotificationService, private userService: UserService) {
   }
 
   ngOnInit(): void {
-    let id: string = this.authService.getUserId();
-    this.authService.getUserById(id).subscribe(
+    this.userService.getUserById().subscribe(
       response => {
         this.user = new Users({
           firstName: response.firstName,
@@ -29,15 +31,21 @@ export class ProfileComponent implements OnInit {
     );
   }
 
-  editProfile() {
-    this.router.navigateByUrl("/profile-edit");
-  }
-
-  requestHostingAccount() {
-
+  openConfirmationModal() {
+    this.isModalOpen = true;
   }
 
   deleteAccount() {
+    this.userService.deleteUser().subscribe(
+      response => {
+        this.notificationService.showNotificationSuccess(response.Message);
+      }
+    )
+    this.authService.logout();
+    this.router.navigateByUrl('/');
+  }
 
+  closeModal() {
+    this.isModalOpen = false;
   }
 }

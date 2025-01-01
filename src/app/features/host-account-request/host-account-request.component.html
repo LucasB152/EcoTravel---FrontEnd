@@ -9,7 +9,7 @@
         <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
           Demande d'inscription
         </h1>
-        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-4 md:space-y-6">
+        <form *ngIf="registerForm" [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-4 md:space-y-6">
           <!-- Nom complet -->
           <div>
             <label for="fullname" class="block mb-2 text-sm font-medium text-gray-900">Nom complet*</label>
@@ -18,7 +18,7 @@
               id="fullname"
               formControlName="fullName"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-              placeholder="John Doe" />
+            />
             <small *ngIf="registerForm.get('fullName')?.invalid && registerForm.get('fullName')?.touched"
                    class="text-red-600">
               Ce champ est requis.
@@ -27,19 +27,15 @@
 
           <!-- Email -->
           <div>
-            <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Email*</label>
+            <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Email</label>
             <input
               type="email"
               id="email"
               formControlName="email"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-              placeholder="name@company.com" />
-            <small *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
-                   class="text-red-600">
-              <span *ngIf="registerForm.get('email')?.errors?.['required']">Email requis.</span>
-              <span *ngIf="registerForm.get('email')?.errors?.['email']">Email invalide.</span>
-            </small>
+              class="bg-gray-100 border border-gray-300 text-gray-500 text-sm rounded-lg cursor-not-allowed focus:ring-0 focus:border-gray-300 block w-full p-2.5"
+              readonly/>
           </div>
+
 
           <!-- Numéro de téléphone -->
           <div>
@@ -49,8 +45,42 @@
               id="phone"
               formControlName="phone"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-              placeholder="0123456789" />
+              placeholder="0123456789"/>
             <small *ngIf="registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched"
+                   class="text-red-600">
+              Ce champ est requis.
+            </small>
+          </div>
+
+          <!-- Services proposés -->
+          <div formArrayName="services">
+            <label class="block mb-2 text-sm font-medium text-gray-900">Services proposés*</label>
+            <div *ngFor="let service of services.controls; let i = index" class="flex items-center mb-2">
+              <input
+                type="checkbox"
+                [formControlName]="i"
+                class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-primary-300"
+                [id]="'service-' + i">
+              <label [for]="'service-' + i" class="ml-2 text-sm text-gray-900 cursor-pointer">
+                {{ availableServices[i] }}
+              </label>
+            </div>
+            <small *ngIf="services.invalid && registerForm.get('services')?.touched" class="text-red-600">
+              Vous devez sélectionner au moins un service.
+            </small>
+          </div>
+
+          <!-- Description des services proposés -->
+          <div>
+            <label for="description" class="block mb-2 text-sm font-medium text-gray-900">Décrivez-nous les services que
+              vous proposez*</label>
+            <textarea
+              id="description"
+              formControlName="description"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+              rows="4"
+              placeholder="Description des services proposés"></textarea>
+            <small *ngIf="registerForm.get('description')?.invalid && registerForm.get('description')?.touched"
                    class="text-red-600">
               Ce champ est requis.
             </small>
@@ -76,78 +106,57 @@
 
           <!-- Nom de l'entreprise -->
           <div>
-            <label for="company" class="block mb-2 text-sm font-medium text-gray-900">Nom de l'entreprise ou du projet (si applicable)</label>
+            <label for="company" class="block mb-2 text-sm font-medium text-gray-900">Nom de l'entreprise ou du projet
+              (si applicable)</label>
             <input
               type="text"
               id="company"
               formControlName="company"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-              placeholder="Nom de l'entreprise ou du projet" />
+              placeholder="Nom de l'entreprise ou du projet"/>
           </div>
 
           <!-- Numéro ONSS ou SIRET -->
           <div>
-            <label for="identifier" class="block mb-2 text-sm font-medium text-gray-900">Numéro ONSS ou SIRET (si applicable)</label>
+            <label for="identifier" class="block mb-2 text-sm font-medium text-gray-900">Numéro ONSS ou SIRET (si
+              applicable)</label>
             <input
               type="text"
               id="identifier"
               formControlName="identifier"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-              placeholder="Numéro ONSS ou SIRET" />
+              placeholder="Numéro ONSS ou SIRET"/>
           </div>
 
           <!-- Lien vers site web -->
           <div>
-            <label for="website" class="block mb-2 text-sm font-medium text-gray-900">Lien vers un site web ou réseaux sociaux</label>
+            <label for="website" class="block mb-2 text-sm font-medium text-gray-900">Lien vers un site web ou réseaux
+              sociaux</label>
             <input
               type="url"
               id="website"
               formControlName="website"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-              placeholder="https://example.com" />
-          </div>
-
-          <!-- Type de services -->
-          <div>
-            <label class="block mb-2 text-sm font-medium text-gray-900">Type de services prévus*</label>
-            <div class="flex items-center space-x-4">
-              <label class="inline-flex items-center">
-                <input type="checkbox" formControlName="services" value="hebergement"
-                       class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
-                <span class="ml-2 text-sm text-gray-900">Hébergement</span>
-              </label>
-              <label class="inline-flex items-center">
-                <input type="checkbox" formControlName="services" value="activite"
-                       class="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
-                <span class="ml-2 text-sm text-gray-900">Activité</span>
-              </label>
-            </div>
-          </div>
-
-          <!-- Descriptions -->
-          <div>
-            <label for="description" class="block mb-2 text-sm font-medium text-gray-900">Descriptions des services et pratiques écoresponsables</label>
-            <textarea
-              id="description"
-              formControlName="description"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-              rows="4"
-              placeholder="Description des services et pratiques"></textarea>
+              placeholder="https://example.com"/>
           </div>
 
           <!-- Certifications -->
           <div>
-            <label for="certifications" class="block mb-2 text-sm font-medium text-gray-900">Certifications environnementales (fichiers)</label>
+            <label for="certifications" class="block mb-2 text-sm font-medium text-gray-900">Certifications
+              environnementales</label>
             <input
               type="file"
               id="certifications"
-              formControlName="certifications"
-              class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" />
+              (change)="onFilesSelected($event)"
+              multiple
+              class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"/>
+            <small class="text-gray-500">Vous pouvez ajouter plusieurs fichiers PDF.</small>
           </div>
 
           <!-- Pourquoi rejoindre -->
           <div>
-            <label for="motivation" class="block mb-2 text-sm font-medium text-gray-900">Pourquoi souhaitez-vous rejoindre EcoTravel?*</label>
+            <label for="motivation" class="block mb-2 text-sm font-medium text-gray-900">Pourquoi souhaitez-vous
+              rejoindre EcoTravel?*</label>
             <textarea
               id="motivation"
               formControlName="motivation"
@@ -161,27 +170,20 @@
           </div>
 
           <!-- Accepter CGU -->
-          <div>
-            <div class="flex items-start">
-              <div class="flex items-center h-5">
-                <input id="terms" formControlName="terms" type="checkbox"
-                       class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300">
-              </div>
-              <div class="ml-3 text-sm">
-                <label for="terms" class="font-light text-gray-500">J'accepte les <a
-                  class="font-medium text-primary-600 hover:underline" href="#">CGU</a></label>
-              </div>
+          <div class="flex items-start">
+            <div class="flex items-center h-5">
+              <input id="terms" formControlName="terms" type="checkbox"
+                     class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300">
             </div>
-            <small *ngIf="registerForm.get('terms')?.invalid && registerForm.get('terms')?.touched"
-                   class="text-red-600">
-              Vous devez accepter les CGU.
-            </small>
+            <div class="ml-3 text-sm">
+              <label for="terms" class="font-light text-gray-500">J'accepte les <a
+                class="font-medium text-primary-600 hover:underline" href="#">CGU</a></label>
+            </div>
           </div>
 
           <!-- Validation -->
           <button
             type="submit"
-            [disabled]="registerForm.invalid"
             class="w-full text-white bg-[#00a14b] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
             Soumettre
           </button>

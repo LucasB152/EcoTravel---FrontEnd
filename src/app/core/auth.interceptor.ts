@@ -4,14 +4,15 @@ import {catchError, Observable} from 'rxjs';
 import {AuthService} from './services/auth.service';
 import {Router} from '@angular/router';
 import {NotificationService} from './services/notification.service';
+import {TokenService} from './services/token.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private authService: AuthService, private router: Router, private notificationService: NotificationService) {
+  constructor(private authService: AuthService, private tokenService: TokenService, private router: Router, private notificationService: NotificationService) {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token = this.authService.getToken();
+    const token = this.tokenService.getToken();
 
     if (token) {
       const cloned = req.clone({
@@ -22,7 +23,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
       return next.handle(cloned).pipe(
         catchError((error) => {
-          if(error.status === 403 || error.status === 401) {
+          if(error.status === 401) {
             sessionStorage.clear();
             this.authService.logout();
             this.router.navigateByUrl("/login");

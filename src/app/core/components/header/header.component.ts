@@ -13,7 +13,6 @@ export class HeaderComponent implements OnInit {
 
   isLoggedIn!: boolean;
   user!: Users;
-  isMenuOpen: boolean = false;
   isAdmin: boolean = false;
 
   constructor(private router: Router, private authService: AuthService, private userService: UserService) {
@@ -37,8 +36,7 @@ export class HeaderComponent implements OnInit {
   }
 
   updateUserDetails(){
-    let userId: string = this.authService.getUserId();
-    this.authService.getUserById(userId).subscribe(
+    this.userService.getUserById().subscribe(
       response => {
         this.user = new Users({
           firstName: response.firstName,
@@ -53,10 +51,6 @@ export class HeaderComponent implements OnInit {
 
   onLogout() {
     this.authService.logout();
-    this.router.navigate(['/']);
-  }
-
-  toggleMenu() {
-    this.isMenuOpen = true;
+    this.router.navigateByUrl('/');
   }
 }

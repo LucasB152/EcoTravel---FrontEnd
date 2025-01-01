@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {Users} from '../../core/models/Users';
-import {AuthService} from '../../core/services/auth.service';
 import {UserService} from '../../core/services/user.service';
 import {Router} from '@angular/router';
 import {CloudinaryService} from '../../core/services/cloudinary.service';
@@ -19,11 +18,10 @@ export class ProfileEditComponent implements OnInit {
   selectedFile: File | null = null;
   imagePreviewUrl: string | null = null;
 
-  constructor(private authService : AuthService, private fb: FormBuilder, private userService: UserService, private router: Router, private cloudinaryService: CloudinaryService, private notificationService: NotificationService) {}
+  constructor(private fb: FormBuilder, private userService: UserService, private router: Router, private cloudinaryService: CloudinaryService, private notificationService: NotificationService) {}
 
   ngOnInit(): void {
-    let id: string = this.authService.getUserId();
-    this.authService.getUserById(id).subscribe(
+    this.userService.getUserById().subscribe(
       response => {
         this.user = new Users({
           firstName: response.firstName,
@@ -31,7 +29,6 @@ export class ProfileEditComponent implements OnInit {
           email: response.email,
           password: ""
         });
-        this.user.id = id;
         this.user.profilePicturePath = response.profilePicturePath;
         this.basicInfoForm = this.fb.group({
           profilePicturePath: [this.user.profilePicturePath],
@@ -74,6 +71,7 @@ export class ProfileEditComponent implements OnInit {
         this.userService.modifyUserPassword(currentPassword, newPassword, this.user.id).subscribe({
           next: (message) => {
             this.router.navigateByUrl('/profile');
+            this.userService.notifyUserUpdated();
             this.notificationService.showNotificationSuccess(message.Message);
           },
           error: (error) => {
@@ -99,7 +97,6 @@ export class ProfileEditComponent implements OnInit {
   private saveForm() {
     this.userService.modifyUserDetails(this.basicInfoForm.value, this.user.id).subscribe({
       next: (response) => {
-        this.userService.notifyUserUpdated();
         this.router.navigateByUrl("/profile");
         this.notificationService.showNotificationSuccess(response.Message);
       },
