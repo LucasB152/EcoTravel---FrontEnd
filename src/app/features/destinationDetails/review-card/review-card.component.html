@@ -25,12 +25,12 @@
         </svg>
       </ng-container>
     </div>
-    <span class="text-sm text-gray-500">{{ date | date: 'shortDate' }}</span>
+    <span class="text-sm text-gray-500">{{ reviewOfDestination.dateStringCreation.split(' ')[0] }}</span>
   </div>
   <p class="text-gray-700 text-base leading-relaxed">
-    {{ comment }}
+    {{ reviewOfDestination.comment }}
   </p>
-  <div *ngIf="modified" class="mt-3 text-xs text-gray-500 italic">
+  <div *ngIf="reviewOfDestination.edited" class="mt-3 text-xs text-gray-500 italic">
     (Modifié)
   </div>
 </div>

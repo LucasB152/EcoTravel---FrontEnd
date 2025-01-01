@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import { Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import {DestinationSearch} from '../../core/models/DestinationSearch';
 import {SearchResult} from '../../core/models/SearchResult';
 import {SearchService} from '../../core/services/search.service';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-index',
@@ -11,24 +12,22 @@ import {SearchService} from '../../core/services/search.service';
 })
 export class IndexComponent implements OnInit {
 
-  destinations: DestinationSearch[] = [];
+  destinations$: Observable<DestinationSearch[]> = new Observable();
   isSearchActive: boolean = false;
 
   constructor(private searchService: SearchService) {
   }
 
   ngOnInit(): void {
-
-    const results$ = this.searchService.searchDestinations('', [], '', 1, 3);
-    results$.subscribe((results) => {
-      this.destinations = results.destinations;
-    });
+    this.destinations$ = this.searchService.searchDestinations('', [], '', 1, 3).pipe(
+      map((results: SearchResult) => results.destinations)
+    );
   }
 
   onSearchResults(results$: Observable<SearchResult>): void {
-    results$.subscribe((results) => {
-      this.destinations = results.destinations;
-      this.isSearchActive = true;
-    });
+    this.destinations$ = results$.pipe(
+      map((results: SearchResult) => results.destinations)
+    );
+    this.isSearchActive = true;
   }
 }

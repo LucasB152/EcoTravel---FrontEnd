@@ -65,7 +65,7 @@ export class MapComponent implements AfterViewInit {
         borderColor: "#000000",
       })
       const marker = new google.maps.marker.AdvancedMarkerElement({
-        position: {lat: position.lat, lng: position.lng},
+        position: {lat: position.latitude, lng: position.longitude},
         content: pinGlyph.element,
       });
 
@@ -80,7 +80,7 @@ export class MapComponent implements AfterViewInit {
         infoWindow.setContent(`<div class="flex flex-col">
           <h1 class="text-lg font-bold">${position.name}</h1>
           <p class="text-sm">${position.type}</p>
-          <p class="text-sm">${position.lat}, ${position.lng}</p>
+          <p class="text-sm">${position.latitude}, ${position.longitude}</p>
           <div class="flex flex-wrap">
             ${images}
           </div>

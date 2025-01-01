@@ -7,14 +7,11 @@
 </div>
 <div class="max-w-screen-xl mx-auto px-4 py-8">
 
-  <!--  <app-map *ngIf="destinations$ | async as destinations" [destinations]="destinations"></app-map>-->
+<!--    <app-map *ngIf="destinations$ | async as destinations" [destinations]="destinations"></app-map>-->
 
   <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-6 text-center">
     {{ isSearchActive ? 'Search Results' : 'Most Popular' }}
   </h2>
-
-  <app-cards-list *ngIf="destinations.length > 0" [destinations]="destinations"></app-cards-list>
-  <p *ngIf="destinations.length === 0" class="text-center text-gray-500">No destinations found.</p>
-
+  <app-cards-list *ngIf="destinations$ | async as destinations" [destinations]="destinations"></app-cards-list>
+  <p *ngIf="(destinations$ | async)?.length === 0" class="text-center text-gray-500">No destinations found.</p>
 </div>
-
