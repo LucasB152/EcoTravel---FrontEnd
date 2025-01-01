@@ -1,0 +1,46 @@
+<div class="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
+  <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+<!--    todo adapter en finction de si on add ou update-->
+    <h2 class="text-xl font-semibold mb-4">Add Review</h2>
+
+    <form (ngSubmit)="submitReview()">
+      <div class="flex items-center justify-center place-content-center mb-4">
+        <!-- Note avec des étoiles -->
+        <ng-container *ngFor="let star of stars; let i = index">
+          <svg
+            *ngIf="i < rating"
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6 text-yellow-400"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+            stroke="none"
+            (click)="rating = i + 1"
+          >
+            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+          </svg>
+          <svg
+            *ngIf="i >= rating"
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6 text-gray-300"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+            stroke="none"
+            (click)="rating = i + 1"
+          >
+            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+          </svg>
+        </ng-container>
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-gray-700" for="oui">Share your opinion with us:</label>
+        <textarea class="w-full px-3 py-2 border rounded-lg" placeholder="your opinion" id="oui" [(ngModel)]="comment"
+                  name="comment"></textarea>
+      </div>
+      <div class="flex justify-end">
+        <button type="button" (click)="cancel()" class="mr-2 px-4 py-2 bg-gray-300 rounded-lg">Cancel</button>
+        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>

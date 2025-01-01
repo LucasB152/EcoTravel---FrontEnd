@@ -27,6 +27,7 @@ import { NotificationComponent } from './core/components/notification/notificati
 import { LoadingSpinnerComponent } from './features/loading-spinner/loading-spinner.component';
 import { HostAccountRequestComponent } from './features/host-account-request/host-account-request.component';
 import {CoreModule} from './core/core.module';
+import {FeaturesModule} from './features/features.module';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import {CoreModule} from './core/core.module';
     RouterLinkActive,
     ReactiveFormsModule,
     FormsModule,
-    CoreModule
+    CoreModule,
+    FeaturesModule
   ],
   providers: [
     provideClientHydration(),

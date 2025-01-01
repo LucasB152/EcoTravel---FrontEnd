@@ -34,7 +34,18 @@
 
     <!-- Section 3: Avis clients -->
     <div class="bg-gray-50 p-6 rounded-lg shadow-md">
-      <h2 class="text-xl font-semibold text-gray-800">Avis clients</h2>
+      <div class="flex justify-between items-center">
+        <h2 class="text-xl font-semibold text-gray-800">Avis clients</h2>
+        <!--        todo changer pour add review ou update review-->
+        <button (click)="toggleReviewForm()" class="text-blue-600 hover:text-blue-800 font-semibold text-lg">Add
+          Review
+        </button>
+      </div>
+      <ng-container *ngIf="isReviewFormVisible">
+        <app-review-form *ngIf="myReview$ | async as reviewResponseDto" [reviewOfDestination]="reviewResponseDto"
+                         (closeForm)="toggleReviewForm()"></app-review-form>
+      </ng-container>
+
       <div class="flex flex-col gap-10 sm:grid sm:grid-cols-2 lg:flex lg:flex-row lg:flex-wrap lg:justify-center">
         <app-review-card *ngFor="let review of reviews$ | async" [reviewOfDestination]="review"></app-review-card>
         <p *ngIf="(reviews$ | async)?.length === 0" class="text-center text-gray-500">No reviews found.</p>
