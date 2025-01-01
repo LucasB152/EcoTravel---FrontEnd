@@ -5,6 +5,7 @@ import {Observable} from 'rxjs';
 import {Destination} from '../../../core/models/Destination';
 import {ReviewService} from '../../../core/services/review.service';
 import {ReviewResponseDto} from '../../../core/models/ReviewResponseDto';
+import {AuthService} from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-destination-details',
@@ -15,12 +16,15 @@ export class DestinationDetailsComponent implements OnInit {
   destination$!: Observable<Destination>;
   reviews$!: Observable<ReviewResponseDto[]>;
 
-  constructor(public route: ActivatedRoute, private location: LocationService,private reviewService: ReviewService) {
+  constructor(public route: ActivatedRoute,
+              private location: LocationService,
+              private reviewService: ReviewService,) {
+
   }
 
   ngOnInit(): void {
-        const destinationId: number = this.route.snapshot.params['id'];
-        this.destination$ = this.location.getDestinationDetails(destinationId);
-        this.reviews$ = this.reviewService.getReviews(destinationId);
-    }
+    const destinationId: number = this.route.snapshot.params['id'];
+    this.destination$ = this.location.getDestinationDetails(destinationId);
+    this.reviews$ = this.reviewService.getReviews(destinationId);
+  }
 }

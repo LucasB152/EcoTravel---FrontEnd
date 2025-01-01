@@ -29,7 +29,7 @@
     <div *ngIf="isTagsDropdownOpen"
          class="absolute mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
       <div class="p-3">
-        <label *ngFor="let tag of availableTags" class="block">
+        <label *ngFor="let tag of availableTags$ | async" class="block">
           <input
             type="checkbox"
             [value]="tag"
