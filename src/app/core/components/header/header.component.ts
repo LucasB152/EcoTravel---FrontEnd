@@ -14,6 +14,8 @@ export class HeaderComponent implements OnInit {
   isLoggedIn!: boolean;
   user!: Users;
   isAdmin: boolean = false;
+  showDropdownAdmin: boolean = false;
+  showDropdownUser: boolean = false;
 
   constructor(private router: Router, private authService: AuthService, private userService: UserService) {
   }
@@ -25,6 +27,8 @@ export class HeaderComponent implements OnInit {
         this.userService.loadCurrentUser().subscribe();
       }
       this.isAdmin = this.authService.isAdmin();
+      this.showDropdownUser = false;  // Reset du menu utilisateur lors de la connexion
+      this.showDropdownAdmin = false;
     })
     this.userService.user$.subscribe(user => {
       if(user){
@@ -32,6 +36,15 @@ export class HeaderComponent implements OnInit {
         this.user.profilePicturePath = null ? user.profilePicturePath : "basic-profile-picture.webp";
       }
     })
+  }
+  toggleUserDropdown() {
+    this.showDropdownUser = !this.showDropdownUser;
+    this.showDropdownAdmin = false;
+  }
+
+  toggleAdminDropdown() {
+    this.showDropdownAdmin = !this.showDropdownAdmin;
+    this.showDropdownUser = false;
   }
 
   onLogout() {
