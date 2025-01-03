@@ -5,4 +5,5 @@ export interface Users {
   email: string;
   password: string;
   profilePicturePath?: string;
+  role?: string;
 }

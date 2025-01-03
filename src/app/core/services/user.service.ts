@@ -4,6 +4,7 @@ import {Users} from '../models/Users';
 import {BehaviorSubject, Observable, tap} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {TokenService} from './token.service';
+import {response} from 'express';
 
 @Injectable({
   providedIn: 'root',
@@ -51,7 +52,7 @@ export class UserService {
     });
   }
 
-  promoteToAdmin(email: string) {
-
+  promoteToAdmin(userId: string) {
+    return this.http.put(`${environment.API_URL}/admin/${userId}/role/admin`, "");
   }
 }

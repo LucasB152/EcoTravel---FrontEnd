@@ -18,8 +18,10 @@ export class AdministratorManagementComponent implements OnInit {
     this.users$ = this.userService.getAllUsers();
   }
 
-  promoteUser(email: string): void{
-    this.userService.promoteToAdmin(email);
+  promoteUser(userId: string): void{
+    this.userService.promoteToAdmin(userId).subscribe(() => {
+      this.users$ = this.userService.getAllUsers();
+    });
   }
 
 

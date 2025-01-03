@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, HostListener, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
 import {Users} from '../../models/Users';
@@ -17,7 +17,7 @@ export class HeaderComponent implements OnInit {
   showDropdownAdmin: boolean = false;
   showDropdownUser: boolean = false;
 
-  constructor(private router: Router, private authService: AuthService, private userService: UserService) {
+  constructor(private router: Router, private authService: AuthService, private userService: UserService, private el: ElementRef) {
   }
 
   ngOnInit(): void {
@@ -50,5 +50,15 @@ export class HeaderComponent implements OnInit {
   onLogout() {
     this.authService.logout();
     this.router.navigateByUrl('/');
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClick(event: MouseEvent) {
+    const clickedInside = this.el.nativeElement.contains(event.target);
+
+    if (!clickedInside) {
+      this.showDropdownUser = false;
+      this.showDropdownAdmin = false;
+    }
   }
 }

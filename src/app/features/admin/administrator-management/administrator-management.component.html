@@ -18,11 +18,11 @@
       <td class="p-2 border-b">{{ user.firstName || 'Inconnu' }}</td>
       <td class="p-2 border-b">{{ user.lastName || 'Inconnu' }}</td>
       <td class="p-2 border-b">{{ user.email }}</td>
-      <td class="p-2 border-b">{{ user.email }}</td>
+      <td class="p-2 border-b">{{ user.role }}</td>
       <td class="p-2 border-b">
-        <button *ngIf="user.email !== 'ADMIN'"
-                (click)="promoteUser(user.email)"
-                class="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-700">
+        <button *ngIf="user.role !== 'ADMIN'"
+                (click)="promoteUser(user.id!)"
+                class="bg-[#00a14b] text-white p-2 rounded-lg hover:bg-[#008f44]">
           Promouvoir Admin
         </button>
       </td>
