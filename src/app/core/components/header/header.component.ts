@@ -22,31 +22,16 @@ export class HeaderComponent implements OnInit {
     this.authService.isLoggedIn$.subscribe(status => {
       this.isLoggedIn = status;
       if(this.authService.isAuthenticated()) {
-        this.updateUserDetails();
+        this.userService.loadCurrentUser().subscribe();
       }
       this.isAdmin = this.authService.isAdmin();
     })
-    this.userService.userUpdated$.subscribe(
-      updatedUser => {
-        if(updatedUser){
-          this.updateUserDetails()
-        }
+    this.userService.user$.subscribe(user => {
+      if(user){
+        this.user = user;
+        this.user.profilePicturePath = null ? user.profilePicturePath : "basic-profile-picture.webp";
       }
-    )
-  }
-
-  updateUserDetails(){
-    this.userService.getUserById().subscribe(
-      response => {
-        this.user = new Users({
-          firstName: response.firstName,
-          lastName: response.lastName,
-          email: response.email,
-          password: ""
-        });
-        this.user.profilePicturePath = response.profilePicturePath || "basic-profile-picture.webp";
-      }
-    );
+    })
   }
 
   onLogout() {

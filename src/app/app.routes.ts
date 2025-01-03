@@ -14,6 +14,8 @@ import {RoleGuard} from './core/guard/role.guard';
 import {
   AdministratorManagementComponent
 } from './features/admin/administrator-management/administrator-management.component';
+import {TagsManagementComponent} from './features/admin/tags-management/tags-management.component';
+import {ReportListComponent} from './features/admin/report-list/report-list.component';
 
 export const routes: Routes = [
   { path: '', component: IndexComponent },
@@ -26,4 +28,6 @@ export const routes: Routes = [
   { path: 'host-account-request', component: HostAccountRequestComponent, canActivate: [AuthGuard] },
   { path: 'host-requests', component: HostRequestListComponent, canActivate: [RoleGuard], data: { roles: ['ADMIN'] } },
   { path: 'administrators-management', component: AdministratorManagementComponent, canActivate: [RoleGuard], data: { roles: ['ADMIN'] } },
+  { path: 'tags-management', component: TagsManagementComponent, canActivate: [RoleGuard], data: { roles: ['ADMIN'] } },
+  { path: 'reports', component: ReportListComponent, canActivate: [RoleGuard], data: { roles: ['ADMIN'] } },
 ];

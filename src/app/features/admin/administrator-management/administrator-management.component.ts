@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from '../../../core/services/user.service';
+import {Users} from '../../../core/models/Users';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-administrator-management',
@@ -7,18 +9,18 @@ import {UserService} from '../../../core/services/user.service';
   styleUrl: './administrator-management.component.scss'
 })
 export class AdministratorManagementComponent implements OnInit {
+  users$!: Observable<Users[]>;
+
   constructor(private userService: UserService) {
   }
 
   ngOnInit(): void {
-        this.userService.getAllUsers().subscribe(
-          response => {
-            console.log(response);
-          }, error => {
-            console.log(error);
-          }
-        )
-    }
+    this.users$ = this.userService.getAllUsers();
+  }
+
+  promoteUser(email: string): void{
+    this.userService.promoteToAdmin(email);
+  }
 
 
 }

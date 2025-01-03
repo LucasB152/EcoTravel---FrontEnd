@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 import {Users} from '../models/Users';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, tap} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {TokenService} from './token.service';
 
@@ -9,17 +9,20 @@ import {TokenService} from './token.service';
   providedIn: 'root',
 })
 export class UserService {
-  private userUpdated = new BehaviorSubject<boolean>(false);
-  userUpdated$ = this.userUpdated.asObservable();
+  private userSubject = new BehaviorSubject<Users | null>(null);
+  user$ = this.userSubject.asObservable();
 
-  constructor(private http: HttpClient, private tokenService: TokenService) {}
-
-  getUserById(): Observable<any> {
-    const id: string = this.tokenService.getUserId();
-    return this.http.get<any>(`${environment.API_URL}/user/${id}`);
+  constructor(private http: HttpClient, private tokenService: TokenService) {
   }
 
-  getUserRole(): string | null{
+  loadCurrentUser(): Observable<any> {
+    const id: string = this.tokenService.getUserId();
+    return this.http.get<any>(`${environment.API_URL}/user/${id}`).pipe(
+      tap(user => this.userSubject.next(user))
+    );
+  }
+
+  getUserRole(): string | null {
     return this.tokenService.getUserRole();
   }
 
@@ -32,15 +35,23 @@ export class UserService {
     return this.http.get<any>(`${environment.API_URL}/user/all`);
   }
 
-  modifyUserDetails(user: Users, id: string): Observable<any> {
-    return this.http.put(`${environment.API_URL}/user/${id}`, user);
+  modifyUserDetails(user: Users): Observable<any> {
+    const id = this.tokenService.getUserId();
+    return this.http.put(`${environment.API_URL}/user/${id}`, user).pipe(
+      tap(() => this.loadCurrentUser().subscribe())
+    );
   }
 
-  notifyUserUpdated(){
-    this.userUpdated.next(true);
+  modifyUserPassword(currentPassword: string, newPassword: string): Observable<any> {
+    const userId: string = this.tokenService.getUserId();
+    return this.http.put(`${environment.API_URL}/user/${userId}/password`, {
+      currentPassword: currentPassword,
+      newPassword,
+      userId
+    });
   }
 
-  modifyUserPassword(currentPassword: string, newPassword: string, userId: string): Observable<any> {
-    return this.http.put(`${environment.API_URL}/user/${userId}/password`, {currentPassword: currentPassword, newPassword, userId});
+  promoteToAdmin(email: string) {
+
   }
 }

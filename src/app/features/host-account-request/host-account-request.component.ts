@@ -18,10 +18,10 @@ export class HostAccountRequestComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userService.getUserById().subscribe(
-      response => {
+    this.userService.user$.subscribe(response => {
+      if(response){
         this.registerForm = this.fb.group({
-          fullName: [{value: `${response.firstName} ${response.lastName}`, disabled: false}, [Validators.required]],
+          fullName: [{value: `${response.firstName} ${response.lastName}`, disabled: true}, [Validators.required]],
           email: [{value: `${response.email}`, disabled: true}, [Validators.required, Validators.email]],
           phone: ['', [Validators.required, Validators.pattern(/^((\+33|0)[1-9](\d{2}(\s|-)?){4}|(\+32|0)4(\d{2}(\s|-)?){4})$/)]],
           status: ['', Validators.required],
@@ -35,7 +35,8 @@ export class HostAccountRequestComponent implements OnInit {
           terms: [false, Validators.requiredTrue]
         });
         this.addServices();
-      });
+      }
+    });
   }
 
   get services(): FormArray {

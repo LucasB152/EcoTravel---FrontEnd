@@ -18,17 +18,12 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userService.getUserById().subscribe(
-      response => {
-        this.user = new Users({
-          firstName: response.firstName,
-          lastName: response.lastName,
-          email: response.email,
-          password: ""
-        });
-        this.user.profilePicturePath = response.profilePicturePath || "basic-profile-picture.webp";
+    this.userService.user$.subscribe(user => {
+      if(user){
+        this.user = user;
+        this.user.profilePicturePath = null ? user.profilePicturePath : "basic-profile-picture.webp";
       }
-    );
+    });
   }
 
   openConfirmationModal() {

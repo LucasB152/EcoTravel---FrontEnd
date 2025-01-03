@@ -27,6 +27,8 @@ import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.compo
 import { HostAccountRequestComponent } from './features/host-account-request/host-account-request.component';
 import { HostRequestListComponent } from './features/admin/host-request-list/host-request-list.component';
 import { AdministratorManagementComponent } from './features/admin/administrator-management/administrator-management.component';
+import { TagsManagementComponent } from './features/admin/tags-management/tags-management.component';
+import { ReportListComponent } from './features/admin/report-list/report-list.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +50,9 @@ import { AdministratorManagementComponent } from './features/admin/administrator
     LoadingSpinnerComponent,
     HostAccountRequestComponent,
     HostRequestListComponent,
-    AdministratorManagementComponent
+    AdministratorManagementComponent,
+    TagsManagementComponent,
+    ReportListComponent
   ],
   imports: [
     BrowserModule,

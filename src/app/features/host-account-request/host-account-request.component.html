@@ -12,17 +12,13 @@
         <form *ngIf="registerForm" [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-4 md:space-y-6">
           <!-- Nom complet -->
           <div>
-            <label for="fullname" class="block mb-2 text-sm font-medium text-gray-900">Nom complet*</label>
+            <label for="fullname" class="block mb-2 text-sm font-medium text-gray-900">Nom complet</label>
             <input
               type="text"
               id="fullname"
               formControlName="fullName"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-            />
-            <small *ngIf="registerForm.get('fullName')?.invalid && registerForm.get('fullName')?.touched"
-                   class="text-red-600">
-              Ce champ est requis.
-            </small>
+              readonly/>
           </div>
 
           <!-- Email -->
