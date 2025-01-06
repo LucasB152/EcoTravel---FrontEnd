@@ -6,6 +6,7 @@ import {Destination} from '../../../core/models/Destination';
 import {ReviewService} from '../../../core/services/review.service';
 import {ReviewResponseDto} from '../../../core/models/ReviewResponseDto';
 import {map} from 'rxjs/operators';
+import {ReviewEditDto} from '../../../core/models/ReviewEditDto';
 
 @Component({
   selector: 'app-destination-details',
@@ -36,12 +37,26 @@ export class DestinationDetailsComponent implements OnInit {
 
 
   toggleReviewForm(event: any) {
-
     if (event.isSubmit) {
-      console.log('submitReview: ', event);
-      //todo: créer ou modifier
+      if (event.id === 0) {
+        const reviewCreationDto = {
+          score: event.score,
+          comment: event.comment,
+          userId: event.userId,
+          destinationId: this.route.snapshot.params['id']
+        };
+        this.reviewService.createReview(reviewCreationDto).subscribe(() => {
+        });
+      } else {
+        const reviewEditDto: ReviewEditDto = {
+          id: event.id,
+          score: event.score,
+          comment: event.comment
+        };
+        this.reviewService.updateReview(reviewEditDto).subscribe(() => {
+        });
+      }
     }
-
     this.isReviewFormVisible = !this.isReviewFormVisible;
   }
 
