@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, HostListener, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
 import {Users} from '../../models/Users';
@@ -13,50 +13,52 @@ export class HeaderComponent implements OnInit {
 
   isLoggedIn!: boolean;
   user!: Users;
-  isMenuOpen: boolean = false;
   isAdmin: boolean = false;
+  showDropdownAdmin: boolean = false;
+  showDropdownUser: boolean = false;
 
-  constructor(private router: Router, private authService: AuthService, private userService: UserService) {
+  constructor(private router: Router, private authService: AuthService, private userService: UserService, private el: ElementRef) {
   }
 
   ngOnInit(): void {
     this.authService.isLoggedIn$.subscribe(status => {
       this.isLoggedIn = status;
       if(this.authService.isAuthenticated()) {
-        this.updateUserDetails();
+        this.userService.loadCurrentUser().subscribe();
       }
       this.isAdmin = this.authService.isAdmin();
+      this.showDropdownUser = false;  // Reset du menu utilisateur lors de la connexion
+      this.showDropdownAdmin = false;
     })
-    this.userService.userUpdated$.subscribe(
-      updatedUser => {
-        if(updatedUser){
-          this.updateUserDetails()
-        }
+    this.userService.user$.subscribe(user => {
+      if(user){
+        this.user = user;
+        this.user.profilePicturePath = null ? user.profilePicturePath : "basic-profile-picture.webp";
       }
-    )
+    })
+  }
+  toggleUserDropdown() {
+    this.showDropdownUser = !this.showDropdownUser;
+    this.showDropdownAdmin = false;
   }
 
-  updateUserDetails(){
-    let userId: string = this.authService.getUserId();
-    this.authService.getUserById(userId).subscribe(
-      response => {
-        this.user = new Users({
-          firstName: response.firstName,
-          lastName: response.lastName,
-          email: response.email,
-          password: ""
-        });
-        this.user.profilePicturePath = response.profilePicturePath || "basic-profile-picture.webp";
-      }
-    );
+  toggleAdminDropdown() {
+    this.showDropdownAdmin = !this.showDropdownAdmin;
+    this.showDropdownUser = false;
   }
 
   onLogout() {
     this.authService.logout();
-    this.router.navigate(['/']);
+    this.router.navigateByUrl('/');
   }
 
-  toggleMenu() {
-    this.isMenuOpen = true;
+  @HostListener('document:click', ['$event'])
+  onClick(event: MouseEvent) {
+    const clickedInside = this.el.nativeElement.contains(event.target);
+
+    if (!clickedInside) {
+      this.showDropdownUser = false;
+      this.showDropdownAdmin = false;
+    }
   }
 }

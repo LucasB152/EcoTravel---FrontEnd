@@ -1,0 +1,33 @@
+<div class="container mx-auto p-6">
+  <h1 class="text-2xl font-bold mb-4">Gestion des Tags</h1>
+
+  <!-- Ajouter un Nouveau Tag -->
+  <div class="mt-4 flex space-x-2 mb-6"> <!-- Ajout de "mb-6" pour espacer -->
+    <input
+      type="text"
+      [(ngModel)]="newTag"
+      placeholder="Nouveau tag"
+      class="border border-gray-300 p-2 rounded-md flex-grow"
+    />
+    <button
+      (click)="addTag()"
+      class="bg-[#00a14b] text-white px-4 py-2 rounded-md hover:bg-blue-600"
+    >
+      Ajouter
+    </button>
+  </div>
+
+  <!-- Liste des Tags -->
+  <ul class="bg-gray-100 p-4 rounded-md shadow-md">
+    <li *ngFor="let tag of tags" class="flex justify-between items-center mb-2">
+      <span class="text-gray-800">{{ tag.name }}</span>
+      <button *ngIf="tag.id"
+              (click)="deleteTag(tag.id)"
+              class="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
+              aria-label="Supprimer le tag"
+      >
+        <i class="fas fa-trash"></i>
+      </button>
+    </li>
+  </ul>
+</div>

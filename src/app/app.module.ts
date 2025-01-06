@@ -24,8 +24,12 @@ import { ProfileComponent } from './features/profile/profile.component';
 import { DestinationCreationComponent } from './features/destination-creation/destination-creation.component';
 import { ProfileEditComponent } from './features/profile-edit/profile-edit.component';
 import { NotificationComponent } from './core/components/notification/notification.component';
-import { LoadingSpinnerComponent } from './features/loading-spinner/loading-spinner.component';
+import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 import { HostAccountRequestComponent } from './features/host-account-request/host-account-request.component';
+import { HostRequestListComponent } from './features/admin/host-request-list/host-request-list.component';
+import { AdministratorManagementComponent } from './features/admin/administrator-management/administrator-management.component';
+import { TagsManagementComponent } from './features/admin/tags-management/tags-management.component';
+import { ReportListComponent } from './features/admin/report-list/report-list.component';
 import {CoreModule} from './core/core.module';
 
 @NgModule({
@@ -48,7 +52,11 @@ import {CoreModule} from './core/core.module';
     ProfileEditComponent,
     NotificationComponent,
     LoadingSpinnerComponent,
-    HostAccountRequestComponent
+    HostAccountRequestComponent,
+    HostRequestListComponent,
+    AdministratorManagementComponent,
+    TagsManagementComponent,
+    ReportListComponent
   ],
   imports: [
     BrowserModule,

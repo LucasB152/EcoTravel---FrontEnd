@@ -2,18 +2,20 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Users } from '../models/Users';
-import { jwtDecode } from 'jwt-decode';
 import {environment} from '../../../environments/environment';
+import {TokenService} from './token.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private tokenKey = 'auth-token';
-  private loggedIn = new BehaviorSubject<boolean>(this.hasToken());
-  isLoggedIn$ = this.loggedIn.asObservable();
+  private loggedIn;
+  isLoggedIn$;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private tokenService: TokenService) {
+    this.loggedIn = new BehaviorSubject<boolean>(this.tokenService.hasToken());
+    this.isLoggedIn$ = this.loggedIn.asObservable();
+  }
 
   register(user: Users): Observable<any> {
     return this.http.post(`${environment.API_URL}/auth/signup`, user);
@@ -22,8 +24,8 @@ export class AuthService {
   login(email: string, password: string, rememberMe: boolean): Observable<any> {
     return this.http.post<any>(`${environment.API_URL}/auth/login`, { email, password }).pipe(
       tap(response => {
-        if (response && response.token) {
-          rememberMe ? this.saveToken(response.token) : this.saveTokenOnSession(response.token);
+        if (response?.token) {
+          this.tokenService.saveToken(response.token, rememberMe);
           this.loggedIn.next(true);
         }
       })
@@ -31,79 +33,15 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return this.hasToken();
+    return this.tokenService.hasToken();
   }
 
   isAdmin(): boolean {
-    return this.getUserRole() === "ADMIN";
+    return this.tokenService.getUserRole() === "ADMIN";
   }
 
   logout(): void {
+    this.tokenService.removeToken();
     this.loggedIn.next(false);
-    this.removeToken();
-  }
-
-  private hasToken(): boolean {
-    return !!this.getToken();
-  }
-
-  private saveTokenOnSession(token: string): void {
-    sessionStorage.setItem(this.tokenKey, token);
-  }
-
-  private saveToken(token: string): void {
-    localStorage.setItem(this.tokenKey, token);
-  }
-
-  getToken(): string | null {
-    if (typeof window === 'undefined') return null;
-
-    const token = sessionStorage.getItem(this.tokenKey) || localStorage.getItem(this.tokenKey);
-    return token && token.split('.').length === 3 ? token : null;
-  }
-
-
-  public removeToken(): void {
-    localStorage.removeItem(this.tokenKey);
-    sessionStorage.removeItem(this.tokenKey);
-    this.loggedIn.next(false);
-  }
-
-  private getDecodedToken(): any {
-    const token = this.getToken();
-    if (token != null) {
-      return jwtDecode(token);
-    }
-    return null;
-  }
-
-  getUserId(): string {
-    const decodedToken = this.getDecodedToken();
-    return decodedToken.sub;
-  }
-
-  public getUserRole(): string | null {
-    const decodedToken = this.getDecodedToken();
-    return decodedToken ? decodedToken.role : null;
-  }
-
-  getUserById(id: string): Observable<any> {
-    return this.http.get<any>(`${environment.API_URL}/user/${id}`, {});
-  }
-
-  isTokenExpired(): boolean {
-    try{
-      const decodedToken = this.getDecodedToken();
-      if(decodedToken.exp){
-
-        console.log(`Expiration Date: ${decodedToken.exp}`);
-        console.log(`Date: ${Date.now()}`);
-        console.log(decodedToken.exp < Date.now());
-        return decodedToken.exp < Date.now();
-      }
-      return true;
-    }catch (e) {
-      return true;
-    }
   }
 }

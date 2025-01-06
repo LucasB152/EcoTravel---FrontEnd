@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {Users} from '../../core/models/Users';
-import {AuthService} from '../../core/services/auth.service';
 import {UserService} from '../../core/services/user.service';
 import {Router} from '@angular/router';
 import {CloudinaryService} from '../../core/services/cloudinary.service';
@@ -15,31 +13,23 @@ import {NotificationService} from '../../core/services/notification.service';
 export class ProfileEditComponent implements OnInit {
   basicInfoForm!: FormGroup;
   passwordForm!: FormGroup;
-  user!: Users;
   selectedFile: File | null = null;
   imagePreviewUrl: string | null = null;
 
-  constructor(private authService : AuthService, private fb: FormBuilder, private userService: UserService, private router: Router, private cloudinaryService: CloudinaryService, private notificationService: NotificationService) {}
+  constructor(private fb: FormBuilder, private userService: UserService, private router: Router, private cloudinaryService: CloudinaryService, private notificationService: NotificationService) {}
 
   ngOnInit(): void {
-    let id: string = this.authService.getUserId();
-    this.authService.getUserById(id).subscribe(
+    this.userService.user$.subscribe(
       response => {
-        this.user = new Users({
-          firstName: response.firstName,
-          lastName: response.lastName,
-          email: response.email,
-          password: ""
-        });
-        this.user.id = id;
-        this.user.profilePicturePath = response.profilePicturePath;
+        if(response){
         this.basicInfoForm = this.fb.group({
-          profilePicturePath: [this.user.profilePicturePath],
-          lastName: [this.user.lastname, Validators.required],
-          firstName: [this.user.firstname, Validators.required],
-          email: [this.user.email, [Validators.required, Validators.email]],
+          profilePicturePath: [response.profilePicturePath],
+          lastName: [response.lastName, Validators.required],
+          firstName: [response.firstName, Validators.required],
+          email: [response.email, [Validators.required, Validators.email]],
         });
       }
+        }
     );
     this.passwordForm = this.fb.group({
       currentPassword: ['', Validators.required],
@@ -51,7 +41,7 @@ export class ProfileEditComponent implements OnInit {
   onUpdateBasicInfo(): void {
     if (this.basicInfoForm.valid) {
       if(this.selectedFile){
-        this.cloudinaryService.uploadImage(this.selectedFile, this.user.id).subscribe({
+        this.cloudinaryService.uploadImage(this.selectedFile).subscribe({
           next: (imageUrl) => {
             this.basicInfoForm.patchValue({profilePicturePath: imageUrl});
 
@@ -71,7 +61,7 @@ export class ProfileEditComponent implements OnInit {
       const {currentPassword, newPassword, confirmPassword} = this.passwordForm.value;
 
       if (newPassword === confirmPassword) {
-        this.userService.modifyUserPassword(currentPassword, newPassword, this.user.id).subscribe({
+        this.userService.modifyUserPassword(currentPassword, newPassword).subscribe({
           next: (message) => {
             this.router.navigateByUrl('/profile');
             this.notificationService.showNotificationSuccess(message.Message);
@@ -97,9 +87,8 @@ export class ProfileEditComponent implements OnInit {
   }
 
   private saveForm() {
-    this.userService.modifyUserDetails(this.basicInfoForm.value, this.user.id).subscribe({
+    this.userService.modifyUserDetails(this.basicInfoForm.value).subscribe({
       next: (response) => {
-        this.userService.notifyUserUpdated();
         this.router.navigateByUrl("/profile");
         this.notificationService.showNotificationSuccess(response.Message);
       },
