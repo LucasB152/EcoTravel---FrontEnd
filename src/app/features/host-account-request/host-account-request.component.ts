@@ -100,4 +100,3 @@ export class HostAccountRequestComponent implements OnInit {
     }
   }
 }
-
