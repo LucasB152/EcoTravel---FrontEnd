@@ -24,7 +24,7 @@ import { ProfileComponent } from './features/profile/profile.component';
 import { DestinationCreationComponent } from './features/destination-creation/destination-creation.component';
 import { ProfileEditComponent } from './features/profile-edit/profile-edit.component';
 import { NotificationComponent } from './core/components/notification/notification.component';
-import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
+import { LoadingSpinnerComponent } from './shared/components/loading-spinner/loading-spinner.component';
 import { HostAccountRequestComponent } from './features/host-account-request/host-account-request.component';
 import { HostRequestListComponent } from './features/admin/host-request-list/host-request-list.component';
 import { AdministratorManagementComponent } from './features/admin/administrator-management/administrator-management.component';
