@@ -49,7 +49,7 @@ export class MapComponent implements AfterViewInit {
     this.map = new google.maps.Map(document.getElementById('map') as HTMLElement, {
       zoom: 10,
       center: {lat: 50.636, lng: 5.573},
-      mapId: '1b9475db8c0f46f2',
+      mapId: '1b9475db8c0f46f3',
     });
 
     const infoWindow = new google.maps.InfoWindow({

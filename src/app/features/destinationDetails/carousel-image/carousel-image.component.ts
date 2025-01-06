@@ -1,5 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {of} from 'rxjs';
+import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-carousel-image',
@@ -7,12 +6,7 @@ import {of} from 'rxjs';
   styleUrl: './carousel-image.component.scss'
 })
 export class CarouselImageComponent{
-  images: string[] = [
-    'https://via.placeholder.com/600x400/FF5733/FFFFFF?text=Image+1',
-    'https://via.placeholder.com/600x400/33FF57/FFFFFF?text=Image+2',
-    'https://via.placeholder.com/600x400/3357FF/FFFFFF?text=Image+3',
-    'https://via.placeholder.com/600x400/FF33A6/FFFFFF?text=Image+4',
-  ];
+  @Input() images: string[] = [];
 
   currentIndex: number = 0;
 
