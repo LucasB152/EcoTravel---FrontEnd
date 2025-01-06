@@ -32,7 +32,6 @@
               readonly/>
           </div>
 
-
           <!-- Numéro de téléphone -->
           <div>
             <label for="phone" class="block mb-2 text-sm font-medium text-gray-900">Numéro de téléphone*</label>
@@ -81,7 +80,6 @@
               Ce champ est requis.
             </small>
           </div>
-
           <!-- Statut juridique -->
           <div>
             <label for="status" class="block mb-2 text-sm font-medium text-gray-900">Statut juridique*</label>
@@ -180,6 +178,7 @@
           <!-- Validation -->
           <button
             type="submit"
+            [disabled]="registerForm.invalid"
             class="w-full text-white bg-[#00a14b] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
             Soumettre
           </button>

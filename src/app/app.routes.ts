@@ -11,11 +11,10 @@ import {ProfileEditComponent} from './features/profile-edit/profile-edit.compone
 import {HostAccountRequestComponent} from './features/host-account-request/host-account-request.component';
 import {HostRequestListComponent} from './features/admin/host-request-list/host-request-list.component';
 import {RoleGuard} from './core/guard/role.guard';
-import {
-  AdministratorManagementComponent
-} from './features/admin/administrator-management/administrator-management.component';
+import {AdministratorManagementComponent} from './features/admin/administrator-management/administrator-management.component';
 import {TagsManagementComponent} from './features/admin/tags-management/tags-management.component';
 import {ReportListComponent} from './features/admin/report-list/report-list.component';
+import {DestinationCreationComponent} from './features/destination-creation/destination-creation.component';
 
 export const routes: Routes = [
   { path: '', component: IndexComponent },
@@ -24,6 +23,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [LoggedInGuard] },
   { path: 'register', component: RegisterComponent, canActivate: [LoggedInGuard]  },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'create-destination', component: DestinationCreationComponent },
   { path: 'profile-edit', component: ProfileEditComponent, canActivate: [AuthGuard] },
   { path: 'host-account-request', component: HostAccountRequestComponent, canActivate: [AuthGuard] },
   { path: 'host-requests', component: HostRequestListComponent, canActivate: [RoleGuard], data: { roles: ['ADMIN'] } },

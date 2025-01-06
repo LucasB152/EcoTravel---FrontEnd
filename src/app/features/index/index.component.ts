@@ -1,39 +1,33 @@
-import {Component, HostListener, OnInit} from '@angular/core';
-import {Destination} from '../../core/models/Destination';
-import {LocationService} from '../../core/services/location.service';
+import {Component, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
+import {DestinationSearch} from '../../core/models/DestinationSearch';
+import {SearchResult} from '../../core/models/SearchResult';
+import {SearchService} from '../../core/services/search.service';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
   styleUrl: './index.component.scss'
 })
-export class IndexComponent implements OnInit{
-  isDropdownOpen: boolean = false;
-  selectedCategory: string = "All categories";
-  destination$!: Observable<Destination[]>;
+export class IndexComponent implements OnInit {
 
-  constructor(private destinationService: LocationService) {}
+  destinations$: Observable<DestinationSearch[]> = new Observable();
+  isSearchActive: boolean = false;
+
+  constructor(private searchService: SearchService) {
+  }
 
   ngOnInit(): void {
-        this.destination$ = this.destinationService.getMostPopularLocation();
-    }
-
-  toggleDropdown = () => {
-    this.isDropdownOpen = !this.isDropdownOpen;
+    this.destinations$ = this.searchService.searchDestinations('', [], '', 1, 3).pipe(
+      map((results: SearchResult) => results.destinations)
+    );
   }
 
-  selectCategory(category: string) {
-    this.selectedCategory = category;
-    this.isDropdownOpen = false;
-    console.log('Catégorie sélectionnée :', category);
-  }
-
-  @HostListener('document:click', ['$event'])
-  closeDropdown(event: Event) {
-    const target = event.target as HTMLElement;
-    if (!target.closest('#dropdown-button') && !target.closest('#dropdown')) {
-      this.isDropdownOpen = false;
-    }
+  onSearchResults(results$: Observable<SearchResult>): void {
+    this.destinations$ = results$.pipe(
+      map((results: SearchResult) => results.destinations)
+    );
+    this.isSearchActive = true;
   }
 }

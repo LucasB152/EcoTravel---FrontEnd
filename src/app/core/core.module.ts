@@ -1,16 +1,20 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import {Destination} from './models/Destination';
-
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {SearchBarComponent} from '../features/search-bar/search-bar.component';
+import {FormsModule} from '@angular/forms';
 
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule
+  declarations: [
+    SearchBarComponent
   ],
   exports: [
-    Destination
+    SearchBarComponent
+  ],
+  imports: [
+    CommonModule,
+    FormsModule
   ]
 })
-export class CoreModule { }
+export class CoreModule {
+}
