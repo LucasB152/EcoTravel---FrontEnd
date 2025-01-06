@@ -29,11 +29,19 @@ export class DestinationDetailsComponent implements OnInit {
     this.destination$ = this.location.getDestinationDetails(destinationId);
     this.reviews$ = this.reviewService.getReviews(destinationId);
     this.myReview$ = this.reviews$.pipe(
+      //todo: ne pas prendre le premier mais plus celui qui a le meme userId que le user connecté
       map(reviews => reviews[0] || this.createEmptyReview())
     );
   }
 
-  toggleReviewForm(): void {
+
+  toggleReviewForm(event: any) {
+
+    if (event.isSubmit) {
+      console.log('submitReview: ', event);
+      //todo: créer ou modifier
+    }
+
     this.isReviewFormVisible = !this.isReviewFormVisible;
   }
 
@@ -43,6 +51,7 @@ export class DestinationDetailsComponent implements OnInit {
       score: 1,
       comment: '',
       edited: false,
+      userId: 0,
       username: '',
       dateStringCreation: '',
       dateStringModification: ''

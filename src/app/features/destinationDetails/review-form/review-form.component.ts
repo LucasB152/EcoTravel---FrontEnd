@@ -7,7 +7,7 @@ import {ReviewResponseDto} from '../../../core/models/ReviewResponseDto';
   styleUrl: './review-form.component.scss'
 })
 export class ReviewFormComponent implements OnInit {
-  @Output() closeForm = new EventEmitter<void>();
+  @Output() closeForm = new EventEmitter<any>();
 
   @Input() reviewOfDestination!: ReviewResponseDto;
 
@@ -20,17 +20,18 @@ export class ReviewFormComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.reviewOfDestination) {
+      console.log('reviewOfDestination: ', this.reviewOfDestination);
       this.rating = this.reviewOfDestination.score;
       this.comment = this.reviewOfDestination.comment;
     }
   }
 
   submitReview() {
-    this.closeForm.emit();
+    this.closeForm.emit({rating: this.rating, comment: this.comment, isSubmit: true});
   }
 
   cancel() {
-    this.closeForm.emit();
+    this.closeForm.emit({isSubmit: false});
   }
 
 }
