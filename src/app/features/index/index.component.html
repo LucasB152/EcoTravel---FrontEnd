@@ -1,4 +1,5 @@
-<div class="relative w-full h-80 bg-cover bg-center" style="background-image: url('https://www.elle.be/fr/wp-content/uploads/2018/05/eco-resorts.jpg');">
+<div class="relative w-full h-80 bg-cover bg-center"
+     style="background-image: url('https://www.elle.be/fr/wp-content/uploads/2018/05/eco-resorts.jpg');">
   <div class="absolute inset-0 flex items-center justify-center">
 
     <app-search-bar (searchResults)="onSearchResults($event)"></app-search-bar>
@@ -6,10 +7,10 @@
 </div>
 <div class="max-w-screen-xl mx-auto px-4 py-8">
 
-<!--  <app-map *ngIf="destinations$ | async as destinations" [destinations]="destinations"></app-map>-->
+    <app-map *ngIf="destinations$ | async as destinations" [destinations]="destinations"></app-map>
   <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-6 text-center">
-    Most Popular
+    {{ isSearchActive ? 'Search Results' : 'Most Popular' }}
   </h2>
-  <app-cards-list *ngIf="destinations$ | async as destinations" [destinations]="destinations"/>
+  <app-cards-list *ngIf="destinations$ | async as destinations" [destinations]="destinations"></app-cards-list>
+  <p *ngIf="(destinations$ | async)?.length === 0" class="text-center text-gray-500">No destinations found.</p>
 </div>
-

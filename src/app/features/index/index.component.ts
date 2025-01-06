@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {Destination} from '../../core/models/Destination';
-import {LocationService} from '../../core/services/location.service';
-import {forkJoin, Observable, switchMap} from 'rxjs';
-import {DestinationId} from '../../core/models/DestinationId';
+import {Observable} from 'rxjs';
+import {DestinationSearch} from '../../core/models/DestinationSearch';
+import {SearchResult} from '../../core/models/SearchResult';
+import {SearchService} from '../../core/services/search.service';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-index',
@@ -10,22 +11,23 @@ import {DestinationId} from '../../core/models/DestinationId';
   styleUrl: './index.component.scss'
 })
 export class IndexComponent implements OnInit {
-  destinations$!: Observable<Destination[]>;
 
-  constructor(private destinationService: LocationService) {
+  destinations$: Observable<DestinationSearch[]> = new Observable();
+  isSearchActive: boolean = false;
+
+  constructor(private searchService: SearchService) {
   }
 
   ngOnInit(): void {
+    this.destinations$ = this.searchService.searchDestinations('', [], '', 1, 3).pipe(
+      map((results: SearchResult) => results.destinations)
+    );
   }
 
-  onSearchResults(results$: Observable<DestinationId[]>): void {
+  onSearchResults(results$: Observable<SearchResult>): void {
     this.destinations$ = results$.pipe(
-      switchMap((destinationIds: DestinationId[]) => {
-        const destinationDetails$ = destinationIds.map((destinationId: DestinationId) =>
-          this.destinationService.getDestinationDetails(destinationId.destinationID)
-        );
-        return forkJoin(destinationDetails$);
-      })
+      map((results: SearchResult) => results.destinations)
     );
+    this.isSearchActive = true;
   }
 }

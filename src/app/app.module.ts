@@ -31,6 +31,7 @@ import { AdministratorManagementComponent } from './features/admin/administrator
 import { TagsManagementComponent } from './features/admin/tags-management/tags-management.component';
 import { ReportListComponent } from './features/admin/report-list/report-list.component';
 import {CoreModule} from './core/core.module';
+import {FeaturesModule} from './features/features.module';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import {CoreModule} from './core/core.module';
     RouterLinkActive,
     ReactiveFormsModule,
     FormsModule,
-    CoreModule
+    CoreModule,
+    FeaturesModule
   ],
   providers: [
     provideClientHydration(),

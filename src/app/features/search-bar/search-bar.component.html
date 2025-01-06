@@ -3,7 +3,7 @@
     <input
       type="text"
       placeholder="Search by title or description"
-      [(ngModel)]="criteria.query"
+      [(ngModel)]="query"
       class="w-full md:w-80 px-4 py-2 rounded-l-lg border-2 border-[#00a14b] focus:outline-none focus:border-[#00a14b]"
     />
     <button (click)="search()"
@@ -11,7 +11,7 @@
       Search
     </button>
   </div>
-  <select [(ngModel)]="criteria.type"
+  <select [(ngModel)]="type"
           class="h-10 border-2 border-[#00a14b] focus:outline-none focus:border-[#00a14b] text-[#00a14b] rounded-lg px-4 py-2 tracking-wider">
     <option value="">Both type</option>
     <option value="LODGING">Lodging</option>
@@ -29,7 +29,7 @@
     <div *ngIf="isTagsDropdownOpen"
          class="absolute mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
       <div class="p-3">
-        <label *ngFor="let tag of availableTags" class="block">
+        <label *ngFor="let tag of availableTags$ | async" class="block">
           <input
             type="checkbox"
             [value]="tag"
