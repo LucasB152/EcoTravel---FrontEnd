@@ -26,7 +26,6 @@ export class HostRequestListComponent implements OnInit {
         website: 'https://www.ecohosting.com',
         services: ['Web Hosting', 'Cloud Storage'],
         description: 'Demande pour héberger des sites éco-responsables.',
-        certifications: [],
         motivation: 'Je souhaite contribuer à un hébergement plus écologique.',
         terms: true
       },
@@ -40,7 +39,6 @@ export class HostRequestListComponent implements OnInit {
         website: 'https://www.greenhost.com',
         services: ['Web Hosting'],
         description: 'Une plateforme verte pour un avenir durable.',
-        certifications: [],
         motivation: 'Promouvoir des solutions cloud écologiques.',
         terms: true
       },
@@ -54,7 +52,6 @@ export class HostRequestListComponent implements OnInit {
         website: 'https://www.planethost.com',
         services: ['Cloud Storage'],
         description: 'Des services cloud respectueux de l’environnement.',
-        certifications: [],
         motivation: 'Soutenir la transition numérique durable.',
         terms: true
       }

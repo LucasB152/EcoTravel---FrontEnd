@@ -8,7 +8,6 @@ export interface Request {
   website?: string;
   services: string[];
   description: string;
-  certifications?: File[];
   motivation: string;
   terms: boolean;
 }

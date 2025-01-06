@@ -34,7 +34,7 @@
     <p><strong>Site web :</strong> <a [href]="selectedRequest.website" target="_blank">{{ selectedRequest.website }}</a></p>
     <p><strong>Services :</strong> {{ selectedRequest.services.join(', ') }}</p>
     <p><strong>Description :</strong> {{ selectedRequest.description }}</p>
-    <p><strong>Certifications :</strong> {{ selectedRequest.certifications || 'Aucune' }}</p>
+    <p><strong>Certifications :</strong> {{ selectedRequest.description || 'Aucune' }}</p>
     <p><strong>Motivation :</strong> {{ selectedRequest.motivation }}</p>
     <p><strong>Conditions acceptées :</strong> {{ selectedRequest.terms ? 'Oui' : 'Non' }}</p>
     <div class="mt-4 space-x-2">

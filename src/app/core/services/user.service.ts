@@ -55,4 +55,8 @@ export class UserService {
   promoteToAdmin(userId: string) {
     return this.http.put(`${environment.API_URL}/admin/${userId}/role/admin`, "");
   }
+
+  getUserId() {
+    return this.tokenService.getUserId();
+  }
 }
