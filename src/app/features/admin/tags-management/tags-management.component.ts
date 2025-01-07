@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {TagsService} from '../../../core/services/tags.service';
 import {Tag} from '../../../core/models/Tag';
+import {Observable, of} from 'rxjs';
 
 @Component({
   selector: 'app-tags-management',
@@ -8,7 +9,7 @@ import {Tag} from '../../../core/models/Tag';
   styleUrl: './tags-management.component.scss'
 })
 export class TagsManagementComponent implements OnInit {
-  tags: Tag[] = [];
+  tags$: Observable<Tag[]> = of([]);
   newTag: string = "";
 
   constructor(private tagsService: TagsService) {
@@ -19,29 +20,18 @@ export class TagsManagementComponent implements OnInit {
   }
 
   loadTags() {
-    this.tagsService.getTags().subscribe(
-      (data) => this.tags = data,
-      (error) => console.error('Erreur lors de la récupération des tags', error)
-    );
+    this.tags$ = this.tagsService.getTags();
   }
 
   addTag() {
     if (this.newTag.trim()) {
-      this.tagsService.addTag({"name": this.newTag.trim()}).subscribe(
-        (data) => {
-          this.tags = data;
-          this.newTag = '';
-        },
-        (error) => console.error('Erreur lors de l\'ajout du tag', error)
-      );
+      this.tags$ = this.tagsService.addTag({"name": this.newTag.trim()});
+      this.newTag = "";
     }
   }
 
   deleteTag(tagId: number) {
-    this.tagsService.deleteTag(tagId).subscribe(
-      (data) => this.tags = data,
-      (error) => console.error('Erreur lors de la suppression du tag', error)
-    );
+    this.tags$ = this.tagsService.deleteTag(tagId);
   }
 
 }

@@ -55,16 +55,10 @@ export class HostAccountRequestComponent implements OnInit {
     return this.services.controls.some(control => control.value === true);
   }
 
-  /**
-   * Méthode pour récupérer les services sélectionnés sous forme d'un tableau.
-   * Retourne ["LODGING"] si "Hébergement" est coché, ["ACTIVITY"] si "Activités" est coché,
-   * ou ["LODGING", "ACTIVITY"] si les deux sont cochés.
-   */
   private getSelectedServices(): string[] {
     const selectedServices: string[] = [];
     this.services.controls.forEach((control, index) => {
       if (control.value) {
-        // Traduction des services en anglais
         if (this.availableServices[index] === 'Hébergement') {
           selectedServices.push('LODGING');
         } else if (this.availableServices[index] === 'Activités') {
@@ -78,31 +72,51 @@ export class HostAccountRequestComponent implements OnInit {
   onFilesSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files) {
-      Array.from(input.files).forEach(file => {
-        if (file.type === 'application/pdf') {
-          this.certificationFiles.push(file);
+      const newFiles: File[] = Array.from(input.files);
+      let totalSize = this.certificationFiles.reduce((acc, file) => acc + file.size, 0);
+      let valid = true;
+
+      newFiles.forEach(file => {
+        if (file.type !== 'application/pdf') {
+          this.notificationService.showNotificationError('Le fichier doit être au format PDF');
+          valid = false;
+        } else if (file.size > 10 * 1024 * 1024) {
+          this.notificationService.showNotificationError(`Le fichier ${file.name} dépasse la taille maximale de 10 Mo`);
+          valid = false;
         } else {
-          this.notificationService.showNotificationError('Le fichier doit être un PDF');
+          totalSize += file.size;
         }
       });
+
+      if (valid && totalSize <= 10 * 1024 * 1024) {
+        this.certificationFiles.push(...newFiles.filter(file => file.type === 'application/pdf'));
+      } else if (totalSize > 10 * 1024 * 1024) {
+        this.notificationService.showNotificationError('La taille totale des fichiers dépasse 10 Mo');
+      }
     }
   }
 
   onSubmit(): void {
     if (!this.atLeastOneServiceSelected()) {
-      this.services.setErrors({noServiceSelected: true});
+      this.services.setErrors({ noServiceSelected: true });
     } else {
       this.services.setErrors(null);
     }
 
+    const totalFileSize = this.certificationFiles.reduce((acc, file) => acc + file.size, 0);
+
+    if (totalFileSize > 10 * 1024 * 1024) {
+      this.notificationService.showNotificationError('La taille totale des fichiers ne doit pas dépasser 10 Mo');
+      return;
+    }
+
     if (this.registerForm.valid) {
-      // Obtenir les services sélectionnés
       const selectedServices = this.getSelectedServices();
       console.log('Selected Services:', selectedServices);
 
       this.requestService.postRequest({
         ...this.registerForm.value,
-        services: selectedServices, // Ajout des services sélectionnés
+        services: selectedServices,
         userId: this.userService.getUserId()
       }).subscribe({
         next: (response) => {
@@ -114,8 +128,7 @@ export class HostAccountRequestComponent implements OnInit {
                 this.notificationService.showNotificationSuccess(response.Message);
               },
               error: (uploadError) => {
-                console.log(uploadError);
-                this.notificationService.showNotificationError("Échec du téléversement des fichiers...");
+                this.notificationService.showNotificationError(uploadError.Message);
               }
             });
           } else {

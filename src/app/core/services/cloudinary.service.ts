@@ -8,15 +8,14 @@ import { TokenService } from './token.service';
   providedIn: 'root',
 })
 export class CloudinaryService {
-  constructor(private http: HttpClient, private tokenService: TokenService) {}
+  constructor(private http: HttpClient) {}
 
   uploadFile(file: File, folderName: string): Observable<string> {
-    const id: string = this.tokenService.getUserId();
     const formData = new FormData();
     formData.append('file', file);
 
     return this.http.post(
-      `${environment.API_URL}${folderName}${id}`,
+      `${environment.API_URL}${folderName}`,
       formData,
       { responseType: 'text' }
     );
