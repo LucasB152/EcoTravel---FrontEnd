@@ -3,6 +3,8 @@ import {FormBuilder, FormGroup, Validators, FormArray} from '@angular/forms';
 import {RequestService} from '../../core/services/request.service';
 import {NotificationService} from '../../core/services/notification.service';
 import {UserService} from '../../core/services/user.service';
+import {CloudinaryService} from '../../core/services/cloudinary.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -12,14 +14,14 @@ import {UserService} from '../../core/services/user.service';
 export class HostAccountRequestComponent implements OnInit {
   registerForm!: FormGroup;
   certificationFiles: File[] = [];
-  availableServices = ['Hébergement', 'Activités'];
+  availableServices = ['Hébergement', 'Activités']; // Correspond aux deux services
 
-  constructor(private fb: FormBuilder, private userService: UserService, private requestService: RequestService, private notificationService: NotificationService) {
+  constructor(private fb: FormBuilder, private userService: UserService, private requestService: RequestService, private notificationService: NotificationService, private cloudinaryService: CloudinaryService, private router: Router) {
   }
 
   ngOnInit(): void {
     this.userService.user$.subscribe(response => {
-      if(response){
+      if (response) {
         this.registerForm = this.fb.group({
           fullName: [{value: `${response.firstName} ${response.lastName}`, disabled: true}, [Validators.required]],
           email: [{value: `${response.email}`, disabled: true}, [Validators.required, Validators.email]],
@@ -28,13 +30,13 @@ export class HostAccountRequestComponent implements OnInit {
           company: [''],
           identifier: [''],
           website: ['', Validators.pattern(/https?:\/\/[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/)],
-          services: this.fb.array([], Validators.required),
+          services: this.fb.array([], Validators.required), // Liste des services
           description: [''],
           certifications: [null],
           motivation: ['', Validators.required],
           terms: [false, Validators.requiredTrue]
         });
-        this.addServices();
+        this.addServices(); // Ajout des contrôles pour les services
       }
     });
   }
@@ -45,12 +47,32 @@ export class HostAccountRequestComponent implements OnInit {
 
   private addServices(): void {
     this.availableServices.forEach(() => {
-      this.services.push(this.fb.control(false));
+      this.services.push(this.fb.control(false)); // Chaque service commence décoché
     });
   }
 
   private atLeastOneServiceSelected(): boolean {
     return this.services.controls.some(control => control.value === true);
+  }
+
+  /**
+   * Méthode pour récupérer les services sélectionnés sous forme d'un tableau.
+   * Retourne ["LODGING"] si "Hébergement" est coché, ["ACTIVITY"] si "Activités" est coché,
+   * ou ["LODGING", "ACTIVITY"] si les deux sont cochés.
+   */
+  private getSelectedServices(): string[] {
+    const selectedServices: string[] = [];
+    this.services.controls.forEach((control, index) => {
+      if (control.value) {
+        // Traduction des services en anglais
+        if (this.availableServices[index] === 'Hébergement') {
+          selectedServices.push('LODGING');
+        } else if (this.availableServices[index] === 'Activités') {
+          selectedServices.push('ACTIVITY');
+        }
+      }
+    });
+    return selectedServices;
   }
 
   onFilesSelected(event: Event): void {
@@ -66,7 +88,6 @@ export class HostAccountRequestComponent implements OnInit {
     }
   }
 
-
   onSubmit(): void {
     if (!this.atLeastOneServiceSelected()) {
       this.services.setErrors({noServiceSelected: true});
@@ -75,28 +96,37 @@ export class HostAccountRequestComponent implements OnInit {
     }
 
     if (this.registerForm.valid) {
-      const formData = new FormData();
+      // Obtenir les services sélectionnés
+      const selectedServices = this.getSelectedServices();
+      console.log('Selected Services:', selectedServices);
 
-      Object.keys(this.registerForm.value).forEach(key => {
-        if (key === 'certifications') {
-          this.certificationFiles.forEach(file => {
-            formData.append('certifications', file, file.name);
-          });
-        } else {
-          formData.append(key, this.registerForm.get(key)?.value);
-        }
-      });
-
-      this.requestService.postRequest(formData).subscribe({
+      this.requestService.postRequest({
+        ...this.registerForm.value,
+        services: selectedServices, // Ajout des services sélectionnés
+        userId: this.userService.getUserId()
+      }).subscribe({
         next: (response) => {
-          this.notificationService.showNotificationSuccess(response.Message);
+          const requestId = response.requestId;
+          if (this.certificationFiles.length > 0) {
+            this.cloudinaryService.uploadFiles(this.certificationFiles, `/request/files/${requestId}`).subscribe({
+              next: (response) => {
+                this.router.navigateByUrl('/');
+                this.notificationService.showNotificationSuccess(response.Message);
+              },
+              error: (uploadError) => {
+                console.log(uploadError);
+                this.notificationService.showNotificationError("Échec du téléversement des fichiers...");
+              }
+            });
+          } else {
+            this.router.navigateByUrl('/');
+            this.notificationService.showNotificationSuccess(response.Message);
+          }
         },
         error: (error) => {
-          this.notificationService.showNotificationError(error)
+          this.notificationService.showNotificationError(error.error.message);
         }
       });
-    } else {
-      console.error('Formulaire invalide');
     }
   }
 }

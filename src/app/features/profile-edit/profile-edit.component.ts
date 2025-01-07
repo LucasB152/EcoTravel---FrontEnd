@@ -41,7 +41,8 @@ export class ProfileEditComponent implements OnInit {
   onUpdateBasicInfo(): void {
     if (this.basicInfoForm.valid) {
       if(this.selectedFile){
-        this.cloudinaryService.uploadImage(this.selectedFile).subscribe({
+        const id = this.userService.getUserId();
+        this.cloudinaryService.uploadFile(this.selectedFile, `/user/picture/${id}`).subscribe({
           next: (imageUrl) => {
             this.basicInfoForm.patchValue({profilePicturePath: imageUrl});
 
