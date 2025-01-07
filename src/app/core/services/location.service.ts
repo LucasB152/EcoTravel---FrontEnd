@@ -22,10 +22,6 @@ export class LocationService {
   }
 
   createNewDestination(destination: DestinationCreationDto) {
-    //TODO faire la conversion latitude longitude
-    console.log(destination);
-    console.log("je lance une requete api");
-    console.log(`${environment.API_URL}/destination`);
     return this.http.post<any>(`http://localhost:8081/api/destination/test`, destination);
 
   }

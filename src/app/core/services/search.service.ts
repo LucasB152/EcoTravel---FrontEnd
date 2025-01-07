@@ -1,9 +1,8 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {DestinationSearch} from '../models/DestinationSearch';
-import {SearchResult} from '../models/SearchResult';
 import {map} from 'rxjs/operators';
 
 @Injectable({
@@ -12,11 +11,9 @@ import {map} from 'rxjs/operators';
 
 export class SearchService {
   private baseUrl = `${environment.API_URL}/destination`;
+  private http = inject(HttpClient);
 
-  constructor(private http: HttpClient) {
-  }
-
-  searchDestinations(query?: string, tags?: string[], type?: string, page: number = 1, size: number = 10): Observable<SearchResult> {
+  getSearchDestinations(center:{lat:number; lng:number},query?: string, tags?: string[], type?: string, page: number = 1, size: number = 10): Observable<DestinationSearch[]> {
     let params = new HttpParams().set('page', page).set('size', size);
 
     if (query) {
@@ -31,16 +28,9 @@ export class SearchService {
       params = params.set('type', type);
     }
 
-
     return this.http.get(`${this.baseUrl}`, {params}).pipe(
       map((response: any) => {
-        return {
-          page: response.page,
-          size: response.size,
-          totalPages: response.totalPages,
-          totalResults: response.totalResults,
-          destinations: this.transformDestinations(response.content)
-        };
+        return this.transformDestinations(response.content);
       })
     );
   }

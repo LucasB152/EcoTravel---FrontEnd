@@ -1,8 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {SearchService} from '../../core/services/search.service';
 import {Observable} from 'rxjs';
 import {TagService} from '../../core/services/tag.service';
-import {SearchResult} from '../../core/models/SearchResult';
 import {map} from "rxjs/operators";
 
 @Component({
@@ -13,8 +11,7 @@ import {map} from "rxjs/operators";
 
 export class SearchBarComponent implements OnInit {
 
-//output pour l'index component
-    @Output() searchResults = new EventEmitter<Observable<SearchResult>>();
+    @Output() searchResults = new EventEmitter<any>();
 
     availableTags$: Observable<string[]> = new Observable();
     isTagsDropdownOpen: boolean = false;
@@ -23,7 +20,6 @@ export class SearchBarComponent implements OnInit {
     type: string = '';
 
     constructor(
-        private searchService: SearchService,
         private tagService: TagService
     ) {
     }
@@ -35,8 +31,7 @@ export class SearchBarComponent implements OnInit {
     }
 
     search(): void {
-        const results$ = this.searchService.searchDestinations(this.query, this.tags, this.type);
-        this.searchResults.emit(results$);
+      this.searchResults.emit({query: this.query, tags: this.tags, type: this.type});
     }
 
     toggleTag(tag: string, event: Event) {

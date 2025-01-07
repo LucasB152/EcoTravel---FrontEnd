@@ -1,16 +1,46 @@
-<div class="relative w-full h-80 bg-cover bg-center"
+<div class="relative w-full h-60 bg-cover bg-center"
      style="background-image: url('https://www.elle.be/fr/wp-content/uploads/2018/05/eco-resorts.jpg');">
   <div class="absolute inset-0 flex items-center justify-center">
 
     <app-search-bar (searchResults)="onSearchResults($event)"></app-search-bar>
   </div>
 </div>
-<div class="max-w-screen-xl mx-auto px-4 py-8">
+<div class="flex space-x-4 h-[40rem] w-full">
 
-    <app-map *ngIf="destinations$ | async as destinations" [destinations]="destinations"></app-map>
-  <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-6 text-center">
-    {{ isSearchActive ? 'Search Results' : 'Most Popular' }}
-  </h2>
-  <app-cards-list *ngIf="destinations$ | async as destinations" [destinations]="destinations"></app-cards-list>
-  <p *ngIf="(destinations$ | async)?.length === 0" class="text-center text-gray-500">No destinations found.</p>
+
+  <div class="h-full w-3/5">
+    <div class="divide-y h-full overflow-auto pr-4">
+      <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-6 text-center">
+        {{ isSearchActive ? 'Search Results' : 'Most Popular' }}
+      </h2>
+      @if ($destinations().length === 0) {
+        <p class="text-center text-gray-500">No destinations found.</p>
+      }
+      <div class="flex flex-col gap-6 sm:grid sm:grid-cols-2 lg:flex lg:flex-row lg:flex-wrap lg:justify-center">
+        @for (destination of $destinations(); track destination) {
+          <app-location-card [locationActivity]="destination"></app-location-card>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="w-2/5">
+    <div class="w-full h-full">
+      <google-map
+        mapId="1b9475db8c0f46f2"
+        height="100%"
+        width="100%"
+        [zoom]="zoom()"
+        [center]="center()">
+        @for (destination of $destinations(); track destination) {
+          <map-advanced-marker
+            #marker="mapAdvancedMarker"
+            (mapClick)="onMarkerClick(destination, marker)"
+            [position]="{lat: destination.latitude, lng: destination.longitude}"/>
+        }
+        <map-info-window></map-info-window>
+      </google-map>
+    </div>
+  </div>
+
 </div>

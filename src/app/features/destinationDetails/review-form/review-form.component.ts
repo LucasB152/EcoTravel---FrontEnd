@@ -22,7 +22,6 @@ export class ReviewFormComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.reviewOfDestination) {
-      console.log('reviewOfDestination: ', this.reviewOfDestination);
       this.id = this.reviewOfDestination.id;
       this.score = this.reviewOfDestination.score;
       this.comment = this.reviewOfDestination.comment;
