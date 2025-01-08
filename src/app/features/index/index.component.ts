@@ -1,33 +1,48 @@
-import {Component, OnInit} from '@angular/core';
-import {Observable} from 'rxjs';
-import {DestinationSearch} from '../../core/models/DestinationSearch';
-import {SearchResult} from '../../core/models/SearchResult';
+import {Component, inject, signal, WritableSignal, viewChild} from '@angular/core';
 import {SearchService} from '../../core/services/search.service';
-import {map} from 'rxjs/operators';
+import {DestinationSearch} from '../../core/models/DestinationSearch';
+import {MapAdvancedMarker, MapInfoWindow} from '@angular/google-maps';
 
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
   styleUrl: './index.component.scss'
 })
-export class IndexComponent implements OnInit {
-
-  destinations$: Observable<DestinationSearch[]> = new Observable();
+export class IndexComponent {
   isSearchActive: boolean = false;
 
-  constructor(private searchService: SearchService) {
+  infoWindowRef = viewChild.required(MapInfoWindow);
+  readonly #searchService = inject(SearchService);
+  center = signal<google.maps.LatLngLiteral>({lat: 50.636, lng: 5.573});
+  zoom = signal(10);
+
+  $destinations: WritableSignal<any[]> = signal([]);
+
+  constructor() {
+    this.loadDestinations("", [], "", 1, 3);
   }
 
-  ngOnInit(): void {
-    this.destinations$ = this.searchService.searchDestinations('', [], '', 1, 3).pipe(
-      map((results: SearchResult) => results.destinations)
-    );
-  }
-
-  onSearchResults(results$: Observable<SearchResult>): void {
-    this.destinations$ = results$.pipe(
-      map((results: SearchResult) => results.destinations)
-    );
+  onSearchResults(event: any): void {
     this.isSearchActive = true;
+    const {query, tags, type} = event;
+    this.loadDestinations(query, tags, type, 1, 20);
+  }
+
+  onMarkerClick(destination: DestinationSearch, marker: MapAdvancedMarker): void {
+    const content = `
+      <div>
+        <h1 class="font-bold text-xl">${destination.name}</h1>
+        <p>${destination.description}</p>
+      </div>
+    `;
+    this.infoWindowRef().open(marker, false, content);
+  }
+
+  private loadDestinations(query: string, tags: string[], type: string, page: number, size: number): void {
+    this.#searchService
+      .getSearchDestinations(this.center(), query, tags, type, page, size)
+      .subscribe((newDestinations) => {
+        this.$destinations.set(newDestinations);
+      });
   }
 }

@@ -12,22 +12,26 @@ export class ReviewFormComponent implements OnInit {
   @Input() reviewOfDestination!: ReviewResponseDto;
 
   stars = Array(5);
-  rating: number = 0;
+  id: number = 0;
+  score: number = 0;
   comment: string = '';
+  userId: number = 0;
 
   constructor() {
   }
 
   ngOnInit(): void {
     if (this.reviewOfDestination) {
-      console.log('reviewOfDestination: ', this.reviewOfDestination);
-      this.rating = this.reviewOfDestination.score;
+      this.id = this.reviewOfDestination.id;
+      this.score = this.reviewOfDestination.score;
       this.comment = this.reviewOfDestination.comment;
+      this.userId = this.reviewOfDestination.userId;
+
     }
   }
 
   submitReview() {
-    this.closeForm.emit({rating: this.rating, comment: this.comment, isSubmit: true});
+    this.closeForm.emit({id: this.id, score: this.score, comment: this.comment,userId: this.userId ,isSubmit: true});
   }
 
   cancel() {

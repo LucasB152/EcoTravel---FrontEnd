@@ -5,7 +5,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {GoogleMapsModule} from '@angular/google-maps';
-import { MapComponent } from './features/map/map.component';
 import { HeaderComponent } from './core/components/header/header.component';
 import {RouterLink, RouterLinkActive, RouterModule} from '@angular/router';
 import { IndexComponent } from './features/index/index.component';
@@ -36,7 +35,6 @@ import {FeaturesModule} from './features/features.module';
 @NgModule({
   declarations: [
     AppComponent,
-    MapComponent,
     HeaderComponent,
     IndexComponent,
     LocationCardComponent,

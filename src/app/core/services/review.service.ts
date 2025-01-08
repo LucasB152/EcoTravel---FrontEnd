@@ -2,6 +2,8 @@
 import {environment} from '../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {ReviewResponseDto} from '../models/ReviewResponseDto';
+import {ReviewCreationDto} from '../models/ReviewCreationDto';
+import {ReviewEditDto} from '../models/ReviewEditDto';
 
 
 @Injectable({
@@ -17,4 +19,13 @@ export class ReviewService {
   getReviews(destinationId: number) {
     return this.http.get<ReviewResponseDto[]>(`${this.baseUrl}/${destinationId}`);
   }
+
+  createReview(review: ReviewCreationDto) {
+    return this.http.post<ReviewCreationDto>(this.baseUrl, review);
+  }
+
+  updateReview(review: ReviewEditDto) {
+    return this.http.put<void>(this.baseUrl, review);
+  }
+
 }
