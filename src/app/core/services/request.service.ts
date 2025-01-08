@@ -15,7 +15,7 @@ export class RequestService {
     return this.http.get<Request[]>(`${environment.API_URL}/request`);
   }
 
-  postRequest(request: FormData): Observable<any> {
+  postRequest(request: Request): Observable<any> {
     return this.http.post(`${environment.API_URL}/request`, request);
   }
 

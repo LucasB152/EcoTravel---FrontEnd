@@ -27,13 +27,13 @@ export class HeaderComponent implements OnInit {
         this.userService.loadCurrentUser().subscribe();
       }
       this.isAdmin = this.authService.isAdmin();
-      this.showDropdownUser = false;  // Reset du menu utilisateur lors de la connexion
+      this.showDropdownUser = false;
       this.showDropdownAdmin = false;
     })
     this.userService.user$.subscribe(user => {
       if(user){
         this.user = user;
-        this.user.profilePicturePath = null ? user.profilePicturePath : "basic-profile-picture.webp";
+        this.user.profilePicturePath != null ? user.profilePicturePath : "basic-profile-picture.webp";
       }
     })
   }

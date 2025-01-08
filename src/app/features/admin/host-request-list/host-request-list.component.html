@@ -5,18 +5,18 @@
   <div *ngIf="!selectedRequest">
     <ul class="space-y-4">
       <li
-        *ngFor="let request of requests"
+        *ngFor="let request of requests$ | async"
         (click)="selectRequest(request)"
         class="p-4 border rounded shadow hover:bg-gray-100 cursor-pointer"
       >
         <div>
-          <strong>Nom :</strong> {{ request.fullName }}
+          <strong>Nom :</strong> {{ request.userFullName }}
         </div>
         <div>
           <strong>Email :</strong> {{ request.email }}
         </div>
         <div>
-          <strong>Statut :</strong> {{ request.status }}
+          <strong>Statut :</strong> {{ request.hostStatus }}
         </div>
       </li>
     </ul>
@@ -25,18 +25,30 @@
   <!-- Détails d'une demande -->
   <div *ngIf="selectedRequest" class="p-4 border rounded shadow">
     <h2 class="text-xl font-bold mb-4">Détails de la demande</h2>
-    <p><strong>Nom complet :</strong> {{ selectedRequest.fullName }}</p>
+    <p><strong>Nom complet :</strong> {{ selectedRequest.userFullName }}</p>
     <p><strong>Email :</strong> {{ selectedRequest.email }}</p>
-    <p><strong>Téléphone :</strong> {{ selectedRequest.phone }}</p>
-    <p><strong>Statut :</strong> {{ selectedRequest.status }}</p>
+    <p><strong>Téléphone :</strong> {{ selectedRequest.contactPhone }}</p>
+    <p><strong>Statut :</strong> {{ selectedRequest.hostStatus }}</p>
     <p><strong>Entreprise :</strong> {{ selectedRequest.company }}</p>
     <p><strong>Identifiant :</strong> {{ selectedRequest.identifier }}</p>
-    <p><strong>Site web :</strong> <a [href]="selectedRequest.website" target="_blank">{{ selectedRequest.website }}</a></p>
+    <p><strong>Site web :</strong> <a [href]="selectedRequest.websiteUrl">{{ selectedRequest.websiteUrl }}</a></p>
     <p><strong>Services :</strong> {{ selectedRequest.services.join(', ') }}</p>
     <p><strong>Description :</strong> {{ selectedRequest.description }}</p>
-    <p><strong>Certifications :</strong> {{ selectedRequest.certifications || 'Aucune' }}</p>
+    <p><strong>Certifications :</strong></p>
+    <div *ngIf="selectedRequest.files && selectedRequest.files.length > 0">
+      <ul>
+        <li *ngFor="let file of selectedRequest.files" class="flex items-center space-x-2">
+          <i class="fa-solid fa-file-pdf text-red-500"></i>
+          <a [href]="file" target="_blank" class="text-blue-500 underline hover:text-blue-700">
+            Voir le fichier
+          </a>
+        </li>
+      </ul>
+    </div>
+    <p *ngIf="!selectedRequest.files || selectedRequest.files.length === 0">
+      Aucune certification
+    </p>
     <p><strong>Motivation :</strong> {{ selectedRequest.motivation }}</p>
-    <p><strong>Conditions acceptées :</strong> {{ selectedRequest.terms ? 'Oui' : 'Non' }}</p>
     <div class="mt-4 space-x-2">
       <button
         (click)="updateStatus('Accepté')"

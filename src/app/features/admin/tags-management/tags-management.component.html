@@ -19,7 +19,7 @@
 
   <!-- Liste des Tags -->
   <ul class="bg-gray-100 p-4 rounded-md shadow-md">
-    <li *ngFor="let tag of tags" class="flex justify-between items-center mb-2">
+    <li *ngFor="let tag of tags$ | async" class="flex justify-between items-center mb-2">
       <span class="text-gray-800">{{ tag.name }}</span>
       <button *ngIf="tag.id"
               (click)="deleteTag(tag.id)"

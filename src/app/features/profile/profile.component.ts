@@ -21,7 +21,7 @@ export class ProfileComponent implements OnInit {
     this.userService.user$.subscribe(user => {
       if(user){
         this.user = user;
-        this.user.profilePicturePath = null ? user.profilePicturePath : "basic-profile-picture.webp";
+        this.user.profilePicturePath != null ? user.profilePicturePath : "basic-profile-picture.webp";
       }
     });
   }

@@ -3,6 +3,8 @@ import {FormBuilder, FormGroup, Validators, FormArray} from '@angular/forms';
 import {RequestService} from '../../core/services/request.service';
 import {NotificationService} from '../../core/services/notification.service';
 import {UserService} from '../../core/services/user.service';
+import {CloudinaryService} from '../../core/services/cloudinary.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -12,14 +14,14 @@ import {UserService} from '../../core/services/user.service';
 export class HostAccountRequestComponent implements OnInit {
   registerForm!: FormGroup;
   certificationFiles: File[] = [];
-  availableServices = ['Hébergement', 'Activités'];
+  availableServices = ['Hébergement', 'Activités']; // Correspond aux deux services
 
-  constructor(private fb: FormBuilder, private userService: UserService, private requestService: RequestService, private notificationService: NotificationService) {
+  constructor(private fb: FormBuilder, private userService: UserService, private requestService: RequestService, private notificationService: NotificationService, private cloudinaryService: CloudinaryService, private router: Router) {
   }
 
   ngOnInit(): void {
     this.userService.user$.subscribe(response => {
-      if(response){
+      if (response) {
         this.registerForm = this.fb.group({
           fullName: [{value: `${response.firstName} ${response.lastName}`, disabled: true}, [Validators.required]],
           email: [{value: `${response.email}`, disabled: true}, [Validators.required, Validators.email]],
@@ -28,13 +30,13 @@ export class HostAccountRequestComponent implements OnInit {
           company: [''],
           identifier: [''],
           website: ['', Validators.pattern(/https?:\/\/[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/)],
-          services: this.fb.array([], Validators.required),
+          services: this.fb.array([], Validators.required), // Liste des services
           description: [''],
           certifications: [null],
           motivation: ['', Validators.required],
           terms: [false, Validators.requiredTrue]
         });
-        this.addServices();
+        this.addServices(); // Ajout des contrôles pour les services
       }
     });
   }
@@ -45,7 +47,7 @@ export class HostAccountRequestComponent implements OnInit {
 
   private addServices(): void {
     this.availableServices.forEach(() => {
-      this.services.push(this.fb.control(false));
+      this.services.push(this.fb.control(false)); // Chaque service commence décoché
     });
   }
 
@@ -53,50 +55,91 @@ export class HostAccountRequestComponent implements OnInit {
     return this.services.controls.some(control => control.value === true);
   }
 
+  private getSelectedServices(): string[] {
+    const selectedServices: string[] = [];
+    this.services.controls.forEach((control, index) => {
+      if (control.value) {
+        if (this.availableServices[index] === 'Hébergement') {
+          selectedServices.push('LODGING');
+        } else if (this.availableServices[index] === 'Activités') {
+          selectedServices.push('ACTIVITY');
+        }
+      }
+    });
+    return selectedServices;
+  }
+
   onFilesSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files) {
-      Array.from(input.files).forEach(file => {
-        if (file.type === 'application/pdf') {
-          this.certificationFiles.push(file);
+      const newFiles: File[] = Array.from(input.files);
+      let totalSize = this.certificationFiles.reduce((acc, file) => acc + file.size, 0);
+      let valid = true;
+
+      newFiles.forEach(file => {
+        if (file.type !== 'application/pdf') {
+          this.notificationService.showNotificationError('Le fichier doit être au format PDF');
+          valid = false;
+        } else if (file.size > 10 * 1024 * 1024) {
+          this.notificationService.showNotificationError(`Le fichier ${file.name} dépasse la taille maximale de 10 Mo`);
+          valid = false;
         } else {
-          this.notificationService.showNotificationError('Le fichier doit être un PDF');
+          totalSize += file.size;
         }
       });
+
+      if (valid && totalSize <= 10 * 1024 * 1024) {
+        this.certificationFiles.push(...newFiles.filter(file => file.type === 'application/pdf'));
+      } else if (totalSize > 10 * 1024 * 1024) {
+        this.notificationService.showNotificationError('La taille totale des fichiers dépasse 10 Mo');
+      }
     }
   }
 
-
   onSubmit(): void {
     if (!this.atLeastOneServiceSelected()) {
-      this.services.setErrors({noServiceSelected: true});
+      this.services.setErrors({ noServiceSelected: true });
     } else {
       this.services.setErrors(null);
     }
 
+    const totalFileSize = this.certificationFiles.reduce((acc, file) => acc + file.size, 0);
+
+    if (totalFileSize > 10 * 1024 * 1024) {
+      this.notificationService.showNotificationError('La taille totale des fichiers ne doit pas dépasser 10 Mo');
+      return;
+    }
+
     if (this.registerForm.valid) {
-      const formData = new FormData();
+      const selectedServices = this.getSelectedServices();
+      console.log('Selected Services:', selectedServices);
 
-      Object.keys(this.registerForm.value).forEach(key => {
-        if (key === 'certifications') {
-          this.certificationFiles.forEach(file => {
-            formData.append('certifications', file, file.name);
-          });
-        } else {
-          formData.append(key, this.registerForm.get(key)?.value);
-        }
-      });
-
-      this.requestService.postRequest(formData).subscribe({
+      this.requestService.postRequest({
+        ...this.registerForm.value,
+        services: selectedServices,
+        userId: this.userService.getUserId()
+      }).subscribe({
         next: (response) => {
-          this.notificationService.showNotificationSuccess(response.Message);
+          const requestId = response.requestId;
+          if (this.certificationFiles.length > 0) {
+            this.cloudinaryService.uploadFiles(this.certificationFiles, `/request/files/${requestId}`).subscribe({
+              next: (response) => {
+                this.router.navigateByUrl('/');
+                this.notificationService.showNotificationSuccess(response.Message);
+              },
+              error: (uploadError) => {
+                this.notificationService.showNotificationError(uploadError.Message);
+              }
+            });
+          } else {
+            this.router.navigateByUrl('/');
+            this.notificationService.showNotificationSuccess(response.Message);
+          }
         },
         error: (error) => {
-          this.notificationService.showNotificationError(error)
+          this.notificationService.showNotificationError(error.error.message);
         }
       });
-    } else {
-      console.error('Formulaire invalide');
     }
   }
 }
