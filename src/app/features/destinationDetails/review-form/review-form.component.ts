@@ -15,13 +15,14 @@ export class ReviewFormComponent implements OnInit {
   id: number = 0;
   score: number = 0;
   comment: string = '';
-  userId: number = 0;
+  userId: string = '0';
 
   constructor() {
   }
 
   ngOnInit(): void {
     if (this.reviewOfDestination) {
+      console.log(this.reviewOfDestination);
       this.id = this.reviewOfDestination.id;
       this.score = this.reviewOfDestination.score;
       this.comment = this.reviewOfDestination.comment;
@@ -31,7 +32,7 @@ export class ReviewFormComponent implements OnInit {
   }
 
   submitReview() {
-    this.closeForm.emit({id: this.id, score: this.score, comment: this.comment,userId: this.userId ,isSubmit: true});
+    this.closeForm.emit({id: this.id, score: this.score, comment: this.comment, userId: this.userId, isSubmit: true});
   }
 
   cancel() {

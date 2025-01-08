@@ -36,13 +36,15 @@
     <div class="bg-gray-50 p-6 rounded-lg shadow-md">
       <div class="flex justify-between items-center">
         <h2 class="text-xl font-semibold text-gray-800">Avis clients</h2>
-        <button (click)="toggleReviewForm($event)" class="text-blue-600 hover:text-blue-800 font-semibold text-lg">Your
-          Review
-        </button>
+        @if (myId) {
+          <button (click)="showReviewForm()" class="text-blue-600 hover:text-blue-800 font-semibold text-lg">Your
+            Review
+          </button>
+        }
       </div>
-      <ng-container *ngIf="isReviewFormVisible">
 
-        <app-review-form *ngIf="myReview$ | async as reviewResponseDto" [reviewOfDestination]="reviewResponseDto"
+      <ng-container *ngIf="isReviewFormVisible">
+        <app-review-form *ngIf="reviewResponseDto" [reviewOfDestination]="reviewResponseDto"
                          (closeForm)="toggleReviewForm($event)"></app-review-form>
       </ng-container>
 
