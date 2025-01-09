@@ -1,34 +1,61 @@
-<div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-  <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-    <h2 class="text-2xl font-bold text-gray-900 mb-4">Ajouter à un itinéraire</h2>
+<div class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white w-96 rounded-lg shadow-lg p-6 relative">
+    <!-- Croix pour fermer le modal -->
+    <button
+      class="absolute top-2 right-2 text-gray-600 hover:text-gray-900"
+      (click)="closeModalHandler()"
+      aria-label="Fermer"
+    >
+      <span class="text-2xl">&times;</span>
+    </button>
 
-    <!-- Liste des itinéraires -->
-    <div class="space-y-4">
-      <div *ngFor="let itinerary of itineraries" class="flex justify-between items-center bg-gray-50 p-4 rounded-lg shadow">
-        <span class="text-gray-800 font-medium">{{ itinerary.name }}</span>
-        <button
-          class="text-green-600 hover:text-green-800 font-semibold"
+    <!-- Affichage principal -->
+    <ng-container *ngIf="!showCreateItineraryForm">
+      <h2 class="text-lg font-semibold mb-4">Choisissez un itinéraire</h2>
+      <ul class="space-y-2">
+        <li
+          *ngFor="let itinerary of itineraries$ | async"
           (click)="addToItinerary(itinerary.id)"
+          class="p-2 bg-gray-100 rounded-lg hover:bg-gray-200 cursor-pointer"
         >
-          Ajouter
-        </button>
-      </div>
-
-      <!-- Option pour créer un nouvel itinéraire -->
+          {{ itinerary.title }}
+        </li>
+      </ul>
       <button
-        class="w-full text-blue-600 hover:text-blue-800 font-semibold mt-4 py-2 border border-blue-600 rounded-lg"
+        class="mt-4 w-full bg-[#00a14b] hover:bg-[#008f44] text-white font-semibold py-2 rounded-lg"
         (click)="createNewItinerary()"
       >
         Créer un nouvel itinéraire
       </button>
-    </div>
+      <button
+        class="mt-2 w-full bg-gray-300 hover:bg-gray-400 text-gray-700 font-semibold py-2 rounded-lg"
+        (click)="closeModalHandler()"
+      >
+        Fermer
+      </button>
+    </ng-container>
 
-    <!-- Bouton fermer -->
-    <button
-      class="absolute top-2 right-2 text-gray-600 hover:text-gray-800 text-lg font-semibold"
-      (click)="closeModalHandler()"
-    >
-      &times;
-    </button>
+    <!-- Formulaire de création d'itinéraire -->
+    <ng-container *ngIf="showCreateItineraryForm">
+      <h2 class="text-lg font-semibold mb-4">Créer un nouvel itinéraire</h2>
+      <input
+        type="text"
+        [(ngModel)]="newItineraryName"
+        placeholder="Nom de l'itinéraire"
+        class="w-full p-2 border border-gray-300 rounded-lg mb-4 focus:ring focus:ring-blue-200"
+      />
+      <button
+        class="w-full bg-[#00a14b] hover:bg-[#008f44] text-white font-semibold py-2 rounded-lg"
+        (click)="saveNewItinerary()"
+      >
+        Enregistrer
+      </button>
+      <button
+        class="mt-2 w-full bg-gray-300 hover:bg-gray-400 text-gray-700 font-semibold py-2 rounded-lg"
+        (click)="cancelCreateItinerary()"
+      >
+        Annuler
+      </button>
+    </ng-container>
   </div>
 </div>
