@@ -27,19 +27,11 @@
         <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
           <li>
             <a routerLink="/"
-               class="block py-1 px-3 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-200 lg:border-0 hover:text-primary-700 lg:p-0 rounded transition">Home</a>
-          </li>
-          <li>
-            <a href="#"
-               class="block py-1 px-3 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-200 lg:border-0 hover:text-primary-700 lg:p-0 rounded transition">Accommodations</a>
-          </li>
-          <li>
-            <a href="#"
-               class="block py-1 px-3 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-200 lg:border-0 hover:text-primary-700 lg:p-0 rounded transition">Activities</a>
+               class="block py-1 px-3 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-200 lg:border-0 hover:text-primary-700 lg:p-0 rounded transition">Accueil</a>
           </li>
 
           <!-- Menu admin -->
-          <ng-container *ngIf="isAdmin">
+          <ng-container *ngIf="isAdmin == true">
             <li class="relative">
               <button id="dropdownNavbarLinkAdmin" (click)="toggleAdminDropdown()"
                       class="flex items-center justify-between w-full py-2 px-3 text-gray-700 rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:p-0 md:w-auto">
@@ -76,14 +68,13 @@
               <!-- Menu déroulant utilisateur -->
               <div *ngIf="showDropdownUser" id="dropdownNavbar" class="absolute right-0 z-50 font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 mt-2">
                 <ul class="py-2 text-sm text-gray-700">
-                  <li><a routerLink="/profile" class="block px-4 py-2 hover:bg-gray-200">My profile</a></li>
-                  <li><a href="#" class="block px-4 py-2 hover:bg-gray-200">My routes</a></li>
-                  <li><a href="#" class="block px-4 py-2 hover:bg-gray-200">My accommodations</a></li>
-                  <li><a href="#" class="block px-4 py-2 hover:bg-gray-200">My activities</a></li>
+                  <li><a routerLink="/profile" class="block px-4 py-2 hover:bg-gray-200">Mon profil</a></li>
+                  <li><a href="#" class="block px-4 py-2 hover:bg-gray-200">Mes itinéraires</a></li>
+                  <li *ngIf="isHost"><a href="#" class="block px-4 py-2 hover:bg-gray-200">Mes destinations</a></li>
                 </ul>
                 <div class="py-1 flex">
                   <button (click)="onLogout()" class="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-200 transition">
-                    Logout
+                    Se déconnecter
                   </button>
                 </div>
               </div>

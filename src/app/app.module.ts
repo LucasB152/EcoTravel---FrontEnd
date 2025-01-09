@@ -31,6 +31,7 @@ import { TagsManagementComponent } from './features/admin/tags-management/tags-m
 import { ReportListComponent } from './features/admin/report-list/report-list.component';
 import {CoreModule} from './core/core.module';
 import {FeaturesModule} from './features/features.module';
+import { ItineraryModalComponent } from './features/destinationDetails/itinerary-modal/itinerary-modal.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import {FeaturesModule} from './features/features.module';
     HostRequestListComponent,
     AdministratorManagementComponent,
     TagsManagementComponent,
-    ReportListComponent
+    ReportListComponent,
+    ItineraryModalComponent
   ],
   imports: [
     BrowserModule,
