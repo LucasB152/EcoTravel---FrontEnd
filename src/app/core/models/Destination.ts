@@ -4,7 +4,7 @@
  * !!! ATTENTION version temporaire et a completer (type, tags et images peuvent changer) !!!
  */
 export interface Destination {
-  destinationID: number;
+  destinationID: string;
   name: string;
   description: string;
   price: string;

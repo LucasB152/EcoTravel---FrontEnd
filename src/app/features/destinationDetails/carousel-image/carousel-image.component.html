@@ -19,7 +19,7 @@
   <!-- Indicateur de position (points) -->
   <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
     <span *ngFor="let image of images; let i = index"
-          [class.bg-blue-500]="i === currentIndex"
+          [class.bg-[#008f44]]="i === currentIndex"
           [class.bg-gray-300]="i !== currentIndex"
           class="w-3 h-3 rounded-full transition-colors duration-300 cursor-pointer"
           (click)="goToImage(i)">
