@@ -51,13 +51,13 @@
     <p><strong>Motivation :</strong> {{ selectedRequest.motivation }}</p>
     <div class="mt-4 space-x-2">
       <button
-        (click)="updateStatus('Accepté')"
+        (click)="openAcceptModal()"
         class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
       >
         Accepter
       </button>
       <button
-        (click)="updateStatus('Refusé')"
+        (click)="openRejectModal()"
         class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
       >
         Refuser
@@ -68,6 +68,58 @@
       >
         Retour
       </button>
+    </div>
+  </div>
+
+  <!-- Modal pour Accepter -->
+  <div *ngIf="showAcceptModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white p-6 rounded shadow-lg w-96">
+      <h3 class="text-xl font-bold mb-4">Confirmer l'acceptation</h3>
+      <p>Êtes-vous sûr de vouloir accepter cette demande ?</p>
+      <div class="mt-4 flex justify-end space-x-2">
+        <button
+          (click)="confirmAccept()"
+          class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+        >
+          Confirmer
+        </button>
+        <button
+          (click)="closeModal()"
+          class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+        >
+          Annuler
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal pour Refuser -->
+  <div *ngIf="showRejectModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white p-6 rounded shadow-lg w-96">
+      <h3 class="text-xl font-bold mb-4">Motif du refus</h3>
+      <textarea
+        [(ngModel)]="rejectReason"
+        placeholder="Expliquez la raison du refus"
+        class="w-full p-2 border rounded focus:outline-none focus:ring focus:ring-blue-300"
+        rows="4"
+      ></textarea>
+      <p *ngIf="!rejectReason.trim()" class="text-red-500 text-sm mt-2">
+        La raison du refus est obligatoire.
+      </p>
+      <div class="mt-4 flex justify-end space-x-2">
+        <button
+          (click)="confirmReject()"
+          class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+        >
+          Refuser
+        </button>
+        <button
+          (click)="closeModal()"
+          class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+        >
+          Annuler
+        </button>
+      </div>
     </div>
   </div>
 </div>

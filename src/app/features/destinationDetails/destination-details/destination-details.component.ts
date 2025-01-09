@@ -7,6 +7,7 @@ import {ReviewService} from '../../../core/services/review.service';
 import {ReviewResponseDto} from '../../../core/models/ReviewResponseDto';
 import {map} from 'rxjs/operators';
 import {ReviewEditDto} from '../../../core/models/ReviewEditDto';
+import {UserService} from '../../../core/services/user.service';
 
 @Component({
   selector: 'app-destination-details',
@@ -18,10 +19,13 @@ export class DestinationDetailsComponent implements OnInit {
   reviews$!: Observable<ReviewResponseDto[]>;
   myReview$!: Observable<ReviewResponseDto>;
   isReviewFormVisible: boolean = false;
+  isItineraryModalVisible: boolean = false;
+  selectedDestination: any;
 
   constructor(public route: ActivatedRoute,
               private location: LocationService,
-              private reviewService: ReviewService
+              private reviewService: ReviewService,
+              private userService: UserService,
   ) {
   }
 
@@ -33,6 +37,7 @@ export class DestinationDetailsComponent implements OnInit {
       //todo: ne pas prendre le premier mais plus celui qui a le meme userId que le user connecté
       map(reviews => reviews[0] || this.createEmptyReview())
     );
+    console.log(`Id : ${this.userService.getUserId()}`)
   }
 
 
@@ -71,6 +76,16 @@ export class DestinationDetailsComponent implements OnInit {
       dateStringCreation: '',
       dateStringModification: ''
     };
+  }
+
+  openItineraryModal(destination: any): void {
+    this.selectedDestination = destination;
+    this.isItineraryModalVisible = true;
+  }
+
+  closeItineraryModal(): void {
+    this.isItineraryModalVisible = false;
+    this.selectedDestination = null;
   }
 
 }

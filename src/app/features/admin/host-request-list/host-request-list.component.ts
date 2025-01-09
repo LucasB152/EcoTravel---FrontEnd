@@ -11,6 +11,9 @@ import {Observable, of} from 'rxjs';
 export class HostRequestListComponent implements OnInit {
   requests$: Observable<Request[]> = of([]);
   selectedRequest: Request | null = null;
+  showAcceptModal: boolean = false;
+  showRejectModal: boolean = false;
+  rejectReason: string = '';
 
   constructor(private requestService: RequestService) {
   }
@@ -23,20 +26,45 @@ export class HostRequestListComponent implements OnInit {
     this.selectedRequest = request;
   }
 
-  updateStatus(status: string) {
+  updateStatus(status: string, message: string) {
     if (this.selectedRequest) {
-      const id = this.selectedRequest.identifier || ''; // Remplacez par le champ identifiant unique
-      this.requestService.updateRequestStatus(id, status).subscribe(
+      const id = this.selectedRequest.id || '';
+      //this.requests$ = this.requestService.updateRequestStatus(id, status, message);
+      this.requestService.updateRequestStatus(id, status, message).subscribe(
         () => {
-          this.selectedRequest!.hostStatus = status; // Met à jour localement
-          this.selectedRequest = null; // Retour à la liste
+          this.selectedRequest!.hostStatus = status;
+          this.selectedRequest = null;
         },
         (error) => {
           console.error('Erreur lors de la mise à jour du statut :', error);
         }
       );
     }
+    this.closeModal();
   }
 
 
+  openAcceptModal() {
+    this.showAcceptModal = true;
+  }
+
+  openRejectModal() {
+    this.showRejectModal = true;
+  }
+
+  confirmAccept() {
+    this.updateStatus("ACCEPTED", "Votre demande de compte hébergeur a été accepté");
+  }
+
+  confirmReject() {
+    if(!this.rejectReason.trim()) {
+      return;
+    }
+    this.updateStatus("DECLINED", this.rejectReason);
+  }
+
+  closeModal() {
+    this.showAcceptModal = false;
+    this.showRejectModal = false;
+  }
 }
