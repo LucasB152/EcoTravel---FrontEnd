@@ -32,6 +32,7 @@ import { ReportListComponent } from './features/admin/report-list/report-list.co
 import {CoreModule} from './core/core.module';
 import {FeaturesModule} from './features/features.module';
 import { ItineraryModalComponent } from './features/destinationDetails/itinerary-modal/itinerary-modal.component';
+import { EmailVerificationComponent } from './features/email-verification/email-verification.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { ItineraryModalComponent } from './features/destinationDetails/itinerary
     AdministratorManagementComponent,
     TagsManagementComponent,
     ReportListComponent,
-    ItineraryModalComponent
+    ItineraryModalComponent,
+    EmailVerificationComponent
   ],
   imports: [
     BrowserModule,

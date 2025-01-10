@@ -14,12 +14,14 @@ import {AdministratorManagementComponent} from './features/admin/administrator-m
 import {TagsManagementComponent} from './features/admin/tags-management/tags-management.component';
 import {ReportListComponent} from './features/admin/report-list/report-list.component';
 import {DestinationCreationComponent} from './features/destination-creation/destination-creation.component';
+import {EmailVerificationComponent} from './features/email-verification/email-verification.component';
 
 export const routes: Routes = [
   { path: '', component: IndexComponent },
   { path: 'destination/:id', component: DestinationDetailsComponent },
   { path: 'login', component: LoginComponent, canActivate: [LoggedInGuard] },
-  { path: 'register', component: RegisterComponent, canActivate: [LoggedInGuard]  },
+  { path: 'register', component: RegisterComponent, canActivate: [LoggedInGuard]},
+  { path: 'verify-email/:token', component: EmailVerificationComponent, canActivate: [LoggedInGuard] },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'create-destination', component: DestinationCreationComponent },
   { path: 'profile-edit', component: ProfileEditComponent, canActivate: [AuthGuard] },

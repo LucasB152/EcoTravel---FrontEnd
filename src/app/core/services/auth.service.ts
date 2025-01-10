@@ -32,6 +32,10 @@ export class AuthService {
     );
   }
 
+  verifyEmail(token: any): Observable<any> {
+    return this.http.post<any>(`${environment.API_URL}/auth/verify-email`, { token });
+  }
+
   isAuthenticated(): boolean {
     return this.tokenService.hasToken();
   }
