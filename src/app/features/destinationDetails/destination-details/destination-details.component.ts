@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {LocationService} from '../../../core/services/location.service';
 import {ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs';
+import {Observable, shareReplay} from 'rxjs';
 import {Destination} from '../../../core/models/Destination';
 import {ReviewService} from '../../../core/services/review.service';
 import {ReviewResponseDto} from '../../../core/models/ReviewResponseDto';
@@ -17,29 +17,25 @@ import {UserService} from '../../../core/services/user.service';
 export class DestinationDetailsComponent implements OnInit {
   destination$!: Observable<Destination>;
   reviews$!: Observable<ReviewResponseDto[]>;
-  myReview$!: Observable<ReviewResponseDto>;
   isReviewFormVisible: boolean = false;
+  myId: string | undefined;
+  reviewResponseDto!: ReviewResponseDto;
   isItineraryModalVisible: boolean = false;
   selectedDestination: any;
 
   constructor(public route: ActivatedRoute,
               private location: LocationService,
               private reviewService: ReviewService,
-              private userService: UserService,
+              private userService: UserService
   ) {
   }
 
   ngOnInit(): void {
     const destinationId: number = this.route.snapshot.params['id'];
     this.destination$ = this.location.getDestinationDetails(destinationId);
-    this.reviews$ = this.reviewService.getReviews(destinationId);
-    this.myReview$ = this.reviews$.pipe(
-      //todo: ne pas prendre le premier mais plus celui qui a le meme userId que le user connecté
-      map(reviews => reviews[0] || this.createEmptyReview())
-    );
-    console.log(`Id : ${this.userService.getUserId()}`)
+    this.reviews$ = this.reviewService.getReviews(destinationId).pipe(shareReplay(1));
+    this.myId = this.userService.getUserId();
   }
-
 
   toggleReviewForm(event: any) {
     if (event.isSubmit) {
@@ -51,6 +47,7 @@ export class DestinationDetailsComponent implements OnInit {
           destinationId: this.route.snapshot.params['id']
         };
         this.reviewService.createReview(reviewCreationDto).subscribe(() => {
+          this.reviews$ = this.reviewService.getReviews(this.route.snapshot.params['id']).pipe(shareReplay(1));
         });
       } else {
         const reviewEditDto: ReviewEditDto = {
@@ -59,23 +56,35 @@ export class DestinationDetailsComponent implements OnInit {
           comment: event.comment
         };
         this.reviewService.updateReview(reviewEditDto).subscribe(() => {
+          this.reviews$ = this.reviewService.getReviews(this.route.snapshot.params['id']).pipe(shareReplay(1));
         });
       }
     }
     this.isReviewFormVisible = !this.isReviewFormVisible;
   }
 
-  protected createEmptyReview(): ReviewResponseDto {
-    return {
-      id: 0,
-      score: 1,
-      comment: '',
-      edited: false,
-      userId: 0,
-      username: '',
-      dateStringCreation: '',
-      dateStringModification: ''
-    };
+  showReviewForm() {
+    this.isReviewFormVisible = true;
+    this.createMyReview().subscribe(reviewResponseDto => {
+      this.reviewResponseDto = reviewResponseDto;
+    });
+  }
+
+  createMyReview(): Observable<ReviewResponseDto> {
+    return this.reviews$.pipe(
+      map(reviews => {
+        return reviews.find(review => review.userId === this.myId) || {
+          id: 0,
+          score: 1,
+          comment: '',
+          edited: false,
+          userId: this.userService.getUserId(),
+          username: '',
+          dateStringCreation: '',
+          dateStringModification: ''
+        }
+      })
+    );
   }
 
   openItineraryModal(destination: any): void {

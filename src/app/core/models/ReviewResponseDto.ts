@@ -3,7 +3,7 @@
   score: number;
   comment: string;
   edited: boolean;
-  userId: number;
+  userId: string;
   username: string;
   dateStringCreation: string;
   dateStringModification: string;

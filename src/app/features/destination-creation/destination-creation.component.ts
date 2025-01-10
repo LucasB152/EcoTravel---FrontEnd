@@ -67,12 +67,19 @@ export class DestinationCreationComponent {
       this.destinationForm.value.description!,
       this.destinationForm.value.price!,
       this.destinationForm.value.capacity!,
+      true,
       this.destinationForm.value.contactPhone!,
       this.destinationForm.value.contactEmail!,
-      this.destinationForm.value.isVisible!,
+      this.destinationForm.value.type!,
+      0,
       address
     );
 
+    console.log("HAAAA adress: " );
+    console.log(address);
+    console.log("HAAAA creation: " + destination);
+
+    console.log(destination);
     this.destinationService.createNewDestination(destination);
   }
 }
