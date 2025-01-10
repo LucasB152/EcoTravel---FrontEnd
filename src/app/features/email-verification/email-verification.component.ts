@@ -30,6 +30,9 @@ export class EmailVerificationComponent implements OnInit {
             this.router.navigateByUrl("/");
           }
         });
+      }else{
+        this.notificationService.showNotificationError("Token manquant");
+        this.router.navigateByUrl("/");
       }
     })
   }

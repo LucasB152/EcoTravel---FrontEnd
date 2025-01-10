@@ -4,6 +4,7 @@ import {AuthService} from '../../core/services/auth.service';
 import {Users} from '../../core/models/Users';
 import {NotificationService} from '../../core/services/notification.service';
 import {Router} from '@angular/router';
+import {LoadingService} from '../../core/services/loading.service';
 
 @Component({
   selector: 'app-register',
@@ -13,7 +14,11 @@ import {Router} from '@angular/router';
 export class RegisterComponent {
   registerForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private notificationService: NotificationService, private router: Router) {
+  constructor(private fb: FormBuilder,
+              private authService: AuthService,
+              private notificationService: NotificationService,
+              private router: Router,
+              private loadingService: LoadingService) {
     this.registerForm = this.fb.group({
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
@@ -36,13 +41,16 @@ export class RegisterComponent {
   }
 
   onSubmit() {
+    this.loadingService.show();
     if (this.registerForm.valid) {
       this.authService.register(this.registerForm.value).subscribe({
         next: (response) => {
+          this.loadingService.hide();
           this.router.navigateByUrl("/");
           this.notificationService.showNotificationSuccess(response.Message);
         },
         error: (error) => {
+          this.loadingService.hide();
           this.notificationService.showNotificationError(error.error.message);
         }
       })
