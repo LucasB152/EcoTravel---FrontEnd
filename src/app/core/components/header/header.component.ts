@@ -14,6 +14,7 @@ export class HeaderComponent implements OnInit {
   isLoggedIn!: boolean;
   user!: Users;
   isAdmin: boolean = false;
+  isHost: boolean = false;
   showDropdownAdmin: boolean = false;
   showDropdownUser: boolean = false;
 
@@ -27,6 +28,7 @@ export class HeaderComponent implements OnInit {
         this.userService.loadCurrentUser().subscribe();
       }
       this.isAdmin = this.authService.isAdmin();
+      this.isHost = this.userService.getUserRole() === "HOST";
       this.showDropdownUser = false;
       this.showDropdownAdmin = false;
     })

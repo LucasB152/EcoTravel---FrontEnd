@@ -20,6 +20,8 @@ export class DestinationDetailsComponent implements OnInit {
   isReviewFormVisible: boolean = false;
   myId: string | undefined;
   reviewResponseDto!: ReviewResponseDto;
+  isItineraryModalVisible: boolean = false;
+  selectedDestination: any;
 
   constructor(public route: ActivatedRoute,
               private location: LocationService,
@@ -83,6 +85,16 @@ export class DestinationDetailsComponent implements OnInit {
         }
       })
     );
+  }
+
+  openItineraryModal(destination: any): void {
+    this.selectedDestination = destination;
+    this.isItineraryModalVisible = true;
+  }
+
+  closeItineraryModal(): void {
+    this.isItineraryModalVisible = false;
+    this.selectedDestination = null;
   }
 
 }
