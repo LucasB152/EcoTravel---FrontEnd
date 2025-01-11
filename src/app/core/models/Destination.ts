@@ -14,6 +14,6 @@ export interface Destination {
   images: string[];
   destinationType: string;
   address: string;
-  tag: string[];
+  tags: string[];
   visible: boolean;
 }

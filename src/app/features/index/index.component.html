@@ -1,4 +1,4 @@
-<div class="relative w-full h-60 bg-cover bg-center"
+<div class="relative w-full h-52 bg-cover bg-center"
      style="background-image: url('https://www.elle.be/fr/wp-content/uploads/2018/05/eco-resorts.jpg');">
   <div class="absolute inset-0 flex items-center justify-center">
 
@@ -14,7 +14,7 @@
         <p class="text-center text-gray-500">No destinations found.</p>
       }
 
-      <div class="flex flex-wrap gap-4 flex-1 justify-center h-[40rem] ">
+      <div class="flex flex-wrap gap-4 flex-1 justify-center">
         @for (destination of $destinations(); track destination) {
           <app-location-card [locationActivity]="destination" class="w-80 h-96 "></app-location-card>
         }
@@ -40,118 +40,3 @@
     </div>
   </div>
 </div>
-
-
-
-
-
-
-<!--&lt;!&ndash; Hero Section &ndash;&gt;-->
-<!--<div class="relative bg-cover bg-center h-[50vh] sm:h-[60vh]" style="background-image: url('https://www.elle.be/fr/wp-content/uploads/2018/05/eco-resorts.jpg');">-->
-<!--  <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">-->
-<!--    <div class="w-11/12 max-w-2xl">-->
-<!--      <app-search-bar (searchResults)="onSearchResults($event)"></app-search-bar>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
-
-<!--&lt;!&ndash; Main Content &ndash;&gt;-->
-<!--<div class="container mx-auto px-4 py-8">-->
-<!--  <div class="flex flex-col lg:flex-row gap-8">-->
-<!--    &lt;!&ndash; Map Section &ndash;&gt;-->
-
-<!--    &lt;!&ndash; List of Cards &ndash;&gt;-->
-<!--    <div class="w-full">-->
-<!--      &lt;!&ndash; Title &ndash;&gt;-->
-<!--      <h1 class="text-2xl font-bold text-gray-800 text-center sm:text-left mb-6">-->
-<!--        {{ isSearchActive ? 'Search Results' : 'Most Popular' }}-->
-<!--      </h1>-->
-
-<!--      @if ($destinations().length === 0) {-->
-<!--        <p class="text-center text-gray-600">No destinations found.</p>-->
-<!--      }-->
-
-<!--      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">-->
-<!--        @for (destination of $destinations(); track destination) {-->
-<!--          <app-location-card [locationActivity]="destination"-->
-<!--                             class="w-auto h-20" ></app-location-card>-->
-<!--        }-->
-<!--      </div>-->
-<!--    </div>-->
-
-
-<!--    <div class="rounded-lg shadow-md overflow-hidden w-full">-->
-<!--      <google-map-->
-<!--        mapId="1b9475db8c0f46f2"-->
-<!--        class="w-full h-[40vh] sm:h-[60vh]"-->
-<!--        [zoom]="zoom()"-->
-<!--        [center]="center()">-->
-<!--        @for (destination of $destinations(); track destination) {-->
-<!--          <map-advanced-marker-->
-<!--            #marker="mapAdvancedMarker"-->
-<!--            (mapClick)="onMarkerClick(destination, marker)"-->
-<!--            [position]="{lat: destination.latitude, lng: destination.longitude}"/>-->
-<!--        }-->
-<!--        <map-info-window></map-info-window>-->
-<!--      </google-map>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
-
-
-
-
-
-
-
-
-
-<!--<div-->
-<!--  class=" bg-white border border-gray-200 rounded-lg shadow max-w-md h-full"-->
-<!--&gt;-->
-<!--  <div class="flex flex-col pb-3">-->
-<!--    &lt;!&ndash; Conteneur pour l'image &ndash;&gt;-->
-<!--    <div class="w-full h-1/2 overflow-hidden">-->
-<!--      <img-->
-<!--        class="w-full h-full object-fill rounded-t-lg"-->
-<!--        [src]="locationActivity.images[0]"-->
-<!--        [alt]="locationActivity.name"-->
-<!--      />-->
-<!--    </div>-->
-
-<!--    &lt;!&ndash; Contenu de la carte &ndash;&gt;-->
-<!--    <div class="p-5 flex-grow flex flex-col justify-between">-->
-<!--      &lt;!&ndash; Titre de la carte &ndash;&gt;-->
-<!--      <h5 class="text-lg font-bold text-gray-900">-->
-<!--        {{ locationActivity.name }}-->
-<!--      </h5>-->
-
-<!--      &lt;!&ndash; Description de la carte &ndash;&gt;-->
-<!--      <p class="text-sm text-gray-700 overflow-hidden text-ellipsis">-->
-<!--        {{ locationActivity.description }}-->
-<!--      </p>-->
-
-<!--      &lt;!&ndash; Bouton &ndash;&gt;-->
-<!--      <button-->
-<!--        (click)="onContinue(locationActivity.destinationID)"-->
-<!--        class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-[#00a14b] rounded-lg hover:bg-green-700 mt-4"-->
-<!--      >-->
-<!--        See detail-->
-<!--        <svg-->
-<!--          class="w-3.5 h-3.5 ms-2 rtl:rotate-180"-->
-<!--          xmlns="http://www.w3.org/2000/svg"-->
-<!--          fill="none"-->
-<!--          viewBox="0 0 14 10"-->
-<!--        >-->
-<!--          <path-->
-<!--            stroke="currentColor"-->
-<!--            stroke-linecap="round"-->
-<!--            stroke-linejoin="round"-->
-<!--            stroke-width="2"-->
-<!--            d="M1 5h12m0 0L9 1m4 4L9 9"-->
-<!--          />-->
-<!--        </svg>-->
-<!--      </button>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
