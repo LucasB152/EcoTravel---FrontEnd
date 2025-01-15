@@ -15,6 +15,8 @@ import {TagsManagementComponent} from './features/admin/tags-management/tags-man
 import {ReportListComponent} from './features/admin/report-list/report-list.component';
 import {DestinationCreationComponent} from './features/destination-creation/destination-creation.component';
 import {EmailVerificationComponent} from './features/email-verification/email-verification.component';
+import {ItineraryModalComponent} from './features/destinationDetails/itinerary-modal/itinerary-modal.component';
+import {ItineraryDetailsComponent} from './features/itinerary-details/itinerary-details.component';
 
 export const routes: Routes = [
   { path: '', component: IndexComponent },
@@ -30,4 +32,5 @@ export const routes: Routes = [
   { path: 'administrators-management', component: AdministratorManagementComponent, canActivate: [RoleGuard], data: { roles: ['ADMIN'] } },
   { path: 'tags-management', component: TagsManagementComponent, canActivate: [RoleGuard], data: { roles: ['ADMIN'] } },
   { path: 'reports', component: ReportListComponent, canActivate: [RoleGuard], data: { roles: ['ADMIN'] } },
+  { path: 'itinerary/:id', component: ItineraryDetailsComponent, canActivate: [AuthGuard] },
 ];
