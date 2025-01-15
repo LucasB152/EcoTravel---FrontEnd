@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, signal} from '@angular/core';
 import {finalize, Observable} from 'rxjs';
 import {Itinerary} from '../../core/models/Itinerary';
 import {ItineraryService} from '../../core/services/itinerary.service';
@@ -15,6 +15,15 @@ export class ItineraryDetailsComponent implements OnInit {
   itineraryId!: string;
   itinerary$: Observable<Itinerary> | undefined;
 
+  //Map state
+  center = signal<google.maps.LatLngLiteral>({
+    lat: this.itinerary.steps.length > 0 ? this.itinerary.steps[0].destination.address.latitude : 50.636,
+    lng: this.itinerary.steps.length > 0 ? this.itinerary.steps[0].destination.address.longitude : 5.573
+  });
+  zoom = signal(8);
+
+
+  // Modals state
   showDeleteItineraryModal = false;
   showDeleteStepModal = false;
   showEditTitleModal = false;
@@ -93,4 +102,29 @@ export class ItineraryDetailsComponent implements OnInit {
   goToDestination(id: string) {
     this.router.navigateByUrl(`/destination/${id}`);
   }
+
+
+  createBluePin(step: any): HTMLElement {
+    const pin = document.createElement('div');
+    pin.style.width = '30px';
+    pin.style.height = '30px';
+    pin.style.backgroundColor = `rgb(${step.orderSequence * 40}, ${255 - step.orderSequence * 30}, 0)`;
+    pin.style.border = '2px solid #FFFFFF';
+    pin.style.borderRadius = '50%';
+    pin.style.boxShadow = '0 2px 6px rgba(0,0,0,0.3)';
+
+    const glyph = document.createElement('div');
+    glyph.textContent = step.orderSequence.toString();
+    glyph.style.color = '#FFFFFF';
+    glyph.style.fontSize = '16px';
+    glyph.style.fontWeight = 'bold';
+    glyph.style.display = 'flex';
+    glyph.style.alignItems = 'center';
+    glyph.style.justifyContent = 'center';
+    glyph.style.height = '100%';
+
+    pin.appendChild(glyph);
+    return pin;
+  }
+
 }
