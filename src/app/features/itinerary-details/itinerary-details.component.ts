@@ -1,81 +1,79 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {finalize, Observable} from 'rxjs';
+import {Itinerary} from '../../core/models/Itinerary';
+import {ItineraryService} from '../../core/services/itinerary.service';
+import {LoadingService} from '../../core/services/loading.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {NotificationService} from '../../core/services/notification.service';
 
 @Component({
   selector: 'app-itinerary-details',
   templateUrl: './itinerary-details.component.html',
   styleUrls: ['./itinerary-details.component.scss'],
 })
-export class ItineraryDetailsComponent {
-  itinerary = {
-    "id": "72e4a604-eeb4-4c39-a036-2355327cf528",
-    "title": "Test 2",
-    "steps": [
-      {
-        "id": "1617121c-c596-4fad-adf1-c7437cea6a86",
-        "orderSequence": 1,
-        "destination": {
-          "id": "26f993e4-c515-11ef-8468-00505689127d",
-          "name": "kabane7",
-          "destinationType": {
-            "id": 1,
-            "type": "LODGING"
-          },
-          "address": {
-            "id": "26b1eaa4-c515-11ef-8468-00505689127d",
-            "country": "Belgium",
-            "location": "Sprimont",
-            "street": "Rue du Hollu",
-            "number": "64",
-            "zipcode": "4798",
-            "longitude": 5.6388344,
-            "latitude": 50.4820702
-          }
-        }
-      }
-    ],
-    "distance": 0
-  };
+export class ItineraryDetailsComponent implements OnInit {
+  itineraryId!: string;
+  itinerary$: Observable<Itinerary> | undefined;
 
-  // Modals state
   showDeleteItineraryModal = false;
   showDeleteStepModal = false;
   showEditTitleModal = false;
 
-  selectedStepIndex: number | null = null;
+  selectedStepId: string | null = null;
   newTitle = '';
 
-  // Actions
+  constructor(private itineraryService: ItineraryService,
+              private loadingService: LoadingService,
+              private activatedRoute: ActivatedRoute,
+              private router: Router,
+              private notificationService: NotificationService) {
+  }
+
+
+  ngOnInit(): void {
+    this.loadingService.show();
+    this.activatedRoute.paramMap.subscribe((params) => {
+      this.itineraryId = params.get('id')!;
+      if (this.itineraryId != null) {
+        this.itinerary$ = this.itineraryService.getItinerary(this.itineraryId)
+          .pipe(finalize(() => {
+            this.loadingService.hide();
+          }))
+      }
+    });
+  }
+
   openDeleteItineraryModal() {
     this.showDeleteItineraryModal = true;
   }
 
   confirmDeleteItinerary() {
-    alert('Itinéraire supprimé');
+    this.itineraryService.deleteItinerary(this.itineraryId);
     this.showDeleteItineraryModal = false;
+    this.router.navigateByUrl("/profile");
   }
 
-  openDeleteStepModal(index: number) {
-    this.selectedStepIndex = index;
+  openDeleteStepModal(stepId: string) {
+    this.selectedStepId = stepId;
     this.showDeleteStepModal = true;
   }
 
   confirmDeleteStep() {
-    if (this.selectedStepIndex !== null) {
-      this.itinerary.steps.splice(this.selectedStepIndex, 1);
-      alert('Étape supprimée');
-    }
-    this.showDeleteStepModal = false;
+    this.itinerary$ = this.itineraryService.deleteStepFromItinerary(this.itineraryId, this.selectedStepId!);
+    this.closeModals();
   }
 
   openEditTitleModal() {
-    this.newTitle = this.itinerary.title;
     this.showEditTitleModal = true;
   }
 
   confirmEditTitle() {
-    this.itinerary.title = this.newTitle;
-    alert('Titre modifié');
-    this.showEditTitleModal = false;
+    if (this.newTitle.trim()) {
+      this.itinerary$ = this.itineraryService.changeItineraryName(this.itineraryId, this.newTitle);
+    } else {
+      this.notificationService.showNotificationError("Le nom de l'itinéraire ne peut pas être vide");
+    }
+    this.closeModals();
   }
 
   closeModals() {
@@ -84,15 +82,15 @@ export class ItineraryDetailsComponent {
     this.showEditTitleModal = false;
   }
 
-  moveStepUp(i: number) {
-
+  moveStepUp(stepId: string) {
+    this.itinerary$ = this.itineraryService.moveStepUp(stepId, this.itineraryId);
   }
 
-  moveStepDown(i: number) {
-
+  moveStepDown(stepId: string) {
+    this.itinerary$ = this.itineraryService.moveStepDown(stepId, this.itineraryId);
   }
 
   goToDestination(id: string) {
-
+    this.router.navigateByUrl(`/destination/${id}`);
   }
 }
