@@ -14,7 +14,7 @@ export class IndexComponent {
   infoWindowRef = viewChild.required(MapInfoWindow);
   readonly #searchService = inject(SearchService);
   center = signal<google.maps.LatLngLiteral>({lat: 50.636, lng: 5.573});
-  zoom = signal(10);
+  zoom = signal(8);
 
   $destinations: WritableSignal<any[]> = signal([]);
 

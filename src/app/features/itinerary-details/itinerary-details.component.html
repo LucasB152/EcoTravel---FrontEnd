@@ -17,6 +17,41 @@
     Distance totale : {{ itinerary.distance }} km
   </p>
 
+  <div class="flex justify-center m-2">
+  <div class="lg:w-1/2 w-full h-96 origin-center  snap-center content-center ">
+    <div class="w-full h-full">
+      <google-map
+        mapId="1b9475db8c0f46f2"
+        height="100%"
+        width="100%"
+        [zoom]="zoom()"
+        [center]="center()"
+        [options]="{
+          disableDefaultUI: true,
+          zoomControl: true,
+          fullscreenControl: true,
+          streetViewControl: true,
+          mapTypeControl: true,
+          scaleControl: true,
+          rotateControl: true,
+          gestureHandling: 'greedy'
+        }"
+      >
+        @for (step of itinerary.steps; track step) {
+          <map-advanced-marker
+            [position]="{
+            lat: step.destination.address.latitude,
+            lng: step.destination.address.longitude
+          }"
+            [content]="createBluePin(step)"
+          ></map-advanced-marker>
+        }
+      </google-map>
+    </div>
+  </div>
+  </div>
+
+
   <!-- Liste des étapes -->
   <div *ngFor="let step of itinerary.steps; let i = index" class="mb-4">
     <div
@@ -29,7 +64,8 @@
           <p class="font-semibold">Destination : {{ step.destination.name }}</p>
           <p class="text-gray-600 text-sm">
             ({{ step.destination.address.street }} {{ step.destination.address.number }},
-            {{step.destination.address.zipcode}} {{ step.destination.address.location }}, {{ step.destination.address.country }})
+            {{ step.destination.address.zipcode }} {{ step.destination.address.location }}
+            , {{ step.destination.address.country }})
           </p>
         </div>
         <p class="text-gray-500 text-sm mt-1">
