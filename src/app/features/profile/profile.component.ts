@@ -4,9 +4,11 @@ import {Users} from '../../core/models/Users';
 import {UserService} from '../../core/services/user.service';
 import {AuthService} from '../../core/services/auth.service';
 import {NotificationService} from '../../core/services/notification.service';
-import {Observable, of} from 'rxjs';
+import {finalize, Observable, of} from 'rxjs';
 import {Itinerary} from '../../core/models/Itinerary';
 import {ItineraryService} from '../../core/services/itinerary.service';
+import {LoadingService} from '../../core/services/loading.service';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-profile',
@@ -22,17 +24,21 @@ export class ProfileComponent implements OnInit {
               private authService: AuthService,
               private notificationService: NotificationService,
               private userService: UserService,
-              private itineraryService: ItineraryService) {
+              private itineraryService: ItineraryService,
+              private loadingService: LoadingService) {
   }
 
   ngOnInit(): void {
+    this.loadingService.show();
     this.userService.user$.subscribe(user => {
       if (user) {
         this.user = user;
         this.user.profilePicturePath != null ? user.profilePicturePath : "basic-profile-picture.webp";
       }
     });
-    this.myItinerary$ = this.itineraryService.getItinerariesFromUser();
+    this.myItinerary$ = this.itineraryService.getItinerariesFromUser().pipe(finalize(() => {
+      this.loadingService.hide();
+    }));
   }
 
   openConfirmationModal() {
@@ -40,7 +46,10 @@ export class ProfileComponent implements OnInit {
   }
 
   deleteAccount() {
-    this.userService.deleteUser().subscribe(
+    this.loadingService.show();
+    this.userService.deleteUser().pipe(finalize(() => {
+      this.loadingService.hide();
+    })).subscribe(
       response => {
         this.notificationService.showNotificationSuccess(response.Message);
       }
@@ -51,5 +60,9 @@ export class ProfileComponent implements OnInit {
 
   closeModal() {
     this.isModalOpen = false;
+  }
+
+  onSeeItineraryDetails(itineraryId: string){
+    this.router.navigateByUrl(`/itinerary/${itineraryId}`);
   }
 }

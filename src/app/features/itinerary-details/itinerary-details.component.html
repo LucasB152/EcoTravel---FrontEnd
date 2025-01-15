@@ -1,0 +1,199 @@
+<div class="container mx-auto p-4">
+  <!-- Titre de l'itinéraire -->
+  <div class="flex flex-col items-center mb-6">
+    <div class="flex items-center gap-4">
+      <h1 class="text-2xl font-bold text-center">{{ itinerary.title }}</h1>
+      <button
+        (click)="openEditTitleModal()"
+        class="bg-gray-300 text-gray-700 w-8 h-8 flex items-center justify-center rounded hover:bg-gray-400"
+      >
+        <i class="fa-solid fa-pencil"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Distance totale de l'itinéraire -->
+  <p class="text-center text-lg font-semibold text-gray-600 mb-6">
+    Distance totale : {{ itinerary.distance }} km
+  </p>
+
+  <div class="flex justify-center m-2">
+  <div class="lg:w-1/2 w-full h-96 origin-center  snap-center content-center ">
+    <div class="w-full h-full">
+      <google-map
+        mapId="1b9475db8c0f46f2"
+        height="100%"
+        width="100%"
+        [zoom]="zoom()"
+        [center]="center()"
+        [options]="{
+          disableDefaultUI: true,
+          zoomControl: true,
+          fullscreenControl: true,
+          streetViewControl: true,
+          mapTypeControl: true,
+          scaleControl: true,
+          rotateControl: true,
+          gestureHandling: 'greedy'
+        }"
+      >
+        @for (step of itinerary.steps; track step) {
+          <map-advanced-marker
+            [position]="{
+            lat: step.destination.address.latitude,
+            lng: step.destination.address.longitude
+          }"
+            [content]="createBluePin(step)"
+          ></map-advanced-marker>
+        }
+      </google-map>
+    </div>
+  </div>
+  </div>
+
+
+  <!-- Liste des étapes -->
+  <div *ngFor="let step of itinerary.steps; let i = index" class="mb-4">
+    <div
+      class="bg-gray-100 p-4 rounded shadow flex flex-col md:flex-row md:justify-between md:items-center gap-4"
+    >
+      <!-- Détails de l'étape -->
+      <div class="flex-1">
+        <p class="font-bold mb-1">Étape {{ step.orderSequence }}</p>
+        <div class="flex flex-col sm:flex-row sm:items-center sm:gap-2">
+          <p class="font-semibold">Destination : {{ step.destination.name }}</p>
+          <p class="text-gray-600 text-sm">
+            ({{ step.destination.address.street }} {{ step.destination.address.number }},
+            {{ step.destination.address.zipcode }} {{ step.destination.address.location }}
+            , {{ step.destination.address.country }})
+          </p>
+        </div>
+        <p class="text-gray-500 text-sm mt-1">
+          Type : {{ step.destination.destinationType.type }}
+        </p>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex gap-2 flex-wrap">
+        <!-- Boutons Monter/Descendre -->
+        <button
+          (click)="moveStepUp(i)"
+          class="bg-gray-300 text-gray-700 px-3 py-1 rounded hover:bg-gray-400"
+        >
+          <i class="fa-solid fa-chevron-up"></i>
+        </button>
+        <button
+          (click)="moveStepDown(i)"
+          class="bg-gray-300 text-gray-700 px-3 py-1 rounded hover:bg-gray-400"
+        >
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+
+        <!-- Bouton Supprimer -->
+        <button
+          (click)="openDeleteStepModal(i)"
+          class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+        >
+          <i class="fas fa-trash"></i>
+        </button>
+
+        <!-- Bouton Afficher la destination -->
+        <button
+          (click)="goToDestination(step.destination.id)"
+          class="bg-[#00a14b] text-white px-4 py-2 rounded hover:bg-[#008f44]"
+        >
+          Afficher la destination
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bouton Supprimer l'itinéraire -->
+  <div class="mt-8">
+    <button
+      (click)="openDeleteItineraryModal()"
+      class="w-full bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+    >
+      Supprimer l'itinéraire <i class="fas fa-trash"></i>
+    </button>
+  </div>
+
+  <!-- Modals -->
+  <!-- Modal Suppression Itinéraire -->
+  <div
+    *ngIf="showDeleteItineraryModal"
+    class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center p-4"
+  >
+    <div class="bg-white p-6 rounded shadow-lg max-w-lg w-full">
+      <p class="mb-4 text-lg">Voulez-vous vraiment supprimer cet itinéraire ?</p>
+      <div class="flex justify-end gap-4">
+        <button
+          (click)="closeModals()"
+          class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
+        >
+          Annuler
+        </button>
+        <button
+          (click)="confirmDeleteItinerary()"
+          class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+        >
+          Confirmer
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Suppression Étape -->
+  <div
+    *ngIf="showDeleteStepModal"
+    class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center p-4"
+  >
+    <div class="bg-white p-6 rounded shadow-lg max-w-lg w-full">
+      <p class="mb-4 text-lg">Voulez-vous vraiment supprimer cette étape ?</p>
+      <div class="flex justify-end gap-4">
+        <button
+          (click)="closeModals()"
+          class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
+        >
+          Annuler
+        </button>
+        <button
+          (click)="confirmDeleteStep()"
+          class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+        >
+          Confirmer
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Modification Titre -->
+  <div
+    *ngIf="showEditTitleModal"
+    class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center p-4"
+  >
+    <div class="bg-white p-6 rounded shadow-lg max-w-lg w-full">
+      <p class="mb-4 text-lg">Modifier le titre de l'itinéraire</p>
+      <input
+        type="text"
+        [(ngModel)]="newTitle"
+        class="w-full mb-4 border border-gray-300 rounded px-3 py-2"
+        placeholder="Nouveau titre"
+      />
+      <div class="flex justify-end gap-4">
+        <button
+          (click)="closeModals()"
+          class="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
+        >
+          Annuler
+        </button>
+        <button
+          (click)="confirmEditTitle()"
+          class="bg-[#00a14b] text-white px-4 py-2 rounded hover:bg-[#008f44]"
+        >
+          Enregistrer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

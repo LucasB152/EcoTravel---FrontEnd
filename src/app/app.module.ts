@@ -33,6 +33,7 @@ import {CoreModule} from './core/core.module';
 import {FeaturesModule} from './features/features.module';
 import { ItineraryModalComponent } from './features/destinationDetails/itinerary-modal/itinerary-modal.component';
 import { EmailVerificationComponent } from './features/email-verification/email-verification.component';
+import { ItineraryDetailsComponent } from './features/itinerary-details/itinerary-details.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { EmailVerificationComponent } from './features/email-verification/email-
     TagsManagementComponent,
     ReportListComponent,
     ItineraryModalComponent,
-    EmailVerificationComponent
+    EmailVerificationComponent,
+    ItineraryDetailsComponent
   ],
   imports: [
     BrowserModule,

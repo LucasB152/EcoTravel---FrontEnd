@@ -67,10 +67,35 @@
         <div class="px-6 py-4 flex items-center justify-center"> <!-- flex + items-center pour le centrage vertical -->
           <button
             class="bg-[#00a14b] text-white font-bold py-2 px-4 rounded hover:bg-[#008f44] focus:outline-none"
+            (click)="onSeeItineraryDetails(itinerary.id)"
           >
             Voir l'itinéraire <i class="fa-solid fa-arrow-right"></i>
           </button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pop-up de confirmation -->
+  <div
+    *ngIf="isModalOpen"
+    class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50"
+  >
+    <div class="bg-white p-6 rounded-lg w-1/3">
+      <h2 class="text-xl font-semibold mb-4">Êtes-vous sûr de vouloir supprimer votre compte ?</h2>
+      <div class="flex justify-end gap-4">
+        <button
+          (click)="deleteAccount()"
+          class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+        >
+          Oui, supprimer
+        </button>
+        <button
+          (click)="closeModal()"
+          class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400"
+        >
+          Annuler
+        </button>
       </div>
     </div>
   </div>

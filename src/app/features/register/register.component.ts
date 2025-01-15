@@ -5,6 +5,7 @@ import {Users} from '../../core/models/Users';
 import {NotificationService} from '../../core/services/notification.service';
 import {Router} from '@angular/router';
 import {LoadingService} from '../../core/services/loading.service';
+import {finalize} from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -43,14 +44,15 @@ export class RegisterComponent {
   onSubmit() {
     this.loadingService.show();
     if (this.registerForm.valid) {
-      this.authService.register(this.registerForm.value).subscribe({
-        next: (response) => {
+      this.authService.register(this.registerForm.value)
+        .pipe(finalize(() => {
           this.loadingService.hide();
+        })).subscribe({
+        next: (response) => {
           this.router.navigateByUrl("/");
           this.notificationService.showNotificationSuccess(response.Message);
         },
         error: (error) => {
-          this.loadingService.hide();
           this.notificationService.showNotificationError(error.error.message);
         }
       })
