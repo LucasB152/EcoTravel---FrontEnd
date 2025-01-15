@@ -1,30 +1,27 @@
-<div class="relative w-full h-60 bg-cover bg-center"
+<div class="relative w-full h-52 bg-cover bg-center"
      style="background-image: url('https://www.elle.be/fr/wp-content/uploads/2018/05/eco-resorts.jpg');">
   <div class="absolute inset-0 flex items-center justify-center">
 
     <app-search-bar (searchResults)="onSearchResults($event)"></app-search-bar>
   </div>
 </div>
-<div class="flex space-x-4 h-[40rem] w-full">
-
-
-  <div class="h-full w-3/5">
-    <div class="divide-y h-full overflow-auto pr-4">
+<div class="flex flex-wrap lg:flex-nowrap gap-4 ">
+    <div class=" flex-1">
       <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-6 text-center">
         {{ isSearchActive ? 'Search Results' : 'Most Popular' }}
       </h2>
       @if ($destinations().length === 0) {
         <p class="text-center text-gray-500">No destinations found.</p>
       }
-      <div class="flex flex-col gap-6 sm:grid sm:grid-cols-2 lg:flex lg:flex-row lg:flex-wrap lg:justify-center">
+
+      <div class="flex flex-wrap gap-4 flex-1 justify-center">
         @for (destination of $destinations(); track destination) {
-          <app-location-card [locationActivity]="destination"></app-location-card>
+          <app-location-card [locationActivity]="destination" class="w-80 h-96 "></app-location-card>
         }
       </div>
-    </div>
   </div>
 
-  <div class="w-2/5">
+  <div class="w-full lg:w-1/3 h-96  bg-gray-300 rounded shadow-md m-2 ">
     <div class="w-full h-full">
       <google-map
         mapId="1b9475db8c0f46f2"

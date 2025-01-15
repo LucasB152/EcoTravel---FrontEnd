@@ -1,48 +1,59 @@
-<div
-  class="max-w-md w-full bg-white border border-gray-200 rounded-lg shadow mx-auto flex flex-col"
-  style="width: 350px; height: 500px;"
->
-  <!-- Conteneur pour l'image -->
-  <div class="w-full h-1/2 overflow-hidden">
-    <img
-      class="w-full h-full object-fill rounded-t-lg"
-      [src]="locationActivity.images[0]"
-      [alt]="locationActivity.name"
-    />
+<div (click)="onContinue(locationActivity.destinationID)"
+     class="block rounded-lg p-4 shadow-sm shadow-neutral-500 cursor-pointer h-full">
+  <img
+    alt=""
+    [src]="locationActivity.images[0]"
+    class="h-48 w-full rounded-md object-cover"
+  />
+
+  <div class="mt-2 ">
+    <dl>
+      <div>
+        <dt class="sr-only">NAME</dt>
+
+        <dd class="font-bold ">
+          {{ locationActivity.name }}
+        </dd>
+      </div>
+    </dl>
+
+    <div class="mt-5 flex items-center gap-8 text-xs">
+      <p class="line-clamp-2 text-sm text-gray-700 ">
+        {{ locationActivity.description }}
+      </p>
+    </div>
   </div>
 
-  <!-- Contenu de la carte -->
-  <div class="p-5 flex-grow flex flex-col justify-between">
-    <!-- Titre de la carte -->
-    <h5 class="text-lg font-bold text-gray-900">
-      {{ locationActivity.name }}
-    </h5>
-
-    <!-- Description de la carte -->
-    <p class="text-sm text-gray-700 overflow-hidden text-ellipsis">
-      {{ locationActivity.description }}
-    </p>
-
-    <!-- Bouton -->
-    <button
-      (click)="onContinue(locationActivity.destinationID)"
-      class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-[#00a14b] rounded-lg hover:bg-green-700 mt-4"
+  <button
+    (click)="onContinue(locationActivity.destinationID)"
+    class=" inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-[#00a14b] rounded-lg hover:bg-green-700 mt-4"
+  >
+    See detail
+    <svg
+      class="w-3.5 h-3.5 ms-2 rtl:rotate-180"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 14 10"
     >
-      See detail
-      <svg
-        class="w-3.5 h-3.5 ms-2 rtl:rotate-180"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 14 10"
-      >
-        <path
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M1 5h12m0 0L9 1m4 4L9 9"
-        />
-      </svg>
-    </button>
-  </div>
+      <path
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M1 5h12m0 0L9 1m4 4L9 9"
+      />
+    </svg>
+  </button>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+

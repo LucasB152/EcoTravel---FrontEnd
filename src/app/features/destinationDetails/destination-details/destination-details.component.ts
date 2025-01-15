@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {LocationService} from '../../../core/services/location.service';
 import {ActivatedRoute} from '@angular/router';
-import {Observable, shareReplay} from 'rxjs';
+import {BehaviorSubject, Observable, shareReplay, switchMap} from 'rxjs';
 import {Destination} from '../../../core/models/Destination';
 import {ReviewService} from '../../../core/services/review.service';
 import {ReviewResponseDto} from '../../../core/models/ReviewResponseDto';
@@ -17,37 +17,62 @@ import {UserService} from '../../../core/services/user.service';
 export class DestinationDetailsComponent implements OnInit {
   destination$!: Observable<Destination>;
   reviews$!: Observable<ReviewResponseDto[]>;
+  myReview$!: Observable<ReviewResponseDto>;
+  averageRating$!: Observable<number>;
   isReviewFormVisible: boolean = false;
   myId: string | undefined;
-  reviewResponseDto!: ReviewResponseDto;
   isItineraryModalVisible: boolean = false;
-  selectedDestination: any;
+  selectedDestination: Destination | null = null;
+
+  private reviewsSubject = new BehaviorSubject<void>(undefined); // Permet de rafraîchir les données de revues.
+
 
   constructor(public route: ActivatedRoute,
-              private location: LocationService,
+              private locationService: LocationService,
               private reviewService: ReviewService,
               private userService: UserService
   ) {
   }
 
   ngOnInit(): void {
-    const destinationId: number = this.route.snapshot.params['id'];
-    this.destination$ = this.location.getDestinationDetails(destinationId);
-    this.reviews$ = this.reviewService.getReviews(destinationId).pipe(shareReplay(1));
+    const destinationId = this.route.snapshot.params['id'];
     this.myId = this.userService.getUserId();
+
+    this.destination$ = this.locationService.getDestinationDetails(destinationId).pipe(shareReplay(1));
+
+
+    this.reviews$ = this.reviewsSubject.pipe(
+      switchMap(() => this.reviewService.getReviews(destinationId)),
+      shareReplay(1)
+    );
+
+    this.myReview$ = this.reviews$.pipe(
+      map(reviews => reviews.find(review => review.userId === this.myId) || this.createDefaultReview())
+    );
+
+    this.averageRating$ = this.reviews$.pipe(
+      map(reviews => {
+        const total = reviews.reduce((sum, review) => sum + review.score, 0);
+        return reviews.length > 0 ? total / reviews.length : 0;
+      })
+    );
+
   }
 
-  toggleReviewForm(event: any) {
+  toggleReviewForm(event: any): void {
     if (event.isSubmit) {
+      const destinationId = this.route.snapshot.params['id'];
+
       if (event.id === 0) {
         const reviewCreationDto = {
           score: event.score,
           comment: event.comment,
           userId: event.userId,
-          destinationId: this.route.snapshot.params['id']
+          destinationId
         };
+
         this.reviewService.createReview(reviewCreationDto).subscribe(() => {
-          this.reviews$ = this.reviewService.getReviews(this.route.snapshot.params['id']).pipe(shareReplay(1));
+          this.reviewsSubject.next(); // Rafraîchir les revues après la création.
         });
       } else {
         const reviewEditDto: ReviewEditDto = {
@@ -55,39 +80,22 @@ export class DestinationDetailsComponent implements OnInit {
           score: event.score,
           comment: event.comment
         };
+
         this.reviewService.updateReview(reviewEditDto).subscribe(() => {
-          this.reviews$ = this.reviewService.getReviews(this.route.snapshot.params['id']).pipe(shareReplay(1));
+          this.reviewsSubject.next(); // Rafraîchir les revues après la mise à jour.
         });
       }
     }
+
     this.isReviewFormVisible = !this.isReviewFormVisible;
   }
 
-  showReviewForm() {
+  showReviewForm(): void {
     this.isReviewFormVisible = true;
-    this.createMyReview().subscribe(reviewResponseDto => {
-      this.reviewResponseDto = reviewResponseDto;
-    });
   }
 
-  createMyReview(): Observable<ReviewResponseDto> {
-    return this.reviews$.pipe(
-      map(reviews => {
-        return reviews.find(review => review.userId === this.myId) || {
-          id: 0,
-          score: 1,
-          comment: '',
-          edited: false,
-          userId: this.userService.getUserId(),
-          username: '',
-          dateStringCreation: '',
-          dateStringModification: ''
-        }
-      })
-    );
-  }
 
-  openItineraryModal(destination: any): void {
+  openItineraryModal(destination: Destination): void {
     this.selectedDestination = destination;
     this.isItineraryModalVisible = true;
   }
@@ -95,6 +103,19 @@ export class DestinationDetailsComponent implements OnInit {
   closeItineraryModal(): void {
     this.isItineraryModalVisible = false;
     this.selectedDestination = null;
+  }
+
+  private createDefaultReview(): ReviewResponseDto {
+    return {
+      id: 0,
+      score: 1,
+      comment: '',
+      edited: false,
+      userId: this.myId!,
+      username: '',
+      dateStringCreation: '',
+      dateStringModification: ''
+    };
   }
 
 }
