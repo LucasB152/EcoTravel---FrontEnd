@@ -50,6 +50,10 @@ export class DestinationDetailsComponent implements OnInit {
       }))
     );
 
+    this.markerPosition$.subscribe((position) => {
+      this.center.set(position);
+    });
+
     this.reviews$ = this.reviewsSubject.pipe(
       switchMap(() => this.reviewService.getReviews(destinationId)),
       shareReplay(1)
