@@ -12,5 +12,4 @@ export interface Destination {
   destinationType: string;
   address: Address;
   tags: string[];
-  visible: boolean;
 }

@@ -40,8 +40,8 @@
         @for (step of itinerary.steps; track step) {
           <map-advanced-marker
             [position]="{
-            lat: step.destination.address.latitude,
-            lng: step.destination.address.longitude
+            lat: step.destination!.address.latitude,
+            lng: step.destination!.address.longitude
           }"
             [content]="createBluePin(step)"
           ></map-advanced-marker>

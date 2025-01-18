@@ -13,10 +13,10 @@ import {RoleGuard} from './core/guard/role.guard';
 import {AdministratorManagementComponent} from './features/admin/administrator-management/administrator-management.component';
 import {TagsManagementComponent} from './features/admin/tags-management/tags-management.component';
 import {ReportListComponent} from './features/admin/report-list/report-list.component';
-import {DestinationCreationComponent} from './features/destination-creation/destination-creation.component';
 import {EmailVerificationComponent} from './features/email-verification/email-verification.component';
-import {ItineraryModalComponent} from './features/destinationDetails/itinerary-modal/itinerary-modal.component';
 import {ItineraryDetailsComponent} from './features/itinerary-details/itinerary-details.component';
+import {DestinationFormComponent} from './features/destination-form/destination-form.component';
+import {MyDestinationComponent} from './features/my-destination/my-destination.component';
 
 export const routes: Routes = [
   { path: '', component: IndexComponent },
@@ -25,7 +25,7 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent, canActivate: [LoggedInGuard]},
   { path: 'verify-email/:token', component: EmailVerificationComponent, canActivate: [LoggedInGuard] },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
-  { path: 'create-destination', component: DestinationCreationComponent },
+  { path: 'create-destination', component: DestinationFormComponent},
   { path: 'profile-edit', component: ProfileEditComponent, canActivate: [AuthGuard] },
   { path: 'host-account-request', component: HostAccountRequestComponent, canActivate: [AuthGuard] },
   { path: 'host-requests', component: HostRequestListComponent, canActivate: [RoleGuard], data: { roles: ['ADMIN'] } },
@@ -33,4 +33,5 @@ export const routes: Routes = [
   { path: 'tags-management', component: TagsManagementComponent, canActivate: [RoleGuard], data: { roles: ['ADMIN'] } },
   { path: 'reports', component: ReportListComponent, canActivate: [RoleGuard], data: { roles: ['ADMIN'] } },
   { path: 'itinerary/:id', component: ItineraryDetailsComponent, canActivate: [AuthGuard] },
+  { path: 'myDestination', component: MyDestinationComponent, canActivate: [RoleGuard], data: { roles: ['HOST']}}
 ];

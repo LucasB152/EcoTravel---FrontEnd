@@ -17,13 +17,4 @@ export class LocationService {
     return this.http.get<Destination>(`${this.baseUrl}/${destinationId}`);
   }
 
-  getLocationTypes(): Observable<string[]> {
-    return this.http.get<string[]>(`${this.baseUrl}/types`);
-  }
-
-  createNewDestination(destination: DestinationCreationDto) {
-    return this.http.post<any>(`http://localhost:8081/api/destination/test`, destination);
-
-  }
-
 }

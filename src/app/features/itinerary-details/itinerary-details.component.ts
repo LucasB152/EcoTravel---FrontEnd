@@ -15,15 +15,13 @@ export class ItineraryDetailsComponent implements OnInit {
   itineraryId!: string;
   itinerary$: Observable<Itinerary> | undefined;
 
-  //Map state
   center = signal<google.maps.LatLngLiteral>({
-    lat: this.itinerary.steps.length > 0 ? this.itinerary.steps[0].destination.address.latitude : 50.636,
-    lng: this.itinerary.steps.length > 0 ? this.itinerary.steps[0].destination.address.longitude : 5.573
+    lat: 50.636,
+    lng: 5.573
   });
   zoom = signal(8);
 
 
-  // Modals state
   showDeleteItineraryModal = false;
   showDeleteStepModal = false;
   showEditTitleModal = false;

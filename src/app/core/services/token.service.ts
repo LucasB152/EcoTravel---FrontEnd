@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { jwtDecode } from 'jwt-decode';
+import {Injectable} from '@angular/core';
+import {jwtDecode} from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root',
@@ -17,24 +17,19 @@ export class TokenService {
     return token?.role || null;
   }
 
-  saveToken(token: string, rememberMe: boolean): void {
-    if(rememberMe){
-      localStorage.setItem(this.tokenKey, token);
-    } else {
-      sessionStorage.setItem(this.tokenKey, token);
-    }
+  saveToken(token: string): void {
+    sessionStorage.setItem(this.tokenKey, token);
   }
 
   getToken(): string | null {
     if (typeof window === 'undefined') return null;
 
-    const token = sessionStorage.getItem(this.tokenKey) || localStorage.getItem(this.tokenKey);
+    const token = sessionStorage.getItem(this.tokenKey);
     return token && token.split('.').length === 3 ? token : null;
   }
 
 
   removeToken(): void {
-    localStorage.removeItem(this.tokenKey);
     sessionStorage.removeItem(this.tokenKey);
   }
 
