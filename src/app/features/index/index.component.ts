@@ -2,6 +2,7 @@ import {Component, inject, signal, WritableSignal, viewChild} from '@angular/cor
 import {SearchService} from '../../core/services/search.service';
 import {DestinationSearch} from '../../core/models/DestinationSearch';
 import {MapAdvancedMarker, MapInfoWindow} from '@angular/google-maps';
+import {LoadingService} from '../../core/services/loading.service';
 
 @Component({
   selector: 'app-index',
@@ -18,7 +19,8 @@ export class IndexComponent {
 
   $destinations: WritableSignal<any[]> = signal([]);
 
-  constructor() {
+  constructor(
+    private loadingService: LoadingService) {
     this.loadDestinations("", [], "", 1, 3);
   }
 
@@ -44,10 +46,12 @@ export class IndexComponent {
   }
 
   private loadDestinations(query: string, tags: string[], type: string, page: number, size: number): void {
+    this.loadingService.show();
     this.#searchService
       .getSearchDestinations(this.center(), query, tags, type, page, size)
       .subscribe((newDestinations) => {
         this.$destinations.set(newDestinations);
+        this.loadingService.hide();
       });
   }
 }

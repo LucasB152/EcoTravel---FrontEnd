@@ -5,9 +5,7 @@ import {ItineraryService} from '../../core/services/itinerary.service';
 import {LoadingService} from '../../core/services/loading.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NotificationService} from '../../core/services/notification.service';
-import {DestinationSearch} from '../../core/models/DestinationSearch';
 import {MapAdvancedMarker, MapInfoWindow} from '@angular/google-maps';
-import {Step} from '../../core/models/Step';
 
 @Component({
   selector: 'app-itinerary-details',

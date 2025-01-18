@@ -4,6 +4,7 @@
       type="text"
       placeholder="Search by title or description"
       [(ngModel)]="query"
+      (keyup.enter)="search()"
       class="w-full md:w-80 px-4 py-2 rounded-l-lg border-2 border-[#00a14b] focus:outline-none focus:border-[#00a14b]"
     />
     <button (click)="search()"
