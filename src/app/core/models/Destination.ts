@@ -16,4 +16,6 @@ export interface Destination {
   address: string;
   tags: string[];
   visible: boolean;
+  latitude: number;
+  longitude: number;
 }

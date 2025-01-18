@@ -76,24 +76,49 @@
       </div>
     </div>
 
-    <!-- Sections sous l'image et la partie droite -->
+    <!-- Sections sous l'image -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 
-    <!-- Section 1: Détails supplémentaires -->
+      <!-- Section 1.1: Caractéristiques -->
+      <div >
+        <div class=" w-full h-full p-6 rounded-lg shadow-md">
+          <h2 class="text-xl font-semibold text-gray-800">Caractéristiques</h2>
+          <ul class="list-disc pl-5 text-gray-600 mt-2">
+            <li *ngFor="let tag of destination.tags">
+              <span
+                class="whitespace-nowrap rounded-full border border-green-400 px-2.5 py-0.5 text-sm text-green-700">{{ tag }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Section 1.2: MAP -->
+      <div class="w-full h-96">
+        <div class=" w-full h-full p-6 rounded-lg shadow-md">
+          <google-map
+            mapId="1b9475db8c0f46f2"
+            height="100%"
+            width="100%"
+            [zoom]="zoom()"
+            [center]="center()">
+            <map-advanced-marker
+              *ngIf="markerPosition$ | async as markerPosition"
+              [position]="markerPosition">
+
+            </map-advanced-marker>
+          </google-map>
+        </div>
+      </div>
+
+    </div>
+
+
+    <!-- Section 2: Détails supplémentaires -->
     <div class="bg-gray-50 p-6 rounded-lg shadow-md">
       <h2 class="text-xl font-semibold text-gray-800">Détails du produit</h2>
       <p class="text-gray-600 mt-2">{{ destination.description }}</p>
     </div>
 
-    <!-- Section 2: Caractéristiques -->
-    <div class="bg-gray-50 p-6 rounded-lg shadow-md">
-
-      <h2 class="text-xl font-semibold text-gray-800">Caractéristiques</h2>
-      <ul class="list-disc pl-5 text-gray-600 mt-2">
-        <li *ngFor="let tag of destination.tags">
-        <span class="whitespace-nowrap rounded-full border border-green-400 px-2.5 py-0.5 text-sm text-green-700">{{ tag }}</span>
-        </li>
-      </ul>
-    </div>
 
     <!-- Section 3: Avis clients -->
     <div class="bg-gray-50 p-6 rounded-lg shadow-md">
