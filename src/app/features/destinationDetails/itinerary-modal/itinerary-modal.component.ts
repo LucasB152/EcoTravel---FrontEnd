@@ -25,6 +25,7 @@ export class ItineraryModalComponent implements OnInit{
     }
 
   addToItinerary(itineraryId: string): void {
+    console.log(`Destination ID : ${this.destination!.destinationID}`)
     this.itineraryService.addToItinerary({itineraryId: itineraryId, destinationId: this.destination!.destinationID}).subscribe()
     this.closeModal.emit();
   }

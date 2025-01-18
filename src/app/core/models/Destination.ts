@@ -1,8 +1,5 @@
-/**
- * Interface for Destination qui contient toutes les informations sur une destination.
- *
- * !!! ATTENTION version temporaire et a completer (type, tags et images peuvent changer) !!!
- */
+import {Address} from './Address';
+
 export interface Destination {
   destinationID: string;
   name: string;
@@ -13,7 +10,7 @@ export interface Destination {
   contactEmail: string;
   images: string[];
   destinationType: string;
-  address: string;
+  address: Address;
   tags: string[];
   visible: boolean;
   latitude: number;
