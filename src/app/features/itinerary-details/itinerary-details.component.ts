@@ -6,6 +6,7 @@ import {LoadingService} from '../../core/services/loading.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NotificationService} from '../../core/services/notification.service';
 import {MapAdvancedMarker, MapInfoWindow} from '@angular/google-maps';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-itinerary-details',
@@ -16,41 +17,9 @@ export class ItineraryDetailsComponent implements OnInit {
   itineraryId!: string;
   itinerary$: Observable<Itinerary> | undefined;
 
-  itineraryTemp = {
-    "id": "72e4a604-eeb4-4c39-a036-2355327cf528",
-    "title": "Test 2",
-    "steps": [
-      {
-        "id": "1617121c-c596-4fad-adf1-c7437cea6a86",
-        "orderSequence": 1,
-        "destination": {
-          "id": "26f993e4-c515-11ef-8468-00505689127d",
-          "name": "kabane7",
-          "destinationType": {
-            "id": 1,
-            "type": "LODGING"
-          },
-          "address": {
-            "id": "26b1eaa4-c515-11ef-8468-00505689127d",
-            "country": "Belgium",
-            "location": "Sprimont",
-            "street": "Rue du Hollu",
-            "number": "64",
-            "zipcode": "4798",
-            "longitude": 5.6388344,
-            "latitude": 50.4820702
-          }
-        }
-      }
-    ],
-    "distance": 0
-  };
 
-  //Map state
-  center = signal<google.maps.LatLngLiteral>({
-    lat: this.itineraryTemp.steps.length > 0 ? this.itineraryTemp.steps[0].destination.address.latitude : 50.636,
-    lng: this.itineraryTemp.steps.length > 0 ? this.itineraryTemp.steps[0].destination.address.longitude : 5.573
-  });
+  // Map state
+  center = signal<google.maps.LatLngLiteral>({ lat: 50.636, lng: 5.573 });
   zoom = signal(8);
   infoWindowRef = viewChild.required(MapInfoWindow);
 
@@ -73,13 +42,28 @@ export class ItineraryDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadingService.show();
+
     this.activatedRoute.paramMap.subscribe((params) => {
       this.itineraryId = params.get('id')!;
       if (this.itineraryId != null) {
         this.itinerary$ = this.itineraryService.getItinerary(this.itineraryId)
           .pipe(finalize(() => {
             this.loadingService.hide();
-          }))
+          }));
+
+        this.itinerary$
+          .pipe(
+            map((itinerary) => {
+              const firstStep = itinerary.steps[0];
+              return {
+                lat: firstStep?.destination.address.latitude || 50.636,
+                lng: firstStep?.destination.address.longitude || 5.573
+              };
+            })
+          )
+          .subscribe((position) => {
+            this.center.set(position);
+          });
       }
     });
   }
@@ -163,7 +147,12 @@ export class ItineraryDetailsComponent implements OnInit {
   onMarkerClick(step: any, marker: MapAdvancedMarker): void {
     const content = `
       <div class="p-2 h-full">
-        <h1 class="font-bold text-xl">${step.destination?.address?.location}</h1>
+        <p class="text-gray-600 text-sm">
+${step.destination.address.street}
+${step.destination.address.number},
+${step.destination.address.zipcode}
+${step.destination.address.location},
+${step.destination.address.country}</p>
     </div>
   `;
     this.infoWindowRef().open(marker, false, content);

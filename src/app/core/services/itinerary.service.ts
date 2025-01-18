@@ -6,6 +6,7 @@ import {map, Observable} from "rxjs";
 import {Itinerary} from '../models/Itinerary';
 import {Step} from '../models/Step';
 import {Tag} from '../models/Tag';
+import {StepAddDTO} from '../models/StepAddDTO';
 
 @Injectable({
   providedIn: 'root',
@@ -27,7 +28,7 @@ export class ItineraryService {
     return this.httpClient.get<Itinerary[]>(`${environment.API_URL}/itinerary/user/${this.userService.getUserId()}`);
   }
 
-  addToItinerary(stepToAdd: Step): Observable<any> {
+  addToItinerary(stepToAdd: StepAddDTO): Observable<any> {
     return this.httpClient.post(`${environment.API_URL}/step`, stepToAdd);
   }
 
