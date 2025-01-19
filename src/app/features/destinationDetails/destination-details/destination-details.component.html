@@ -79,17 +79,10 @@
     <!-- Sections sous l'image -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 
-      <!-- Section 1.1: Caractéristiques -->
-      <div >
-        <div class=" w-full h-full p-6 rounded-lg shadow-md">
-          <h2 class="text-xl font-semibold text-gray-800">Caractéristiques</h2>
-          <ul class="list-disc pl-5 text-gray-600 mt-2">
-            <li *ngFor="let tag of destination.tags">
-              <span
-                class="whitespace-nowrap rounded-full border border-green-400 px-2.5 py-0.5 text-sm text-green-700">{{ tag }}</span>
-            </li>
-          </ul>
-        </div>
+      <!-- Section 1.1: Détails supplémentaires -->
+      <div class="bg-gray-50 p-6 rounded-lg shadow-md">
+        <h2 class="text-xl font-semibold text-gray-800">Description</h2>
+        <p class="text-gray-600 mt-2">{{ destination.description }}</p>
       </div>
 
       <!-- Section 1.2: MAP -->
@@ -113,10 +106,17 @@
     </div>
 
 
-    <!-- Section 2: Détails supplémentaires -->
-    <div class="bg-gray-50 p-6 rounded-lg shadow-md">
-      <h2 class="text-xl font-semibold text-gray-800">Détails de la destination</h2>
-      <p class="text-gray-600 mt-2">{{ destination.description }}</p>
+    <!-- Section 2: Caractéristiques -->
+    <div >
+      <div class=" w-full h-full p-6 rounded-lg shadow-md">
+        <h2 class="text-xl font-semibold text-gray-800">Caractéristiques</h2>
+        <ul class="list-disc pl-5 text-gray-600 mt-2">
+          <li *ngFor="let tag of destination.tags">
+              <span
+                class="whitespace-nowrap rounded-full border border-green-400 px-2.5 py-0.5 text-sm text-green-700">{{ tag }}</span>
+          </li>
+        </ul>
+      </div>
     </div>
 
 

@@ -1,5 +1,4 @@
 import {Component, OnInit, signal} from '@angular/core';
-import {LocationService} from '../../../core/services/location.service';
 import {ActivatedRoute} from '@angular/router';
 import {BehaviorSubject, Observable, shareReplay, switchMap} from 'rxjs';
 import {Destination} from '../../../core/models/Destination';

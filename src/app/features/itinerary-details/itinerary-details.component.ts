@@ -34,7 +34,8 @@ export class ItineraryDetailsComponent implements OnInit {
   constructor(private itineraryService: ItineraryService,
               private loadingService: LoadingService,
               private router: Router,
-              private notificationService: NotificationService) {
+              private notificationService: NotificationService,
+              private activatedRoute: ActivatedRoute) {
   }
 
 
@@ -157,6 +158,7 @@ export class ItineraryDetailsComponent implements OnInit {
   onMarkerClick(step: any, marker: MapAdvancedMarker): void {
     const content = `
       <div class="p-2 h-full">
+        <h2>${step.destination.name}</h2>
         <p class="text-gray-600 text-sm">
 ${step.destination.address.street}
 ${step.destination.address.number},
