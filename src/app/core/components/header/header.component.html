@@ -33,7 +33,7 @@
           <!-- Menu admin -->
           <ng-container *ngIf="isAdmin == true">
             <li class="relative">
-              <button id="dropdownNavbarLinkAdmin" (click)="toggleAdminDropdown()"
+              <button id="dropdownNavbarLinkAdmin" (click)="toggleAdminDropdown()" (touchstart)="toggleUserDropdown()"
                       class="flex items-center justify-between w-full py-2 px-3 text-gray-700 rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:p-0 md:w-auto">
                 <span *ngIf="user" class="flex items-center gap-2">Admin</span>
                 <svg class="w-3 h-3 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
@@ -45,7 +45,6 @@
                 <ul class="py-2 text-sm text-gray-700">
                   <li><a routerLink="/tags-management" class="block px-4 py-2 hover:bg-gray-200">Ajouter des tags</a></li>
                   <li><a routerLink="/host-requests" class="block px-4 py-2 hover:bg-gray-200">Gérer les demandes hébergeurs</a></li>
-                  <li><a routerLink="/reports" class="block px-4 py-2 hover:bg-gray-200">Modérer le contenu</a></li>
                   <li><a routerLink="/administrators-management" class="block px-4 py-2 hover:bg-gray-200">Ajouter un administrateur</a></li>
                 </ul>
               </div>

@@ -27,7 +27,6 @@ import { HostAccountRequestComponent } from './features/host-account-request/hos
 import { HostRequestListComponent } from './features/admin/host-request-list/host-request-list.component';
 import { AdministratorManagementComponent } from './features/admin/administrator-management/administrator-management.component';
 import { TagsManagementComponent } from './features/admin/tags-management/tags-management.component';
-import { ReportListComponent } from './features/admin/report-list/report-list.component';
 import {CoreModule} from './core/core.module';
 import {FeaturesModule} from './features/features.module';
 import { ItineraryModalComponent } from './features/destinationDetails/itinerary-modal/itinerary-modal.component';
@@ -58,7 +57,6 @@ import { ModifyDestinationComponent } from './features/modify-destination/modify
     HostRequestListComponent,
     AdministratorManagementComponent,
     TagsManagementComponent,
-    ReportListComponent,
     ItineraryModalComponent,
     EmailVerificationComponent,
     ItineraryDetailsComponent,
