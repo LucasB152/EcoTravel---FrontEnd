@@ -5,6 +5,7 @@
       type="text"
       placeholder="Rechercher par titre ou description"
       [(ngModel)]="query"
+      (keyup.enter)="search()"
       class="flex-grow md:flex-shrink-0 md:w-80 px-4 py-2 rounded-l-lg border-2 border-[#00a14b] focus:outline-none focus:ring-2 focus:ring-[#00a14b]"
     />
     <button

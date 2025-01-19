@@ -1,4 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, signal} from '@angular/core';
+import {LocationService} from '../../../core/services/location.service';
 import {ActivatedRoute} from '@angular/router';
 import {BehaviorSubject, Observable, shareReplay, switchMap} from 'rxjs';
 import {Destination} from '../../../core/models/Destination';
@@ -17,6 +18,7 @@ import {DestinationService} from '../../../core/services/destination.service';
 })
 export class DestinationDetailsComponent implements OnInit {
   destination$!: Observable<Destination>;
+  markerPosition$!: Observable<google.maps.LatLngLiteral>;
   reviews$!: Observable<ReviewResponseDto[]>;
   myReview$!: Observable<ReviewResponseDto>;
   averageRating$!: Observable<number>;
@@ -24,6 +26,8 @@ export class DestinationDetailsComponent implements OnInit {
   myId: string | undefined;
   isItineraryModalVisible: boolean = false;
   selectedDestination: Destination | null = null;
+  center = signal<google.maps.LatLngLiteral>({lat: 50.636, lng: 5.573});
+  zoom = signal(8);
 
   private reviewsSubject = new BehaviorSubject<void>(undefined);
 
@@ -42,6 +46,16 @@ export class DestinationDetailsComponent implements OnInit {
 
     this.destination$ = this.destinationService.getDestinationDetails(destinationId).pipe(shareReplay(1));
 
+    this.markerPosition$ = this.destination$.pipe(
+      map((destination) => ({
+        lat: destination.latitude,
+        lng: destination.longitude
+      }))
+    );
+
+    this.markerPosition$.subscribe((position) => {
+      this.center.set(position);
+    });
 
     this.reviews$ = this.reviewsSubject.pipe(
       switchMap(() => this.reviewService.getReviews(destinationId)),

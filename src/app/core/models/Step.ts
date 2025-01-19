@@ -5,5 +5,5 @@ export interface Step {
   destinationId: string;
   itineraryId: string;
   orderSequence?: number;
-  destination?: Destination;
+  destination: Destination;
 }

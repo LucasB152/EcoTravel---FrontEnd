@@ -48,6 +48,7 @@ export class IndexComponent {
   }
 
   private loadDestinations(query: string, tags: string[], type: string, page: number, size: number): void {
+    this.loadingService.show();
     this.#searchService
       .getSearchDestinations(this.center(), query, tags, type, page, size)
       .pipe(finalize(() => {
@@ -55,6 +56,7 @@ export class IndexComponent {
       }))
       .subscribe((newDestinations) => {
         this.$destinations.set(newDestinations);
+        this.loadingService.hide();
       });
   }
 }

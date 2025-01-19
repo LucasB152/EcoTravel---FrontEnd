@@ -1,10 +1,12 @@
-import {Component, OnInit, signal} from '@angular/core';
+import {Component, OnInit, signal, viewChild} from '@angular/core';
 import {finalize, Observable} from 'rxjs';
 import {Itinerary} from '../../core/models/Itinerary';
 import {ItineraryService} from '../../core/services/itinerary.service';
 import {LoadingService} from '../../core/services/loading.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NotificationService} from '../../core/services/notification.service';
+import {MapAdvancedMarker, MapInfoWindow} from '@angular/google-maps';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-itinerary-details',
@@ -15,11 +17,11 @@ export class ItineraryDetailsComponent implements OnInit {
   itineraryId!: string;
   itinerary$: Observable<Itinerary> | undefined;
 
-  center = signal<google.maps.LatLngLiteral>({
-    lat: 50.636,
-    lng: 5.573
-  });
+  // Map state
+  center = signal<google.maps.LatLngLiteral>({lat: 50.636, lng: 5.573});
+
   zoom = signal(8);
+  infoWindowRef = viewChild.required(MapInfoWindow);
 
 
   showDeleteItineraryModal = false;
@@ -38,11 +40,30 @@ export class ItineraryDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadingService.show();
-    this.itineraryId = history.state.itineraryId;
-    this.itinerary$ = this.itineraryService.getItinerary(this.itineraryId)
-      .pipe(finalize(() => {
-        this.loadingService.hide();
-      }))
+
+    this.activatedRoute.paramMap.subscribe((params) => {
+      this.itineraryId = params.get('id')!;
+      if (this.itineraryId != null) {
+        this.itinerary$ = this.itineraryService.getItinerary(this.itineraryId)
+          .pipe(finalize(() => {
+            this.loadingService.hide();
+          }));
+
+        this.itinerary$
+          .pipe(
+            map((itinerary) => {
+              const firstStep = itinerary.steps[0];
+              return {
+                lat: firstStep?.destination.address.latitude || 50.636,
+                lng: firstStep?.destination.address.longitude || 5.573
+              };
+            })
+          )
+          .subscribe((position) => {
+            this.center.set(position);
+          });
+      }
+    });
   }
 
 
@@ -109,12 +130,8 @@ export class ItineraryDetailsComponent implements OnInit {
     this.router.navigateByUrl(`/destination/${id}`);
   }
 
-
-  createBluePin(step
-                  :
-                  any
-  ):
-    HTMLElement {
+  // Map Methods
+  createBluePin(step: any): HTMLElement {
     const pin = document.createElement('div');
     pin.style.width = '30px';
     pin.style.height = '30px';
@@ -135,6 +152,20 @@ export class ItineraryDetailsComponent implements OnInit {
 
     pin.appendChild(glyph);
     return pin;
+  }
+
+  onMarkerClick(step: any, marker: MapAdvancedMarker): void {
+    const content = `
+      <div class="p-2 h-full">
+        <p class="text-gray-600 text-sm">
+${step.destination.address.street}
+${step.destination.address.number},
+${step.destination.address.zipcode}
+${step.destination.address.location},
+${step.destination.address.country}</p>
+    </div>
+  `;
+    this.infoWindowRef().open(marker, false, content);
   }
 
 }
