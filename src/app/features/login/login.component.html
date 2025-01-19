@@ -7,12 +7,12 @@
     <div class="w-full bg-white rounded-lg shadow">
       <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
         <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-          Sign in to your account
+          Connexion
         </h1>
         <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="space-y-4 md:space-y-6">
           <!-- Email -->
           <div>
-            <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Your email</label>
+            <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Email</label>
             <input
               type="email"
               id="email"
@@ -21,14 +21,14 @@
               placeholder="name@company.com" />
             <!-- Error message -->
             <div *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid">
-              <small class="text-red-600" *ngIf="loginForm.get('email')?.errors?.['required']">Email is required.</small>
-              <small class="text-red-600" *ngIf="loginForm.get('email')?.errors?.['email']">Invalid email format.</small>
+              <small class="text-red-600" *ngIf="loginForm.get('email')?.errors?.['required']">Email nécessaire.</small>
+              <small class="text-red-600" *ngIf="loginForm.get('email')?.errors?.['email']">Format de l'email non valid.</small>
             </div>
           </div>
 
           <!-- Password -->
           <div>
-            <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Password</label>
+            <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Mot de passe</label>
             <input
               type="password"
               id="password"
@@ -37,8 +37,8 @@
               placeholder="••••••••" />
             <!-- Error message -->
             <div *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
-              <small class="text-red-600" *ngIf="loginForm.get('password')?.errors?.['required']">Password is required.</small>
-              <small class="text-red-600" *ngIf="loginForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters long.</small>
+              <small class="text-red-600" *ngIf="loginForm.get('password')?.errors?.['required']">Mot de passe nécessaire.</small>
+              <small class="text-red-600" *ngIf="loginForm.get('password')?.errors?.['minlength']">Le mot de passe doit faire au minimum 6 characters.</small>
             </div>
           </div>
 
@@ -47,10 +47,10 @@
             type="submit"
             [disabled]="loginForm.invalid"
             class="w-full text-white bg-[#00a14b] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-            Sign in
+            Me Connecter
           </button>
           <p class="text-sm font-light text-gray-500">
-            Don’t have an account yet? <a routerLink="/register" class="font-medium text-primary-600 hover:underline">Sign up</a>
+            Pas encore inscris? <a routerLink="/register" class="font-medium text-primary-600 hover:underline">s'inscrire</a>
           </p>
         </form>
       </div>

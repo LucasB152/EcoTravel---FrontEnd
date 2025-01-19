@@ -7,12 +7,12 @@
     <div class="w-full bg-white rounded-lg shadow">
       <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
         <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-          Create an account
+          Créer un compte
         </h1>
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-4 md:space-y-6">
           <!-- First Name -->
           <div>
-            <label for="firstname" class="block mb-2 text-sm font-medium text-gray-900">Your firstname</label>
+            <label for="firstname" class="block mb-2 text-sm font-medium text-gray-900">Prénom</label>
             <input
               type="text"
               id="firstname"
@@ -21,13 +21,13 @@
               placeholder="John"/>
             <small *ngIf="registerForm.get('firstname')?.invalid && registerForm.get('firstname')?.touched"
                    class="text-red-600">
-              First name is required.
+              Ce champ est obligatoire.
             </small>
           </div>
 
           <!-- Last Name -->
           <div>
-            <label for="lastname" class="block mb-2 text-sm font-medium text-gray-900">Your lastname</label>
+            <label for="lastname" class="block mb-2 text-sm font-medium text-gray-900">Nom</label>
             <input
               type="text"
               id="lastname"
@@ -36,13 +36,13 @@
               placeholder="Doe"/>
             <small *ngIf="registerForm.get('lastname')?.invalid && registerForm.get('lastname')?.touched"
                    class="text-red-600">
-              Last name is required.
+              Ce champ est obligatoire.
             </small>
           </div>
 
           <!-- Email -->
           <div>
-            <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Your email</label>
+            <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Email</label>
             <input
               type="email"
               id="email"
@@ -51,14 +51,14 @@
               placeholder="name@company.com"/>
             <small *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
                    class="text-red-600">
-              <span *ngIf="registerForm.get('email')?.errors?.['required']">Email is required.</span>
-              <span *ngIf="registerForm.get('email')?.errors?.['email']">Invalid email address.</span>
+              <span *ngIf="registerForm.get('email')?.errors?.['required']">Ce champ est obligatoire.</span>
+              <span *ngIf="registerForm.get('email')?.errors?.['email']">Adresse email non valide</span>
             </small>
           </div>
 
           <!-- Password -->
           <div>
-            <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Password</label>
+            <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Mot de passe </label>
             <input
               type="password"
               id="password"
@@ -67,15 +67,15 @@
               placeholder="••••••••"/>
             <small *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
                    class="text-red-600">
-              <span *ngIf="registerForm.get('password')?.errors?.['required']">Password is required.</span>
+              <span *ngIf="registerForm.get('password')?.errors?.['required']">Ce champ est obligatoire.</span>
               <span
-                *ngIf="registerForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters.</span>
+                *ngIf="registerForm.get('password')?.errors?.['minlength']">Au moins 6 caractères</span>
             </small>
           </div>
 
           <!-- Confirm Password -->
           <div>
-            <label for="confirm-password" class="block mb-2 text-sm font-medium text-gray-900">Confirm password</label>
+            <label for="confirm-password" class="block mb-2 text-sm font-medium text-gray-900">Confirmation du mot de passe</label>
             <input
               type="password"
               id="confirm-password"
@@ -85,7 +85,7 @@
             <small
               *ngIf="registerForm.hasError('passwordsMismatch') && registerForm.get('passwordConfirmation')?.touched"
               class="text-red-600">
-              Passwords do not match.
+              Ces mots de passe ne correspondent pas.
             </small>
           </div>
 
@@ -97,13 +97,13 @@
                        class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300"/>
               </div>
               <div class="ml-3 text-sm">
-                <label for="terms" class="font-light text-gray-500">I accept the <a
-                  class="font-medium text-primary-600 hover:underline" href="#">Terms and Conditions</a></label>
+                <label for="terms" class="font-light text-gray-500">J'accepte les <a
+                  class="font-medium text-primary-600 hover:underline" href="#">Terms et Conditions</a></label>
               </div>
             </div>
             <small *ngIf="registerForm.get('terms')?.invalid"
                    class="text-red-600">
-              <span *ngIf="registerForm.get('terms')?.errors?.['required']">You must accept the terms</span>
+              <span *ngIf="registerForm.get('terms')?.errors?.['required']">Vous devez accepter les terms</span>
             </small>
           </div>
 
@@ -112,11 +112,11 @@
             type="submit"
             [disabled]="registerForm.invalid"
             class="w-full text-white bg-[#00a14b] hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-            Create an account
+            Créer un compte
           </button>
           <p class="text-sm font-light text-gray-500">
-            Already have an account ? <a routerLink="/login"
-                                         class="font-medium text-primary-600 hover:underline">Login</a>
+            J'ai deja un compte ? <a routerLink="/login"
+                                         class="font-medium text-primary-600 hover:underline">Connexion</a>
           </p>
         </form>
       </div>
