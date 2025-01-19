@@ -19,7 +19,7 @@ export class ProfileComponent implements OnInit {
   user!: Users;
   isModalOpen: boolean = false;
   myItinerary$: Observable<Itinerary[]> = of([]);
-  status: string = "";
+  status: string | null = null;
 
   constructor(private router: Router,
               private authService: AuthService,
@@ -39,7 +39,7 @@ export class ProfileComponent implements OnInit {
       }
     });
     this.requestService.getRequestStatusFromUser(this.userService.getUserId()).subscribe(status => {
-      this.status = status;
+      this.status = this.getStatusMessage(status)
     })
     this.myItinerary$ = this.itineraryService.getItinerariesFromUser().pipe(finalize(() => {
       this.loadingService.hide();
@@ -70,5 +70,18 @@ export class ProfileComponent implements OnInit {
   onSeeItineraryDetails(itineraryId: string){
     const dataToSend = { itineraryId: itineraryId };
     this.router.navigateByUrl(`/itinerary/${itineraryId}`, { state: dataToSend });
+  }
+
+  getStatusMessage(status: string): string | null {
+    switch (status) {
+      case 'WAITING':
+        return 'Votre requête est en attente de traitement.';
+      case 'ACCEPTED':
+        return 'Votre requête a été approuvée. Félicitations, vous êtes hôtes sur EcoTravel !';
+      case 'DECLINED':
+        return 'Votre requête a été refusée';
+      default:
+        return null;
+    }
   }
 }

@@ -29,7 +29,6 @@ export class HostRequestListComponent implements OnInit {
   updateStatus(status: string, message: string) {
     if (this.selectedRequest) {
       const id = this.selectedRequest.id || '';
-      //this.requests$ = this.requestService.updateRequestStatus(id, status, message);
       this.requestService.updateRequestStatus(id, status, message).subscribe(
         () => {
           this.selectedRequest!.hostStatus = status;
