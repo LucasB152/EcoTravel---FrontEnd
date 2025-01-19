@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {DestinationService} from '../../core/services/destination.service';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {TagService} from '../../core/services/tag.service';
 import {Destination} from '../../core/models/Destination';
 import {Tag} from '../../core/models/Tag';
 import {DestinationCreationDto} from '../../core/models/DestinationCreationDto';
@@ -11,6 +10,7 @@ import {CloudinaryService} from '../../core/services/cloudinary.service';
 import {NotificationService} from '../../core/services/notification.service';
 import {LoadingService} from '../../core/services/loading.service';
 import {finalize} from 'rxjs';
+import {TagsService} from '../../core/services/tags.service';
 
 @Component({
   selector: 'app-modify-destination',
@@ -27,7 +27,7 @@ export class ModifyDestinationComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private destinationService: DestinationService,
-              private tagService: TagService,
+              private tagService: TagsService,
               private userService: UserService,
               private router: Router,
               private cloudinaryService: CloudinaryService,

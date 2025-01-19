@@ -1,7 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {Observable} from 'rxjs';
-import {TagService} from '../../core/services/tag.service';
 import {map} from "rxjs/operators";
+import {TagsService} from '../../core/services/tags.service';
 
 @Component({
     selector: 'app-search-bar',
@@ -20,7 +20,7 @@ export class SearchBarComponent implements OnInit {
     type: string = '';
 
     constructor(
-        private tagService: TagService
+        private tagService: TagsService
     ) {
     }
 

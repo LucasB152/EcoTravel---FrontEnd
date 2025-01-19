@@ -1,7 +1,6 @@
 <div class="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
   <div class="bg-white p-6 rounded-lg shadow-lg w-96">
-    <!--    todo adapter en finction de si on add ou update-->
-    <h2 class="text-xl font-semibold mb-4">Add Review</h2>
+    <h2 class="text-xl font-semibold mb-4">Ajouter une avis</h2>
 
     <form (ngSubmit)="submitReview()">
       <div class="flex items-center justify-center place-content-center mb-4">
@@ -33,13 +32,13 @@
       </div>
 
       <div class="mb-4">
-        <label class="block text-gray-700" for="oui">Share your opinion with us:</label>
-        <textarea class="w-full px-3 py-2 border rounded-lg" placeholder="your opinion" id="oui" [(ngModel)]="comment"
+        <label class="block text-gray-700" for="oui">Partager votre avis avec nous:</label>
+        <textarea class="w-full px-3 py-2 border rounded-lg" placeholder="ton avis" id="oui" [(ngModel)]="comment"
                   name="comment"></textarea>
       </div>
       <div class="flex justify-end">
-        <button type="button" (click)="cancel()" class="mr-2 px-4 py-2 bg-gray-300 rounded-lg">Cancel</button>
-        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg">Submit</button>
+        <button type="button" (click)="cancel()" class="mr-2 px-4 py-2 bg-gray-300 rounded-lg">Annuler</button>
+        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg">Soumettre</button>
       </div>
     </form>
   </div>
