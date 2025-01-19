@@ -31,7 +31,6 @@ export class ItineraryDetailsComponent implements OnInit {
 
   constructor(private itineraryService: ItineraryService,
               private loadingService: LoadingService,
-              private activatedRoute: ActivatedRoute,
               private router: Router,
               private notificationService: NotificationService) {
   }
@@ -39,16 +38,13 @@ export class ItineraryDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadingService.show();
-    this.activatedRoute.paramMap.subscribe((params) => {
-      this.itineraryId = params.get('id')!;
-      if (this.itineraryId != null) {
-        this.itinerary$ = this.itineraryService.getItinerary(this.itineraryId)
-          .pipe(finalize(() => {
-            this.loadingService.hide();
-          }))
-      }
-    });
+    this.itineraryId = history.state.itineraryId;
+    this.itinerary$ = this.itineraryService.getItinerary(this.itineraryId)
+      .pipe(finalize(() => {
+        this.loadingService.hide();
+      }))
   }
+
 
   openDeleteItineraryModal() {
     this.showDeleteItineraryModal = true;
@@ -60,7 +56,10 @@ export class ItineraryDetailsComponent implements OnInit {
     this.router.navigateByUrl("/profile");
   }
 
-  openDeleteStepModal(stepId: string) {
+  openDeleteStepModal(stepId
+                        :
+                        string
+  ) {
     this.selectedStepId = stepId;
     this.showDeleteStepModal = true;
   }
@@ -89,20 +88,33 @@ export class ItineraryDetailsComponent implements OnInit {
     this.showEditTitleModal = false;
   }
 
-  moveStepUp(stepId: string) {
+  moveStepUp(stepId
+               :
+               string
+  ) {
     this.itinerary$ = this.itineraryService.moveStepUp(stepId, this.itineraryId);
   }
 
-  moveStepDown(stepId: string) {
+  moveStepDown(stepId
+                 :
+                 string
+  ) {
     this.itinerary$ = this.itineraryService.moveStepDown(stepId, this.itineraryId);
   }
 
-  goToDestination(id: string) {
+  goToDestination(id
+                    :
+                    string
+  ) {
     this.router.navigateByUrl(`/destination/${id}`);
   }
 
 
-  createBluePin(step: any): HTMLElement {
+  createBluePin(step
+                  :
+                  any
+  ):
+    HTMLElement {
     const pin = document.createElement('div');
     pin.style.width = '30px';
     pin.style.height = '30px';

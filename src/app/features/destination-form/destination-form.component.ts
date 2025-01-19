@@ -55,7 +55,7 @@ export class DestinationFormComponent implements OnInit {
   }
 
   onCheckboxChange(event: any, tagId: string): void {
-    const tagIdsArray: FormArray = this.destinationForm.get('tagIds') as FormArray;
+    const tagIdsArray: FormArray = this.destinationForm.get('tagsId') as FormArray;
 
     if (event.target.checked) {
       tagIdsArray.push(new FormControl(tagId));

@@ -20,7 +20,7 @@
       <div>
         <!-- Lien vers les détails -->
         <a
-          [routerLink]="['/destinations', destination.destinationID]"
+          [routerLink]="['/destinations', destination.id]"
           class="text-lg font-semibold text-blue-500 hover:underline"
         >
           {{ destination.name }}
@@ -34,14 +34,14 @@
       <div class="flex space-x-2">
         <!-- Bouton Modifier -->
         <button
-          (click)="editDestination(destination.destinationID)"
+          (click)="editDestination(destination.id)"
           class="px-4 py-2 text-sm text-white bg-blue-500 rounded hover:bg-blue-600"
         >
           Modifier
         </button>
         <!-- Bouton Supprimer -->
         <button
-          (click)="deleteDestination(destination.destinationID)"
+          (click)="openModalDeletion(destination.id)"
           class="px-4 py-2 text-sm text-white bg-red-500 rounded hover:bg-red-600"
         >
           Supprimer
@@ -63,7 +63,7 @@
           Annuler
         </button>
         <button
-          (click)="confirmDeleteDestination('1')"
+          (click)="deleteDestination()"
           class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
         >
           Confirmer

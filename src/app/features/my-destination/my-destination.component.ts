@@ -6,6 +6,7 @@ import {UserService} from '../../core/services/user.service';
 import {DestinationService} from '../../core/services/destination.service';
 import {LoadingService} from '../../core/services/loading.service';
 import {NotificationService} from '../../core/services/notification.service';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-destinations',
@@ -15,6 +16,7 @@ import {NotificationService} from '../../core/services/notification.service';
 export class MyDestinationComponent implements OnInit {
   showDeleteDestinationModal: boolean = false;
   destinations$: Observable<Destination[]> = of([]);
+  destinationId: string = "";
 
   constructor(private router: Router,
               private destinationService: DestinationService,
@@ -27,21 +29,24 @@ export class MyDestinationComponent implements OnInit {
     this.destinations$ = this.destinationService.getDestinationFromHost(this.userService.getUserId());
   }
 
-  deleteDestination(id: string) {
+  openModalDeletion(destinationId: string) {
     this.showDeleteDestinationModal = true;
+    this.destinationId = destinationId;
+    console.log(`id : ${this.destinationId}`);
   }
 
   closeModals() {
     this.showDeleteDestinationModal = false;
   }
 
-  editDestination(id: string) {
-    console.log('Edit destination with ID:', id);
-    // Implémentez ici la logique pour modifier une destination
+  editDestination(destinationId: string) {
+    const dataToSend = { destinationId: destinationId };
+    this.router.navigate([`/modify-destination`], { state: dataToSend });
   }
 
-  confirmDeleteDestination(destinationID: string) {
-    this.destinations$ = this.destinationService.deleteDestination(this.userService.getUserId(), destinationID);
+  deleteDestination() {
+    this.destinations$ = this.destinationService.deleteDestination(this.userService.getUserId(), this.destinationId);
+    this.closeModals();
   }
 
   createNewDestination() {

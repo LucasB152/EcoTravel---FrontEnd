@@ -3,6 +3,7 @@ import {DestinationCreationDto} from '../models/DestinationCreationDto';
 import {Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {environment} from '../../../environments/environment';
+import {Destination} from '../models/Destination';
 
 @Injectable({
   providedIn: 'root'
@@ -21,5 +22,13 @@ export class DestinationService {
 
   deleteDestination(hostId: string, destinationID: string): Observable<any> {
     return this.http.delete(`${environment.API_URL}/host/${hostId}/destination/${destinationID}`);
+  }
+
+  getDestinationDetails(destinationId: number): Observable<any> {
+    return this.http.get<Destination>(`${environment.API_URL}/destination/${destinationId}`);
+  }
+
+  updateDestination(updatedDestination: DestinationCreationDto, hostId: string, destinationId: string): Observable<any> {
+    return this.http.put(`${environment.API_URL}/host/${hostId}/destination/${destinationId}`, updatedDestination);
   }
 }

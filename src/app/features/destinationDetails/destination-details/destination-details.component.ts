@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {LocationService} from '../../../core/services/location.service';
 import {ActivatedRoute} from '@angular/router';
 import {BehaviorSubject, Observable, shareReplay, switchMap} from 'rxjs';
 import {Destination} from '../../../core/models/Destination';
@@ -9,6 +8,7 @@ import {map} from 'rxjs/operators';
 import {ReviewEditDto} from '../../../core/models/ReviewEditDto';
 import {UserService} from '../../../core/services/user.service';
 import {NotificationService} from '../../../core/services/notification.service';
+import {DestinationService} from '../../../core/services/destination.service';
 
 @Component({
   selector: 'app-destination-details',
@@ -25,11 +25,11 @@ export class DestinationDetailsComponent implements OnInit {
   isItineraryModalVisible: boolean = false;
   selectedDestination: Destination | null = null;
 
-  private reviewsSubject = new BehaviorSubject<void>(undefined); // Permet de rafraîchir les données de revues.
+  private reviewsSubject = new BehaviorSubject<void>(undefined);
 
 
   constructor(public route: ActivatedRoute,
-              private locationService: LocationService,
+              private destinationService: DestinationService,
               private reviewService: ReviewService,
               private userService: UserService,
               private notificationService: NotificationService
@@ -40,7 +40,7 @@ export class DestinationDetailsComponent implements OnInit {
     const destinationId = this.route.snapshot.params['id'];
     this.myId = this.userService.getUserId();
 
-    this.destination$ = this.locationService.getDestinationDetails(destinationId).pipe(shareReplay(1));
+    this.destination$ = this.destinationService.getDestinationDetails(destinationId).pipe(shareReplay(1));
 
 
     this.reviews$ = this.reviewsSubject.pipe(

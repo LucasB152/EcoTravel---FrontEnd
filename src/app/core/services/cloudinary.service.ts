@@ -34,4 +34,10 @@ export class CloudinaryService {
 
     return forkJoin(uploadObservables);
   }
+
+  deletePicture(imageUrl: string): Observable<any> {
+    return this.http.delete(`${environment.API_URL}/host/image`, {
+      body: { imageUrl }
+    });
+  }
 }

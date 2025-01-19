@@ -8,7 +8,7 @@ import {finalize, Observable, of} from 'rxjs';
 import {Itinerary} from '../../core/models/Itinerary';
 import {ItineraryService} from '../../core/services/itinerary.service';
 import {LoadingService} from '../../core/services/loading.service';
-import {HttpClient} from '@angular/common/http';
+import {RequestService} from '../../core/services/request.service';
 
 @Component({
   selector: 'app-profile',
@@ -19,13 +19,15 @@ export class ProfileComponent implements OnInit {
   user!: Users;
   isModalOpen: boolean = false;
   myItinerary$: Observable<Itinerary[]> = of([]);
+  status: string = "";
 
   constructor(private router: Router,
               private authService: AuthService,
               private notificationService: NotificationService,
               private userService: UserService,
               private itineraryService: ItineraryService,
-              private loadingService: LoadingService) {
+              private loadingService: LoadingService,
+              private requestService: RequestService) {
   }
 
   ngOnInit(): void {
@@ -36,6 +38,9 @@ export class ProfileComponent implements OnInit {
         this.user.profilePicturePath != null ? user.profilePicturePath : "basic-profile-picture.webp";
       }
     });
+    this.requestService.getRequestStatusFromUser(this.userService.getUserId()).subscribe(status => {
+      this.status = status;
+    })
     this.myItinerary$ = this.itineraryService.getItinerariesFromUser().pipe(finalize(() => {
       this.loadingService.hide();
     }));
@@ -63,6 +68,7 @@ export class ProfileComponent implements OnInit {
   }
 
   onSeeItineraryDetails(itineraryId: string){
-    this.router.navigateByUrl(`/itinerary/${itineraryId}`);
+    const dataToSend = { itineraryId: itineraryId };
+    this.router.navigateByUrl(`/itinerary/${itineraryId}`, { state: dataToSend });
   }
 }

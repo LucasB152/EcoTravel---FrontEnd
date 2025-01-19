@@ -17,6 +17,7 @@ import {EmailVerificationComponent} from './features/email-verification/email-ve
 import {ItineraryDetailsComponent} from './features/itinerary-details/itinerary-details.component';
 import {DestinationFormComponent} from './features/destination-form/destination-form.component';
 import {MyDestinationComponent} from './features/my-destination/my-destination.component';
+import {ModifyDestinationComponent} from './features/modify-destination/modify-destination.component';
 
 export const routes: Routes = [
   { path: '', component: IndexComponent },
@@ -33,5 +34,6 @@ export const routes: Routes = [
   { path: 'tags-management', component: TagsManagementComponent, canActivate: [RoleGuard], data: { roles: ['ADMIN'] } },
   { path: 'reports', component: ReportListComponent, canActivate: [RoleGuard], data: { roles: ['ADMIN'] } },
   { path: 'itinerary/:id', component: ItineraryDetailsComponent, canActivate: [AuthGuard] },
-  { path: 'myDestination', component: MyDestinationComponent, canActivate: [RoleGuard], data: { roles: ['HOST']}}
+  { path: 'myDestination', component: MyDestinationComponent, canActivate: [RoleGuard], data: { roles: ['HOST']}},
+  { path: 'modify-destination', component: ModifyDestinationComponent, canActivate: [RoleGuard], data: { roles: ['HOST']}}
 ];
