@@ -9,11 +9,11 @@ import {FlowbiteService} from './core/services/flowbite.service';
 export class AppComponent implements OnInit {
   title: string = 'front-ecotravel';
 
-  constructor(private flowbiteService: FlowbiteService) {}
+  constructor(private flowbiteService: FlowbiteService) {
+  }
 
   ngOnInit(): void {
     this.flowbiteService.loadFlowbite(flowbite => {
-      // console.log(flowbite);
     })
   }
 }
