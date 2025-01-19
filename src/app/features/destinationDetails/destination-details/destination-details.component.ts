@@ -8,6 +8,8 @@ import {ReviewResponseDto} from '../../../core/models/ReviewResponseDto';
 import {map} from 'rxjs/operators';
 import {ReviewEditDto} from '../../../core/models/ReviewEditDto';
 import {UserService} from '../../../core/services/user.service';
+import {NotificationService} from '../../../core/services/notification.service';
+import {DestinationService} from '../../../core/services/destination.service';
 
 @Component({
   selector: 'app-destination-details',
@@ -27,13 +29,14 @@ export class DestinationDetailsComponent implements OnInit {
   center = signal<google.maps.LatLngLiteral>({lat: 50.636, lng: 5.573});
   zoom = signal(8);
 
-  private reviewsSubject = new BehaviorSubject<void>(undefined); // Permet de rafraîchir les données de revues.
+  private reviewsSubject = new BehaviorSubject<void>(undefined);
 
 
   constructor(public route: ActivatedRoute,
-              private locationService: LocationService,
+              private destinationService: DestinationService,
               private reviewService: ReviewService,
-              private userService: UserService
+              private userService: UserService,
+              private notificationService: NotificationService
   ) {
   }
 
@@ -41,7 +44,7 @@ export class DestinationDetailsComponent implements OnInit {
     const destinationId = this.route.snapshot.params['id'];
     this.myId = this.userService.getUserId();
 
-    this.destination$ = this.locationService.getDestinationDetails(destinationId).pipe(shareReplay(1));
+    this.destination$ = this.destinationService.getDestinationDetails(destinationId).pipe(shareReplay(1));
 
     this.markerPosition$ = this.destination$.pipe(
       map((destination) => ({
@@ -109,8 +112,12 @@ export class DestinationDetailsComponent implements OnInit {
 
 
   openItineraryModal(destination: Destination): void {
-    this.selectedDestination = destination;
-    this.isItineraryModalVisible = true;
+    if(this.userService.getUserId()){
+      this.selectedDestination = destination;
+      this.isItineraryModalVisible = true;
+    }else{
+      this.notificationService.showNotificationError("Vous devez être connecté pour ajouter cette destination à un itinéraire")
+    }
   }
 
   closeItineraryModal(): void {

@@ -1,17 +1,15 @@
-﻿import {AddressDto} from "./AddressDto";
-
-export class DestinationCreationDto {
-  constructor(
-    public name: string,
-    public description: string,
-    public price: string,
-    public capacity: string,
-    public visible: boolean,
-    public contactPhone: string,
-    public contactEmail: string,
-    public destinationType: string,
-    public userId: number,
-    public addressCreationDto: AddressDto,
-  ) {
-  }
+﻿export interface DestinationCreationDto {
+  name: string;
+  description: string;
+  price: string;
+  capacity: string;
+  contactPhone: string;
+  contactEmail: string;
+  destinationType: string;
+  country: string;
+  location: string;
+  street: string;
+  number: string;
+  zipcode: string;
+  tagsId: string[];
 }

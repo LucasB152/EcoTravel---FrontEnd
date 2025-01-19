@@ -1,0 +1,108 @@
+<div class="max-w-4xl mx-auto mt-8 p-6 bg-white shadow-md rounded">
+  <h2 class="text-2xl font-bold mb-6">Créer une Destination</h2>
+
+  <form [formGroup]="destinationForm" (ngSubmit)="onSubmit()">
+    <!-- Section principale -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-gray-700 font-medium mb-1">Nom</label>
+        <input formControlName="name" type="text" placeholder="Le nom de votre service" class="w-full border border-gray-300 p-2 rounded" />
+      </div>
+
+      <div>
+        <label class="block text-gray-700 font-medium mb-1">Description</label>
+        <textarea formControlName="description" placeholder="Décrivez nous votre service" class="w-full border border-gray-300 p-2 rounded"></textarea>
+      </div>
+
+      <div>
+        <label class="block text-gray-700 font-medium mb-1">Prix</label>
+        <input formControlName="price" type="text" placeholder="Le prix de votre service, par nuit, jour, heure, ..." class="w-full border border-gray-300 p-2 rounded" />
+      </div>
+
+      <div>
+        <label class="block text-gray-700 font-medium mb-1">Capacité</label>
+        <input formControlName="capacity" type="number" placeholder="Nombre maximal de personnes" class="w-full border border-gray-300 p-2 rounded" />
+      </div>
+
+      <div>
+        <label class="block text-gray-700 font-medium mb-1">Téléphone de contact</label>
+        <input formControlName="contactPhone" type="text" placeholder="+32472657687" class="w-full border border-gray-300 p-2 rounded" />
+      </div>
+
+      <div>
+        <label class="block text-gray-700 font-medium mb-1">Email de contact</label>
+        <input formControlName="contactEmail" type="email" placeholder="john@doe.com" class="w-full border border-gray-300 p-2 rounded" />
+      </div>
+
+      <div class="w-64">
+        <label for="options" class="block text-sm font-medium text-gray-700 mb-2">
+          Type de destination
+        </label>
+        <select id="options" formControlName="destinationType" name="options" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+          <option value="ACTIVITY">Activité</option>
+          <option value="LODGING">Hébergement</option>
+        </select>
+      </div>
+
+    </div>
+
+    <!-- Section Adresse -->
+    <div class="mt-8">
+      <h3 class="text-lg font-semibold mb-4">Adresse</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-gray-700 font-medium mb-1">Pays</label>
+          <input formControlName="country" type="text" formGroupName="country" placeholder="Belgique" class="w-full border border-gray-300 p-2 rounded" />
+        </div>
+
+        <div>
+          <label class="block text-gray-700 font-medium mb-1">Ville</label>
+          <input formControlName="location" type="text" formGroupName="location" placeholder="Liège" class="w-full border border-gray-300 p-2 rounded" />
+        </div>
+
+        <div>
+          <label class="block text-gray-700 font-medium mb-1">Rue</label>
+          <input formControlName="street" type="text" formGroupName="street" placeholder="Rue de la Paix" class="w-full border border-gray-300 p-2 rounded" />
+        </div>
+
+        <div>
+          <label class="block text-gray-700 font-medium mb-1">Numéro</label>
+          <input formControlName="number" type="text" formGroupName="number" placeholder="23" class="w-full border border-gray-300 p-2 rounded" />
+        </div>
+
+        <div>
+          <label class="block text-gray-700 font-medium mb-1">Code Postal</label>
+          <input formControlName="zipcode" type="text" formGroupName="zipcode" placeholder="4900" class="w-full border border-gray-300 p-2 rounded" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Section Tags -->
+    <div class="mt-8">
+      <h3 class="text-lg font-semibold mb-4">Tags</h3>
+      <div *ngFor="let tag of tags" class="flex items-center gap-2 mt-2">
+        <input
+          type="checkbox"
+          [value]="tag.id"
+          (change)="onCheckboxChange($event, tag.id!)"
+          class="h-4 w-4"
+        />
+        <label class="text-gray-700">{{ tag.name }}</label>
+      </div>
+    </div>
+
+    <!-- Section Photos -->
+    <div class="mt-8">
+      <h3 class="text-lg font-semibold mb-4">Photos</h3>
+      <input type="file" multiple (change)="onPhotoChange($event)" class="w-full border border-gray-300 p-2 rounded" />
+    </div>
+
+    <!-- Bouton de soumission -->
+    <button
+      type="submit"
+      class="mt-8 w-full bg-blue-500 text-white py-3 rounded hover:bg-blue-600"
+    >
+      Sauvegarder la destination
+    </button>
+  </form>
+</div>

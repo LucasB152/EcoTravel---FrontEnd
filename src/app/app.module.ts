@@ -20,7 +20,6 @@ import { RegisterComponent } from './features/register/register.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AuthInterceptor} from './core/auth.interceptor';
 import { ProfileComponent } from './features/profile/profile.component';
-import { DestinationCreationComponent } from './features/destination-creation/destination-creation.component';
 import { ProfileEditComponent } from './features/profile-edit/profile-edit.component';
 import { NotificationComponent } from './core/components/notification/notification.component';
 import { LoadingSpinnerComponent } from './shared/components/loading-spinner/loading-spinner.component';
@@ -34,6 +33,9 @@ import {FeaturesModule} from './features/features.module';
 import { ItineraryModalComponent } from './features/destinationDetails/itinerary-modal/itinerary-modal.component';
 import { EmailVerificationComponent } from './features/email-verification/email-verification.component';
 import { ItineraryDetailsComponent } from './features/itinerary-details/itinerary-details.component';
+import { DestinationFormComponent } from './features/destination-form/destination-form.component';
+import { MyDestinationComponent } from './features/my-destination/my-destination.component';
+import { ModifyDestinationComponent } from './features/modify-destination/modify-destination.component';
 
 @NgModule({
   declarations: [
@@ -49,8 +51,6 @@ import { ItineraryDetailsComponent } from './features/itinerary-details/itinerar
     LoginComponent,
     RegisterComponent,
     ProfileComponent,
-    DestinationCreationComponent,
-    ProfileComponent,
     ProfileEditComponent,
     NotificationComponent,
     LoadingSpinnerComponent,
@@ -61,7 +61,10 @@ import { ItineraryDetailsComponent } from './features/itinerary-details/itinerar
     ReportListComponent,
     ItineraryModalComponent,
     EmailVerificationComponent,
-    ItineraryDetailsComponent
+    ItineraryDetailsComponent,
+    DestinationFormComponent,
+    MyDestinationComponent,
+    ModifyDestinationComponent
   ],
   imports: [
     BrowserModule,

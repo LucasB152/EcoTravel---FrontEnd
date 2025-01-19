@@ -21,11 +21,11 @@ export class AuthService {
     return this.http.post(`${environment.API_URL}/auth/signup`, user);
   }
 
-  login(email: string, password: string, rememberMe: boolean): Observable<any> {
+  login(email: string, password: string): Observable<any> {
     return this.http.post<any>(`${environment.API_URL}/auth/login`, { email, password }).pipe(
       tap(response => {
         if (response?.token) {
-          this.tokenService.saveToken(response.token, rememberMe);
+          this.tokenService.saveToken(response.token);
           this.loggedIn.next(true);
         }
       })

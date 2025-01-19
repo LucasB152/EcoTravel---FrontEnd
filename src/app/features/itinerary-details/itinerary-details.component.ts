@@ -17,14 +17,13 @@ export class ItineraryDetailsComponent implements OnInit {
   itineraryId!: string;
   itinerary$: Observable<Itinerary> | undefined;
 
-
   // Map state
   center = signal<google.maps.LatLngLiteral>({lat: 50.636, lng: 5.573});
+
   zoom = signal(8);
   infoWindowRef = viewChild.required(MapInfoWindow);
 
 
-  // Modals state
   showDeleteItineraryModal = false;
   showDeleteStepModal = false;
   showEditTitleModal = false;
@@ -34,7 +33,6 @@ export class ItineraryDetailsComponent implements OnInit {
 
   constructor(private itineraryService: ItineraryService,
               private loadingService: LoadingService,
-              private activatedRoute: ActivatedRoute,
               private router: Router,
               private notificationService: NotificationService) {
   }
@@ -68,6 +66,7 @@ export class ItineraryDetailsComponent implements OnInit {
     });
   }
 
+
   openDeleteItineraryModal() {
     this.showDeleteItineraryModal = true;
   }
@@ -78,7 +77,10 @@ export class ItineraryDetailsComponent implements OnInit {
     this.router.navigateByUrl("/profile");
   }
 
-  openDeleteStepModal(stepId: string) {
+  openDeleteStepModal(stepId
+                        :
+                        string
+  ) {
     this.selectedStepId = stepId;
     this.showDeleteStepModal = true;
   }
@@ -107,18 +109,26 @@ export class ItineraryDetailsComponent implements OnInit {
     this.showEditTitleModal = false;
   }
 
-  moveStepUp(stepId: string) {
+  moveStepUp(stepId
+               :
+               string
+  ) {
     this.itinerary$ = this.itineraryService.moveStepUp(stepId, this.itineraryId);
   }
 
-  moveStepDown(stepId: string) {
+  moveStepDown(stepId
+                 :
+                 string
+  ) {
     this.itinerary$ = this.itineraryService.moveStepDown(stepId, this.itineraryId);
   }
 
-  goToDestination(id: string) {
+  goToDestination(id
+                    :
+                    string
+  ) {
     this.router.navigateByUrl(`/destination/${id}`);
   }
-
 
   // Map Methods
   createBluePin(step: any): HTMLElement {

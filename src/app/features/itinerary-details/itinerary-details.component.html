@@ -42,9 +42,9 @@
             #marker="mapAdvancedMarker"
             (mapClick)="onMarkerClick(step, marker)"
             [position]="{
-              lat: step.destination.address.latitude,
-              lng: step.destination.address.longitude
-            }"
+            lat: step.destination!.address.latitude,
+            lng: step.destination!.address.longitude
+          }"
             [content]="createBluePin(step)"
           ></map-advanced-marker>
           <map-info-window></map-info-window>
@@ -101,7 +101,7 @@
 
         <!-- Bouton Afficher la destination -->
         <button
-          (click)="goToDestination(step.destination!.destinationID)"
+          (click)="goToDestination(step.destination!.id)"
           class="bg-[#00a14b] text-white px-4 py-2 rounded hover:bg-[#008f44]"
         >
           Afficher la destination

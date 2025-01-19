@@ -4,6 +4,7 @@ import {map, Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {Request} from '../models/Request';
 import {Tag} from '../models/Tag';
+import * as http from 'node:http';
 
 @Injectable({
   providedIn: 'root',
@@ -25,5 +26,9 @@ export class RequestService {
     return this.http.put<{Message: string, Requests: Request[] }>(url, { status, message }).pipe(
       map(data => data.Requests)
     );
+  }
+
+  getRequestStatusFromUser(userId: string): Observable<any> {
+    return this.http.get(`${environment.API_URL}request/user/${userId}/status`, {})
   }
 }

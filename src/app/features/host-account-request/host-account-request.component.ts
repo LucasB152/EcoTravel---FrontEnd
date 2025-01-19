@@ -14,7 +14,7 @@ import {Router} from '@angular/router';
 export class HostAccountRequestComponent implements OnInit {
   registerForm!: FormGroup;
   certificationFiles: File[] = [];
-  availableServices = ['Hébergement', 'Activités']; // Correspond aux deux services
+  availableServices = ['Hébergement', 'Activités'];
 
   constructor(private fb: FormBuilder, private userService: UserService, private requestService: RequestService, private notificationService: NotificationService, private cloudinaryService: CloudinaryService, private router: Router) {
   }

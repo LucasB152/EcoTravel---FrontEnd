@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, forkJoin } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { TokenService } from './token.service';
 
 @Injectable({
   providedIn: 'root',
@@ -34,5 +33,11 @@ export class CloudinaryService {
     });
 
     return forkJoin(uploadObservables);
+  }
+
+  deletePicture(imageUrl: string): Observable<any> {
+    return this.http.delete(`${environment.API_URL}/host/image`, {
+      body: { imageUrl }
+    });
   }
 }
