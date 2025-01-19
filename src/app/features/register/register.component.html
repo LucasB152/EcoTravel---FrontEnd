@@ -75,7 +75,8 @@
 
           <!-- Confirm Password -->
           <div>
-            <label for="confirm-password" class="block mb-2 text-sm font-medium text-gray-900">Confirmation du mot de passe</label>
+            <label for="confirm-password" class="block mb-2 text-sm font-medium text-gray-900">Confirmation du mot de
+              passe</label>
             <input
               type="password"
               id="confirm-password"
@@ -98,12 +99,12 @@
               </div>
               <div class="ml-3 text-sm">
                 <label for="terms" class="font-light text-gray-500">J'accepte les <a
-                  class="font-medium text-primary-600 hover:underline" href="#">Terms et Conditions</a></label>
+                  class="font-medium text-primary-600 hover:underline" href="#">Termes et Conditions</a></label>
               </div>
             </div>
             <small *ngIf="registerForm.get('terms')?.invalid"
                    class="text-red-600">
-              <span *ngIf="registerForm.get('terms')?.errors?.['required']">Vous devez accepter les terms</span>
+              <span *ngIf="registerForm.get('terms')?.errors?.['required']">Vous devez accepter les termes</span>
             </small>
           </div>
 
@@ -116,7 +117,7 @@
           </button>
           <p class="text-sm font-light text-gray-500">
             J'ai deja un compte ? <a routerLink="/login"
-                                         class="font-medium text-primary-600 hover:underline">Connexion</a>
+                                     class="font-medium text-primary-600 hover:underline">Connexion</a>
           </p>
         </form>
       </div>
