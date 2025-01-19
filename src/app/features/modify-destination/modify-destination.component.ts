@@ -9,6 +9,8 @@ import {UserService} from '../../core/services/user.service';
 import {Router} from '@angular/router';
 import {CloudinaryService} from '../../core/services/cloudinary.service';
 import {NotificationService} from '../../core/services/notification.service';
+import {LoadingService} from '../../core/services/loading.service';
+import {finalize} from 'rxjs';
 
 @Component({
   selector: 'app-modify-destination',
@@ -29,7 +31,8 @@ export class ModifyDestinationComponent implements OnInit {
               private userService: UserService,
               private router: Router,
               private cloudinaryService: CloudinaryService,
-              private notificationService: NotificationService) {
+              private notificationService: NotificationService,
+              private loadingService: LoadingService) {
     this.destinationForm = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
@@ -48,11 +51,12 @@ export class ModifyDestinationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Fetch destination details
-    this.destinationService.getDestinationDetails(history.state.destinationId).subscribe((data) => {
+    this.loadingService.show();
+    this.destinationService.getDestinationDetails(history.state.destinationId).pipe(finalize(() => {
+      this.loadingService.hide();
+    })).subscribe((data) => {
       this.destination = data;
 
-      // Populate the form with existing data
       this.destinationForm.patchValue({
         name: data.name,
         description: data.description,
@@ -130,7 +134,12 @@ export class ModifyDestinationComponent implements OnInit {
   }
 
   onDeletePhoto(url: string): void {
-    this.cloudinaryService.deletePicture(url).subscribe();
+    this.loadingService.show();
+    this.cloudinaryService.deletePicture(url, history.state.destinationId).pipe(finalize(() => {
+      this.loadingService.hide();
+    })).subscribe((data) => {
+      this.destination = data;
+    });
   }
 
   getDestinationTypeValue(type: string): string {
@@ -150,15 +159,21 @@ export class ModifyDestinationComponent implements OnInit {
         console.log(tag);
       })
       const destinationUpdated: DestinationCreationDto = this.destinationForm.value;
-
-      this.destinationService.updateDestination(destinationUpdated, this.userService.getUserId(), history.state.destinationId).subscribe({
+      this.loadingService.show();
+      this.destinationService.updateDestination(destinationUpdated, this.userService.getUserId(), history.state.destinationId)
+        .pipe(finalize(() => {
+          this.loadingService.hide();
+        })).subscribe({
         next: (response) => {
           this.router.navigateByUrl("/")
         }
       });
       if(this.newPhotos.length > 0){
+        this.loadingService.show();
         this.cloudinaryService.uploadFiles(this.newPhotos, `/host/destinations/pictures/${history.state.destinationId}`)
-          .subscribe({
+          .pipe(finalize(() => {
+            this.loadingService.hide();
+          })).subscribe({
             next: (response) => {
               this.router.navigateByUrl('/myDestination');
               this.notificationService.showNotificationSuccess(response.Message);

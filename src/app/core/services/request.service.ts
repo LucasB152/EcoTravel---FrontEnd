@@ -3,8 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import {map, Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {Request} from '../models/Request';
-import {Tag} from '../models/Tag';
-import * as http from 'node:http';
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +27,6 @@ export class RequestService {
   }
 
   getRequestStatusFromUser(userId: string): Observable<any> {
-    return this.http.get(`${environment.API_URL}request/user/${userId}/status`, {})
+    return this.http.get(`${environment.API_URL}/request/user/${userId}/status`, {})
   }
 }
