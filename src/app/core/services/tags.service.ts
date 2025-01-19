@@ -22,7 +22,7 @@ export class TagsService {
       );
   }
 
-  deleteTag(id: number): Observable<Tag[]> {
+  deleteTag(id: string): Observable<Tag[]> {
     return this.http.delete<{Message: string, Tags: Tag[] }>(`${environment.API_URL}/tag/${id}`)
       .pipe(
         map(data => data.Tags)

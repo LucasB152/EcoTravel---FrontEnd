@@ -30,7 +30,7 @@ export class TagsManagementComponent implements OnInit {
     }
   }
 
-  deleteTag(tagId: number) {
+  deleteTag(tagId: string) {
     this.tags$ = this.tagsService.deleteTag(tagId);
   }
 

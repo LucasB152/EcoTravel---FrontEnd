@@ -1,7 +1,7 @@
 import {Address} from './Address';
 
 export interface Destination {
-  destinationID: string;
+  id: string;
   name: string;
   description: string;
   price: string;
@@ -12,5 +12,4 @@ export interface Destination {
   destinationType: string;
   address: Address;
   tags: string[];
-  visible: boolean;
 }
