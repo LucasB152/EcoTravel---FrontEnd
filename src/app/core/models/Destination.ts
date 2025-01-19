@@ -1,7 +1,7 @@
 import {Address} from './Address';
 
 export interface Destination {
-  id: string;
+  destinationID: string;
   name: string;
   description: string;
   price: string;

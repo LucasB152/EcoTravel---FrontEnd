@@ -25,8 +25,8 @@ export class ItineraryModalComponent implements OnInit{
     }
 
   addToItinerary(itineraryId: string): void {
-    console.log(`Destination ID : ${this.destination!.id}`)
-    this.itineraryService.addToItinerary({itineraryId: itineraryId, destinationId: this.destination!.id}).subscribe()
+    console.log(`Destination ID : ${this.destination!.destinationID}`)
+    this.itineraryService.addToItinerary({itineraryId: itineraryId, destinationId: this.destination!.destinationID}).subscribe()
     this.closeModal.emit();
   }
 
@@ -39,7 +39,7 @@ export class ItineraryModalComponent implements OnInit{
   }
 
   saveNewItinerary() {
-    this.itineraryService.createItinerary(this.newItineraryName, this.destination!.id).subscribe({
+    this.itineraryService.createItinerary(this.newItineraryName, this.destination!.destinationID).subscribe({
       next: result => {
         this.notificationService.showNotificationSuccess(result.Message);
         this.closeModalHandler();
